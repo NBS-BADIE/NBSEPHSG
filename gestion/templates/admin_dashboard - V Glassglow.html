@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex vh-100 overflow-hidden">
+
+    <!-- Sidebar -->
+    <nav id="sidebar" class="sidebar d-flex flex-column p-3">
+        <div class="sidebar-header d-flex justify-content-between align-items-center mb-4">
+            <h4 class="text-white">EPH Sidi Ghilès</h4>
+            <button id="sidebarCollapse" class="btn btn-sm btn-outline-light">
+                <i class="bi bi-list"></i>
+            </button>
+        </div>
+
+        <ul class="list-unstyled components flex-grow-1">
+            <li class="{% if request.path == '/dashboard/' %}active{% endif %}">
+                <a href="{% url 'admin_dashboard' %}"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
+            </li>
+            <li class="{% if request.path == '/dashboard/medecins/' %}active{% endif %}">
+                <a href="{% url 'liste_medecins' %}"><i class="bi bi-clipboard2-pulse me-2"></i>Médecins</a>
+            </li>
+            <li class="{% if request.path == '/dashboard/services/' %}active{% endif %}">
+                <a href="{% url 'liste_services_svc' %}"><i class="bi bi-hospital me-2"></i>Services</a>
+            </li>
+            <li class="{% if request.path == '/dashboard/utilisateurs/' %}active{% endif %}">
+                <a href="{% url 'liste_usr' %}"><i class="bi bi-people me-2"></i>Utilisateurs</a>
+            </li>
+            <li class="{% if request.path == '/dashboard/rapports/' %}active{% endif %}">
+                <a href="{% url 'rapports' %}"><i class="bi bi-file-earmark-text me-2"></i>Rapports</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Contenu principal -->
+    <div id="mainContent" class="flex-grow-1 p-4 overflow-auto">
+
+        <h1 class="mb-3">Tableau de bord Admin</h1>
+        <p>Bonjour, <strong>{{ request.user.username }}</strong> ! Vous êtes connecté en tant que <strong>{{ user_role|title }}</strong>.</p>
+        <p>Dernière mise à jour : {{ date_heure }}</p>
+
+        <!-- Cartes statistiques -->
+        <div class="row mt-4">
+            {% for card in cartes_stats %}
+            <div class="col-md-3 mb-3">
+                <div class="card card-glass shadow-sm text-center p-3" style="background-color: {{ card.bg }};">
+                    <i class="bi {{ card.icon }} fs-1 mb-2"></i>
+                    <h5>{{ card.title }}</h5>
+                    <p class="display-6">{{ card.value }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Graphiques -->
+        <div class="row mt-4">
+            <div class="col-md-6 mb-3">
+                <div class="card card-glass shadow-sm p-3">
+                    <h5>Visites</h5>
+                    <canvas id="visitesChart"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card card-glass shadow-sm p-3">
+                    <h5>Services</h5>
+                    <canvas id="servicesChart"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card card-glass shadow-sm p-3">
+                    <h5>Rôles utilisateurs</h5>
+                    <canvas id="rolesChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Sidebar toggle
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('sidebarCollapse');
+
+    toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+    });
+
+    // Charts
+    new Chart(document.getElementById('visitesChart'), {
+        type: 'line',
+        data: {
+            labels: {{ labels_visites|safe }},
+            datasets: [{
+                label: 'Visites',
+                data: {{ data_visites|safe }},
+                backgroundColor: 'rgba(0,153,255,0.2)',
+                borderColor: 'rgba(0,153,255,1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4
+            }]
+        }
+    });
+
+    new Chart(document.getElementById('servicesChart'), {
+        type: 'bar',
+        data: {
+            labels: {{ services_labels|safe }},
+            datasets: [{
+                label: 'Utilisateurs par service',
+                data: {{ services_data|safe }},
+                backgroundColor: 'rgba(0,200,100,0.5)'
+            }]
+        }
+    });
+
+    new Chart(document.getElementById('rolesChart'), {
+        type: 'pie',
+        data: {
+            labels: ['Admins','Modérateurs','Utilisateurs'],
+            datasets: [{
+                data: [{{ total_admins }}, {{ total_moderateurs }}, {{ total_utilisateurs }}],
+                backgroundColor: ['#007bff', '#ffc107', '#28a745']
+            }]
+        }
+    });
+</script>
+
+<style>
+/* === Sidebar Glassmorphism === */
+.sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s;
+    backdrop-filter: blur(15px);
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    overflow-y: auto;
+    color: #fff;
+}
+
+.sidebar.collapsed {
+    width: 80px;
+}
+
+.sidebar ul.components li a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    font-weight: 500;
+    color: #fff;
+    transition: 0.3s;
+    border-radius: 10px;
+}
+
+.sidebar ul.components li.active a,
+.sidebar ul.components li a:hover {
+    background-color: rgba(0, 153, 255, 0.3);
+    color: #fff;
+}
+
+/* === Main Content === */
+#mainContent {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+}
+
+/* === Glass Cards === */
+.card-glass {
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-glass:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+</style>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white d-flex align-items-center">
+            {% if titre == "Ajouter un utilisateur" %}
+                <i class="bi bi-person-plus-fill me-2 fs-4"></i>
+            {% else %}
+                <i class="bi bi-pencil-fill me-2 fs-4"></i>
+            {% endif %}
+            <h4 class="mb-0">{{ titre }}</h4>
+        </div>
+
+        <div class="card-body p-4">
+            <form method="post" class="row g-3">
+                {% csrf_token %}
+
+                <!-- Username -->
+                <div class="col-md-6">
+                    <label class="form-label">{{ form.username.label }}</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        {{ form.username }}
+                    </div>
+                    {% if form.username.errors %}
+                        <div class="text-danger mt-1">{{ form.username.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Email -->
+                <div class="col-md-6">
+                    <label class="form-label">{{ form.email.label }}</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                        {{ form.email }}
+                    </div>
+                    {% if form.email.errors %}
+                        <div class="text-danger mt-1">{{ form.email.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Role -->
+                <div class="col-md-6">
+                    <label class="form-label">{{ form.role.label }}</label>
+                    {{ form.role }}
+                    {% if form.role.errors %}
+                        <div class="text-danger mt-1">{{ form.role.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Password -->
+                <div class="col-md-6">
+                    <label class="form-label">{{ form.password.label }}</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                        {{ form.password }}
+                    </div>
+                    {% if form.password.errors %}
+                        <div class="text-danger mt-1">{{ form.password.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Is Active -->
+                <div class="col-12">
+                    <div class="form-check">
+                        {{ form.is_active }}
+                        <label class="form-check-label">{{ form.is_active.label }}</label>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="col-12 d-flex gap-2 mt-3">
+                    <button type="submit" class="btn btn-success btn-lg">
+                        {% if titre == "Ajouter un utilisateur" %}
+                            <i class="bi bi-person-plus-fill me-1"></i> Ajouter
+                        {% else %}
+                            <i class="bi bi-pencil-fill me-1"></i> Modifier
+                        {% endif %}
+                    </button>
+                    <a href="{% url 'liste_usr' %}" class="btn btn-secondary btn-lg">
+                        <i class="bi bi-x-circle me-1"></i> Annuler
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

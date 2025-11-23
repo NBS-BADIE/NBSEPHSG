@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+.header-banner {
+    height: 260px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 25px;
+}
+
+.info-box {
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 20px;
+    transition: .3s;
+}
+.info-box:hover {
+    transform: translateY(-4px);
+}
+</style>
+
+<div class="container py-4">
+
+    <!-- Photo du service -->
+    {% if service.image %}
+        <img src="{{ service.image.url }}" style="width:120px;">
+    {% endif %}
+
+    <h2>{{ service.nom }}</h2>
+    <p class="text-muted">{{ service.description }}</p>
+
+    <hr>
+
+    <!-- UNITÉS -->
+    <h4><i class="bi bi-list-ul me-2"></i>Unités du service</h4>
+
+    <div class="row g-3 mt-2">
+        {% for unite in unites %}
+        <div class="col-md-6">
+            <div class="info-box shadow-sm">
+                <h5>{{ unite.nom }}</h5>
+                <p class="text-muted">{{ unite.description }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted ms-2">Aucune unité enregistrée pour ce service.</p>
+        {% endfor %}
+    </div>
+
+    <hr>
+
+    <!-- CAPACITÉ -->
+    <h4><i class="bi bi-hospital-fill me-2"></i>Capacité & Effectifs</h4>
+
+    <div class="row g-3">
+
+        <div class="col-md-4">
+            <div class="info-box shadow-sm">
+                <h5>Lits disponibles</h5>
+                <p class="fs-4">
+                    {% if details %}
+                        {{ details.nb_lits }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="info-box shadow-sm">
+                <h5>Effectifs</h5>
+
+                {% if effectifs %}
+                <ul class="mb-0">
+                    <li>Professeurs : <strong>{{ effectifs.professeurs }}</strong></li>
+                    <li>Spécialistes : <strong>{{ effectifs.specialistes }}</strong></li>
+                    <li>Médecins généralistes : <strong>{{ effectifs.generalistes }}</strong></li>
+                    <li>Personnel paramédical : <strong>{{ effectifs.paramedicaux }}</strong></li>
+                    <li>Autres : <strong>{{ effectifs.autres }}</strong></li>
+                </ul>
+                {% else %}
+                    <p class="text-muted">Aucun effectif renseigné.</p>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <!-- INDICATEURS CLINIQUES -->
+    <h4><i class="bi bi-bar-chart-fill me-2"></i>Indicateurs cliniques</h4>
+
+    <div class="row g-3 mt-1">
+
+        {% if activite %}
+        <div class="col-md-3"><div class="info-box text-center"><b>Admissions</b><br>{{ activite.admissions }}</div></div>
+        <div class="col-md-3"><div class="info-box text-center"><b>Journées hosp.</b><br>{{ activite.journees_hospitalisation }}</div></div>
+        <div class="col-md-3"><div class="info-box text-center"><b>Taux occupation</b><br>{{ activite.taux_occupation }} %</div></div>
+        <div class="col-md-3"><div class="info-box text-center"><b>Durée séjour</b><br>{{ activite.duree_moy_sejour }} j</div></div>
+
+        <div class="col-md-3"><div class="info-box text-center"><b>Taux mortalité</b><br>{{ activite.taux_mortalite }} %</div></div>
+        {% else %}
+            <p class="text-muted ms-2">Aucune donnée d’activité enregistrée.</p>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

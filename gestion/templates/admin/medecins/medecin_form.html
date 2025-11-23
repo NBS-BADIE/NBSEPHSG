@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+    <h3 class="mb-4">{% if medecin %}Modifier{% else %}Ajouter{% endif %} un Médecin</h3>
+
+    <form method="post" enctype="multipart/form-data" class="card shadow-sm p-4">
+        {% csrf_token %}
+        <div class="row g-3">
+            <!-- Nom -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-person-fill me-1"></i>Nom</label>
+                {{ form.nom }}
+            </div>
+
+            <!-- Spécialité -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-bookmark-star-fill me-1"></i>Spécialité</label>
+                {{ form.specialite }}
+            </div>
+
+            <!-- Téléphone -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-telephone-fill me-1"></i>Téléphone</label>
+                {{ form.telephone }}
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-envelope-fill me-1"></i>Email</label>
+                {{ form.email }}
+            </div>
+
+            <!-- Service -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-hospital-fill me-1"></i>Service</label>
+                {{ form.service }}
+            </div>
+
+            <!-- Unité -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-building me-1"></i>Unité (optionnelle)</label>
+                {{ form.unite }}
+            </div>
+
+            <!-- Grade -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-award-fill me-1"></i>Grade</label>
+                {{ form.grade }}
+            </div>
+
+            <!-- Fonction -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-briefcase-fill me-1"></i>Fonction</label>
+                {{ form.fonction }}
+            </div>
+
+             <!-- Photo -->
+            <div class="row align-items-center g-3 mb-3">
+    <div class="col-md-6">
+        <label class="form-label"><i class="bi bi-camera-fill me-1"></i>Photo</label>
+        {{ form.photo }}
+    </div>
+
+
+    <div class="col-md-6 text-center">
+        <img id="photoPreview" 
+            src="{% if medecin and medecin.photo %}{{ medecin.photo.url }}{% else %}{% static 'images/default-doctor.jpg' %}{% endif %}" 
+            alt="Photo" 
+            class="rounded-circle shadow-sm" 
+            style="width:100px; height:100px; object-fit:cover;">
+    </div>
+
+
+    </div>
+
+</div>
+    
+        <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-primary d-flex align-items-center">
+                <i class="bi bi-check-lg me-1"></i> Enregistrer
+            </button>
+
+            <a href="{% url 'liste_medecins' %}" class="btn btn-secondary d-flex align-items-center">
+                <i class="bi bi-x-lg me-1"></i> Annuler
+            </a>
+        </div>
+
+    </form>
+</div>
+
+<style>
+.form-label i {
+    color: #0d6efd; /* icônes bleu bootstrap */
+}
+input, select {
+    border-radius: 0.35rem;
+}
+input:focus, select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.form-label i { color: #0d6efd; }
+input, select { border-radius: 0.35rem; }
+input:focus, select:focus { border-color: #0d6efd; box-shadow: 0 0 0 0.2rem rgba(13,110,253,0.25); }
+
+</style>
+
+<script>
+// Preview live de la photo
+const photoInput = document.getElementById('{{ form.photo.id_for_label }}');
+const photoPreview = document.getElementById('photoPreview');
+
+photoInput.addEventListener('change', (event) => {
+    const [file] = event.target.files;
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = e => photoPreview.src = e.target.result;
+        reader.readAsDataURL(file);
+    }
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+# Ignorer vidéos
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Ignorer vidéos dans static
+static/Video/
+
+# Ignorer fichiers générés
+__pycache__/
+*.pyc
+media/
+
+# Ignorer IDE
+.vscode/
+.idea/

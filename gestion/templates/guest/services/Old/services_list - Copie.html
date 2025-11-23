@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4">Nos Services</h1>
+    <div class="row g-4">
+        {% for service in services %}
+        <div class="col-md-4">
+            <div class="card card-glass h-100">
+                {% if service.image %}
+                <img src="{{ service.image.url }}" class="card-img-top" alt="{{ service.nom }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ service.nom }}</h5>
+                    <p class="card-text">{{ service.description|truncatechars:100 }}</p>
+                    <a href="{% url 'service_detail' service.pk %}" class="btn btn-primary">Voir plus</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>Aucun service disponible pour le moment.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

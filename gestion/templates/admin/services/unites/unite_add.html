@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+
+    <h3 class="mb-4">
+        <i class="bi bi-plus-circle"></i> Ajouter une unité au service : {{ service.nom }}
+    </h3>
+
+    <form method="post" class="card shadow-sm p-4">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label">Nom de l’unité</label>
+            <input type="text" name="nom" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea name="description" class="form-control" rows="4"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Nombre de lits</label>
+            <input type="number" name="lits" class="form-control" value="0" min="0" required>
+        </div>
+
+        <button class="btn btn-success"><i class="bi bi-check-lg"></i> Enregistrer</button>
+
+        <a href="{% url 'unites_list' service.id %}" class="btn btn-secondary">
+            Annuler
+        </a>
+    </form>
+</div>
+{% endblock %}

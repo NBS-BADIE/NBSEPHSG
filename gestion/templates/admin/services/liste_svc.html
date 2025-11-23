@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+/* --- STYLE PRO --- */
+.toggle-btn {
+    cursor: pointer;
+}
+.card-service:hover {
+    transform: scale(1.02);
+    transition: 0.3s;
+}
+.img-mini {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.filter-box {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 8px;
+}
+.hidden {
+    display: none;
+}
+</style>
+
+<div class="container py-4">
+
+
+<h2 class="mb-4 d-flex align-items-center">
+    <i class="bi bi-hospital me-2"></i>Gestion des Services
+</h2>
+
+<!-- Toggle mode -->
+<button class="btn btn-primary mb-3 toggle-btn" onclick="switchMode()">
+    <i class="bi bi-layout-three-columns"></i> Mode Tableau / Cartes
+</button>
+
+<!-- Barre de recherche + filtres -->
+<div class="filter-box mb-4 shadow-sm">
+    <div class="row g-3">
+
+        <div class="col-md-4">
+            <input type="text" id="searchInput" class="form-control"
+                   placeholder="Rechercher (nom, description, effectifs...)">
+        </div>
+
+        <div class="col-md-2">
+            <select id="filterUnits" class="form-select">
+                <option value="">Unité (tous)</option>
+                <option value="1">≥ 1 unité</option>
+                <option value="2">≥ 2 unités</option>
+                <option value="3">≥ 3 unités</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <select id="filterBeds" class="form-select">
+                <option value="">Lits (tous)</option>
+                <option value="10">≥ 10 lits</option>
+                <option value="20">≥ 20 lits</option>
+                <option value="30">≥ 30 lits</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <select id="filterImage" class="form-select">
+                <option value="">Image (tous)</option>
+                <option value="yes">Avec image</option>
+                <option value="no">Sans image</option>
+            </select>
+        </div>
+
+    </div>
+</div>
+
+<!-- TABLE MODE -->
+<div id="tableMode">
+    <div class="table-responsive shadow-sm">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark text-center">
+                <tr class="text-center">
+                    <th>Image</th>
+                    <th>Nom</th>
+                    <th>Nombre d’unités</th>
+                    <th>Effectifs</th>
+                    <th>Total lits </th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="serviceTable">
+
+                {% for s in services %}
+                    <tr class="service-row"
+                        data-nom="{{ s.nom }}"
+                        data-description="{{ s.description }}"
+                        data-unites="{{ s.unites.count }}"
+                        data-lits="{{ s.lits_total }}"
+                        data-effectifs="{{ s.effectifs_total }}"
+                        data-hasimage="{% if s.image %}yes{% else %}no{% endif %}">
+
+                        <!-- Image -->
+                        <td class="text-center">
+                            {% if s.image %}
+                                <img src="{{ s.image.url }}" class="img-mini">
+                            {% else %}
+                                <span class="text-muted fst-italic">Aucune</span>
+                            {% endif %}
+                        </td>
+
+                        <td>{{ s.nom }}</td>
+                        <td class="text-center">{{ s.unites.count }}</td>
+                        <td class="text-center">{{ s.effectifs_total }}</td>
+                        <td class="text-center">{{ s.lits_total }}</td>
+
+                        <!-- Actions -->
+                        <td class="text-center">
+                            <a href="{% url 'service_manage' s.pk %}" class="me-2">
+                                <i class="bi bi-gear fs-4 text-primary"></i>
+                            </a>
+                            <a href="{% url 'supprimer_service_svc' s.pk %}"
+                               onclick="return confirm('Supprimer ce service ?')">
+                                <i class="bi bi-trash fs-4 text-danger"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- CARDS MODE -->
+<div id="cardMode" class="hidden">
+    <div class="row g-3" id="serviceCards">
+
+        {% for s in services %}
+            <div class="col-md-4 service-card"
+                 data-nom="{{ s.nom }}"
+                 data-description="{{ s.description }}"
+                 data-unites="{{ s.unites.count }}"
+                 data-lits="{{ s.lits_total }}"
+                 data-effectifs="{{ s.effectifs_total }}"
+                 data-hasimage="{% if s.image %}yes{% else %}no{% endif %}">
+
+                <div class="card card-service shadow-sm">
+
+                    {% if s.image %}
+                        <img src="{{ s.image.url }}" class="card-img-top" style="height:180px; object-fit:cover;">
+                    {% else %}
+                        <div class="bg-secondary text-white text-center py-5">
+                            <i class="bi bi-image fs-1"></i>
+                            <p>Aucune image</p>
+                        </div>
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ s.nom }}</h5>
+                        <p class="text-muted">{{ s.description|truncatechars:80 }}</p>
+
+                        
+                        <p><b>Nombre d'Unités :</b> {{ s.unites.count }}</p>
+                        <p><b>Effectifs       :</b> {{ s.effectifs_total }}</p>
+                        <p><b>Nombre de Lits :</b> {{ s.lits_total }}</p>
+
+                        <a href="{% url 'service_manage' s.pk %}" class="btn btn-primary btn-sm">
+                            Gérer
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+
+
+</div>
+
+<script>
+/* --- MODE TABLE / CARDS --- */
+function switchMode() {
+    document.getElementById("tableMode").classList.toggle("hidden");
+    document.getElementById("cardMode").classList.toggle("hidden");
+}
+
+/* --- FILTRAGE GLOBAL --- */
+function filterServices() {
+    let search = document.getElementById("searchInput").value.toLowerCase();
+    let minUnits = document.getElementById("filterUnits").value;
+    let minBeds = document.getElementById("filterBeds").value;
+    let imageFilter = document.getElementById("filterImage").value;
+
+    let rows = document.querySelectorAll(".service-row");
+    let cards = document.querySelectorAll(".service-card");
+
+    [...rows, ...cards].forEach(item => {
+        let nom = item.dataset.nom.toLowerCase();
+        let desc = item.dataset.description.toLowerCase();
+        let unites = parseInt(item.dataset.unites);
+        let lits = parseInt(item.dataset.lits);
+        let effectifs = parseInt(item.dataset.effectifs);
+        let hasImage = item.dataset.hasimage;
+
+        let visible = true;
+
+        if (search && !(nom.includes(search) || desc.includes(search)))
+            visible = false;
+
+        if (minUnits && unites < parseInt(minUnits))
+            visible = false;
+
+        if (minBeds && lits < parseInt(minBeds))
+            visible = false;
+
+        if (imageFilter && imageFilter !== hasImage)
+            visible = false;
+
+        item.style.display = visible ? "" : "none";
+    });
+}
+
+/* --- EVENTS --- */
+document.getElementById("searchInput").onkeyup = filterServices;
+document.getElementById("filterUnits").onchange = filterServices;
+document.getElementById("filterBeds").onchange = filterServices;
+document.getElementById("filterImage").onchange = filterServices;
+
+</script>
+
+{% endblock %}

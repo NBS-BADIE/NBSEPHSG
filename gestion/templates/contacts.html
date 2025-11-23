@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<style>
+.card-glass {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-glass:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.15);
+}
+
+.badge-glass {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+.card-glass {
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(12px);
+    border-radius: 14px;
+    transition: transform .3s, box-shadow .3s;
+}
+.card-glass:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+}
+
+#mainContent {
+    width: 100%;
+    padding-bottom: 100px; /* ou la hauteur exacte de ton footer */
+}
+
+</style>
+
+
+<div class="vh-100  w-100">
+
+    <!-- MAIN CONTENT -->
+    <div id="mainContent" >
+
+        <h1 class="mb-3"><i class="bi bi-info-circle text-primary me-2  fs-1"></i> Contactez-nous</h1>
+        <p class="text-muted">Envoyez-nous un message ou consultez nos coordonnées.</p>
+
+        <!-- Alerts -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="row g-4 mt-2">
+
+            <!-- FORMULAIRE -->
+            <div class="col-md-6">
+                <div class="card card-glass p-4 h-100">
+                    <h4 class="mb-3"><i class="bi bi-chat-dots-fill me-2"></i> Envoyer un message</h4>
+
+                    <form method="post" id="contactForm" novalidate>
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label">Nom complet</label>
+                            <input type="text" name="nom" class="form-control" required>
+                            <div class="invalid-feedback">Veuillez entrer votre nom.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" required>
+                            <div class="invalid-feedback">Adresse email invalide.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Sujet</label>
+                            <input type="text" name="sujet" class="form-control" required>
+                            <div class="invalid-feedback">Veuillez entrer le sujet.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Message</label>
+                            <textarea name="message" class="form-control" rows="5" required></textarea>
+                            <div class="invalid-feedback">Veuillez écrire votre message.</div>
+                        </div>
+
+                        <button class="btn btn-primary w-100">
+                            <i class="bi bi-send-fill me-2"></i> Envoyer
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- COORDONNÉES -->
+            <div class="col-md-6">
+
+                <div class="card card-glass p-4 mb-3">
+                    <h4><i class="bi bi-geo-alt-fill me-2"></i> Adresse</h4>
+                    <p>EPH Sidi Ghilès - Hôpital Lakhdar BOUCHEMAA<br>Route Nationale N°11<br> Sidi Ghilès - 42022 <br> W. Tipaza - Algérie<br></p>
+                    <h4><i class="bi bi-geo-alt-fill me-2"></i> Coordonnées GPS :  LT 36.583872      -    LG 2.128287 </h4>
+                </div>
+
+                <div class="card card-glass p-4 mb-3">
+                    <h4><i class="bi bi-telephone-fill me-2"></i> Téléphone</h4>
+                    <p>+213 25 123 4567<br>+213 25 765 4321</p>
+                </div>
+
+                <div class="card card-glass p-4">
+                    <h4><i class="bi bi-envelope-fill me-2"></i> Email</h4>
+                    <p>contact@ephsidighiles.dz<br>support@ephsidighiles.dz</p>
+                </div>
+
+            </div>
+
+            <!-- GOOGLE MAP -->
+            <div class="col-md-12">
+                <div class="card card-glass p-3">
+                    <h4><i class="bi bi-map-fill me-2"></i> Localisation</h4>
+
+                    <iframe
+                        src="https://www.google.com/maps?q=36.583872,2.128287&hl=fr&z=14&output=embed"
+                        width="100%" height="350" style="border:0;" allowfullscreen loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+
+            <!-- GPS + HORAIRES + RÉSEAUX -->
+    <div class="col-md-4">
+        <div class="card card-glass p-4 h-100 d-flex flex-column justify-content-center align-items-center text-center">
+
+
+            <!-- Badge icône -->
+            <div class="badge-glass mb-3 d-flex align-items-center">
+                <i class="bi bi-geo-alt-fill fs-1 text-primary me-2"></i>
+                
+            </div>
+
+
+
+            <!-- Coordonnées -->
+             <h4>
+            <p class="mb-1">Latitude : 36.583872</p>
+            <p class="mb-0">Longitude : 2.128287</p>
+            </h4>
+
+            </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card card-glass p-3 h-100">
+                    <h5 class="mb-3"><i class="bi bi-clock-fill me-2"></i> Horaires</h5>
+                    <p>Lundi - Vendredi : 08h00 - 17h00</p>
+                    <p>Samedi : 08h00 - 13h00</p>
+                    <p>Dimanche : Fermé</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card card-glass p-3 h-100">
+                    <h5 class="mb-3"><i class="bi bi-share-fill me-2"></i> Réseaux sociaux</h5>
+                    <p>
+                        <a href="#" class="text-decoration-none me-3"><i class="bi bi-facebook"></i> Facebook</a><br>
+                        <a href="#" class="text-decoration-none me-3"><i class="bi bi-twitter"></i> Twitter</a><br>
+                        <a href="#" class="text-decoration-none"><i class="bi bi-instagram"></i> Instagram</a>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<!-- VALIDATION JS -->
+<script>
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    let form = this;
+    if (!form.checkValidity()) {
+        e.preventDefault();
+        form.classList.add('was-validated');
+    }
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+
+    <h3 class="mb-4">
+        <i class="bi bi-diagram-3"></i> Unités du service : {{ service.nom }}
+    </h3>
+
+    <a href="{% url 'unite_add' service.id %}" class="btn btn-success mb-4">
+        <i class="bi bi-plus-circle"></i> Ajouter une unité
+    </a>
+
+    {% if unites %}
+        <div class="row g-4">
+            {% for u in unites %}
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100 hover-card p-3">
+
+                        <h5>{{ u.nom }}</h5>
+                        <p class="text-muted">{{ u.description|truncatewords:20 }}</p>
+
+                        <div class="d-flex justify-content-between mt-auto">
+                            <a href="{% url 'unite_edit' u.id %}" class="btn btn-primary btn-sm">
+                                <i class="bi bi-pencil-square"></i> Modifier
+                            </a>
+
+                            <form method="post" action="{% url 'unite_delete' u.id %}"
+                                  onsubmit="return confirm('Supprimer cette unité ?')" >
+                                {% csrf_token %}
+                                <button class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> Aucune unité définie pour ce service.
+        </div>
+    {% endif %}
+
+    <a href="{% url 'service_manage' service.id %}" class="btn btn-secondary mt-4">
+        Retour
+    </a>
+
+</div>
+
+<style>
+.hover-card { transition: 0.25s; }
+.hover-card:hover { transform: translateY(-3px); background:#f7fff4; }
+</style>
+
+{% endblock %}

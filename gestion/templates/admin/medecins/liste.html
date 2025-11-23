@@ -1,0 +1,318 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid py-4">
+
+    <h3 class="mb-4">Liste des médecins</h3>
+
+<div class="card shadow-sm p-3 mb-3">
+
+<!-- Ligne principale : Recherche + Switch + Ajouter -->
+<div class="row align-items-center mb-3 g-2">
+    <div class="col-md-4">
+        <input type="text" id="searchInput" class="form-control" placeholder="🔍 Nom, téléphone, email...">
+    </div>
+
+    <div class="col-md-4 text-center">
+        <button id="viewCards" class="btn btn-outline-warning me-2">
+            <i class="bi bi-grid-3x3-gap-fill"></i> Mode Cartes
+        </button>
+        <button id="viewTable" class="btn btn-outline-success">
+            <i class="bi bi-table"></i> Mode Tableau
+        </button>
+    </div>
+
+    <div class="col-md-4 text-end">
+        <a href="{% url 'ajouter_medecin' %}" class="btn btn-outline-primary">
+            <i class="bi bi-plus-lg"></i> Ajouter un médecin
+        </a>
+    </div>
+</div>
+
+<div class="card shadow-sm p-3 mb-3">
+
+<!-- Ligne des filtres (colonnes flexibles) -->
+<div class="row g-3 mb-3">
+
+    <div class="col">
+        <label class="form-label fw-semibold">Service</label>
+        <select id="filterService" class="form-select">
+            <option value="">Tous</option>
+            {% for service in services %}
+                <option value="{{ service }}">{{ service }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col">
+        <label class="form-label fw-semibold">Grade</label>
+        <select id="filterGrade" class="form-select">
+            <option value="">Tous</option>
+            {% for g in grades %}
+                <option value="{{ g }}">{{ g }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col">
+        <label class="form-label fw-semibold">Fonction</label>
+        <select id="filterFonction" class="form-select">
+            <option value="">Tous</option>
+            {% for f in fonctions %}
+                <option value="{{ f }}">{{ f }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col">
+        <label class="form-label fw-semibold">Spécialité</label>
+        <select id="filterSpecialite" class="form-select">
+            <option value="">Toutes</option>
+            {% for s in specialites %}
+                <option value="{{ s }}">{{ s }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col">
+        <label class="form-label fw-semibold">Autre filtre</label>
+        <select id="filterAutre" class="form-select">
+            <option value="">Tous</option>
+            <!-- options dynamiques si besoin -->
+        </select>
+    </div>
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+    <!-- ================= MODE TABLEAU ================= -->
+     <!-- 🩺 Tableau -->
+    <div id="tableView" class="card shadow-sm p-3" style="display:none;">
+        <table class="table table-hover align-middle">
+            <thead class="table-primary">
+                    <tr>
+                        <th>#</th>
+                        <th>Photo</th>
+                        <th>Nom</th>
+                        <th>Service</th>
+                        <th>Grade</th>
+                        <th>Fonction</th>
+                        <th>Téléphone</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="medecinTableBody">
+                    {% for m in medecins %}
+                    <tr class="med-row"
+                            data-nom="{{ m.nom|lower }}"
+                            data-specialite="{{ m.specialite|lower }}"
+                            data-grade="{{ m.grade|lower }}"
+                            data-fonction="{{ m.fonction|lower }}"
+                            data-tel="{{ m.telephone|lower }}"
+                            data-email="{{ m.email|lower }}"
+                            data-service="{% if m.service %}{{ m.service.nom|lower }}{% else %}aucun{% endif %}">
+
+
+                        <td class="text-center">{{ forloop.counter }}</td>
+
+                        <td class="text-center">
+                            {% if m.photo %}
+                                <img src="{{ m.photo.url }}" class="rounded-circle shadow-sm"
+                                     style="width:48px;height:48px;object-fit:cover;">
+                            {% else %}
+                                <img src="{% static 'images/default-doctor.jpg' %}"
+                                     class="rounded-circle shadow-sm"
+                                     style="width:48px;height:48px;object-fit:cover;">
+                            {% endif %}
+                        </td>
+
+                        <td class="fw-semibold">{{ m.nom }}</td>
+                        <td>{{ m.service.nom }}</td>
+                        <td>{{ m.grade }}</td>
+                        <td>{{ m.fonction }}</td>
+                        <td>{{ m.telephone }}</td>
+                        <td class="email-cell">{{ m.email }}</td>
+
+                        <td class="text-center">
+                            <a href="{% url 'modifier_medecin' m.id %}" class="btn btn-sm btn-warning">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a href="{% url 'supprimer_medecin' m.id %}" class="btn btn-sm btn-danger"
+                               onclick="return confirm('Supprimer ce médecin ?');">
+                                <i class="bi bi-trash3-fill"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+        </table>
+        
+    </div>
+
+
+    <!-- ================= MODE CARDS ================= -->
+    <div class="row" id="cardsView">
+        {% for m in medecins %}
+            <div class="col-md-3 mb-4 doctor-card-wrapper"
+                data-id="{{ m.id }}"
+                data-nom="{{ m.nom|lower }}"
+                data-grade="{{ m.grade|lower }}"
+                data-fonction="{{ m.fonction|lower }}"
+                data-specialite="{{ m.specialite|lower }}"
+                data-tel="{{ m.telephone|lower }}"
+                data-email="{{ m.email|lower }}"
+                data-service="{% if m.service %}{{ m.service.nom|lower }}{% else %}aucun{% endif %}">
+
+
+                <div class="card shadow-sm border-0 doctor-card">
+                    <div class="text-center mt-3">
+                        {% if m.photo %}
+                            <img src="{{ m.photo.url }}" class="rounded-circle doctor-photo">
+                        {% else %}
+                            <img src="{% static 'images/default-doctor.jpg' %}" class="rounded-circle doctor-photo">
+                        {% endif %}
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ m.nom }}</h5>
+
+                        <span class="badge
+                            {% if m.fonction == 'Chef de Service' %} bg-primary
+                            {% elif m.fonction == 'Chef d Unité' %} bg-danger
+                            {% elif m.fonction == 'Coordinateur' %} bg-success
+                            {% else %} bg-dark {% endif %}">
+                            {{ m.fonction }}
+                        </span>
+
+                        <p class="text-muted mt-2">{{ m.grade }}</p>
+
+                        <p>{{ m.specialite }}</p>
+                          <p>  {{ m.service.nom }}</p>
+                        <div class="mt-2">
+                            <a href="{% url 'modifier_medecin' m.pk %}" class="btn btn-sm btn-warning">Modifier</a>
+                            <a href="{% url 'supprimer_medecin' m.pk %}" class="btn btn-sm btn-danger">Supprimer</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+<style>
+.doctor-card:hover {
+    transform: translateY(-7px);
+    transition: 0.3s;
+}
+.doctor-photo {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.email-cell {
+    font-size: 12px;      /* 🔽 plus petit */
+    color: #f15771;          /* 🔵 gris foncé élégant */
+    font-weight: 500;     /* optionnel : légèrement renforcé */
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+<script>
+/* ===================== SWITCH DE VUES ===================== */
+const cardsView = document.getElementById("cardsView");
+const tableView = document.getElementById("tableView");
+
+
+document.getElementById("viewCards").onclick = () => {
+    cardsView.style.display = "flex";
+    tableView.style.display = "none";
+};
+
+document.getElementById("viewTable").onclick = () => {
+    cardsView.style.display = "none";
+    tableView.style.display = "block";
+};
+
+
+/* ===================== FILTRAGE ===================== */
+const searchInput = document.getElementById("searchInput");
+const filterService = document.getElementById("filterService");
+const filterGrade = document.getElementById("filterGrade");
+const filterFonction = document.getElementById("filterFonction");
+const filterSpecialite = document.getElementById("filterSpecialite");
+
+function filterAll() {
+    const search = searchInput.value.toLowerCase();
+    const grade = filterGrade.value.toLowerCase();
+    const fonction = filterFonction.value.toLowerCase();
+    const specialite = filterSpecialite.value.toLowerCase();
+    const service = filterService.value.toLowerCase();
+
+    const items = document.querySelectorAll(".doctor-card-wrapper, .med-row");
+
+    items.forEach(el => {
+        const nom = (el.dataset.nom || "").toLowerCase();
+        const g = (el.dataset.grade || "").toLowerCase();
+        const f = (el.dataset.fonction || "").toLowerCase();
+        const s = (el.dataset.specialite || "").toLowerCase();
+        const tel = (el.dataset.tel || "").toLowerCase();
+        const email = (el.dataset.email || "").toLowerCase();
+        const serv = (el.dataset.service || "").toLowerCase();
+
+        const fullText = nom + " " + g + " " + f + " " + s + " " + tel + " " + email + " " + serv;
+
+        const matchSearch = fullText.includes(search);
+        const matchGrade = !grade || g === grade;
+        const matchFonction = !fonction || f === fonction;
+        const matchSpecialite = !specialite || s === specialite;
+        const matchService = !service || serv.includes(service);
+
+        const visible = matchSearch && matchGrade && matchFonction && matchSpecialite && matchService;
+
+        el.style.display = visible ? "" : "none";
+    });
+}
+
+searchInput.oninput = filterAll;
+filterService.onchange = filterAll;
+filterGrade.onchange = filterAll;
+filterFonction.onchange = filterAll;
+filterSpecialite.onchange = filterAll;
+
+/* ===================== DRAG & DROP (MODE CARDS) ===================== */
+new Sortable(cardsView, {
+    animation: 150,
+    handle: ".doctor-card",
+    onEnd: function () {
+        const order = [];
+        cardsView.querySelectorAll('.doctor-card-wrapper').forEach((el, index) => {
+            order.push({ id: el.dataset.id, ordre: index });
+        });
+
+        fetch("{% url 'update_medecins_order' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify(order)
+        });
+    }
+});
+</script>
+
+{% endblock %}

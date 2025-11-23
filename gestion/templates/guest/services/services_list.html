@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+.service-card {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.25);
+    transition: 0.3s;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.service-img {
+    height: 180px;
+    width: 100%;
+    object-fit: cover;
+}
+</style>
+
+<div class="container py-5">
+
+    <h2 class="mb-4 text-center">Nos Services</h2>
+    <p class="text-center text-muted mb-4">
+        Découvrez l'ensemble des services médicaux disponibles dans notre établissement.
+    </p>
+
+    <div class="row g-4">
+        {% for service in services %}
+        <div class="col-md-4">
+            <div class="card service-card shadow-sm">
+
+                {% if service.image %}
+                <img src="{{ service.image.url }}" class="service-img">
+                {% else %}
+                <img src="/static/img/default-service.jpg" class="service-img">
+                {% endif %}
+
+                <div class="card-body">
+                    <h5 class="card-title">{{ service.nom }}</h5>
+                    <p class="card-text text-muted">
+                        {{ service.description|truncatechars:120 }}
+                    </p>
+
+                    <a href="{% url 'service_detail_guest' service.pk %}" class="btn btn-primary w-100">
+                        Plus ...
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">Aucun service disponible.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

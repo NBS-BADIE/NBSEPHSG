@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+
+    <h4><i class="bi bi-people-fill"></i> Effectifs : {{ service.nom }}</h4>
+
+    <form method="post" class="card p-4 shadow mt-4">
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Professeurs</label>
+                <input type="number" name="professeurs" class="form-control" value="{{ effectifs.professeurs }}">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Spécialistes</label>
+                <input type="number" name="specialistes" class="form-control" value="{{ effectifs.specialistes }}">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Généralistes</label>
+                <input type="number" name="generalistes" class="form-control" value="{{ effectifs.generalistes }}">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Paramédicaux</label>
+                <input type="number" name="paramedicaux" class="form-control" value="{{ effectifs.paramedicaux }}">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Autres</label>
+                <input type="number" name="autres" class="form-control" value="{{ effectifs.autres }}">
+            </div>
+
+        </div>
+
+        <button class="btn btn-success"><i class="bi bi-check-lg"></i> Enregistrer</button>
+        <a href="{% url 'service_manage' service.id %}" class="btn btn-secondary">Retour</a>
+    </form>
+
+</div>
+{% endblock %}

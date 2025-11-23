@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-center my-5 fade-in" >
+    <img src="/static/logo.png" alt="Logo EPH" width="480" class="mb-4 home-logo">
+    <h1 class="home-title mb-3">Bienvenue sur le site en tant que visiteur</h1>
+    <p class="lead mb-5 text-muted">
+        Explorez nos services, découvrez nos médecins et contactez notre établissement.
+    </p>
+
+    <div class="row justify-content-center">
+        <div class="col-md-4 mb-3">
+            <div class="card home-card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Services</h5>
+                    <p class="card-text">Découvrez nos différents services hospitaliers.</p>
+                    <a  class="btn btn-primary w-100">Voir les services</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card home-card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Médecins</h5>
+                    <p class="card-text">Rencontrez nos médecins et découvrez leurs spécialités.</p>
+                    <a  class="btn btn-primary w-100">Voir les médecins</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card home-card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Contact</h5>
+                    <p class="card-text">Contactez notre établissement pour toute demande.</p>
+                    <a href="{% url 'contact' %}" class="btn btn-primary w-100">Nous contacter</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

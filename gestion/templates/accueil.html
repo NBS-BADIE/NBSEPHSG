@@ -1,0 +1,392 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- HERO + SLIDER + GSAP -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+<style>
+/* --- Styles principaux (ajouter dans ton CSS global si tu veux) --- */
+
+.hero {
+  position: relative;
+  height: 76vh;
+  min-height: 520px;
+  overflow: hidden;
+}
+
+hero {
+  position: relative;
+  width: 100%;
+  /* height supprimée ou auto pour s'adapter à l'image */
+  min-height: 520px; /* optionnel, juste pour éviter un slider trop petit */
+  overflow: hidden;
+}
+.hero .overlay {
+  position: absolute; inset:0; background: linear-gradient(0deg, rgba(4,8,20,0.55), rgba(4,8,20,0.15)); z-index: 1;
+}
+.hero .hero-content {
+  position: absolute; z-index:3; inset:0;
+  display:flex; align-items:center; justify-content:flex-start; padding-left:6%;
+}
+.hero .kicker { font-size: clamp(1rem, 2vw, 2.25rem); color:#ffd; opacity:.9; letter-spacing:1px; text-transform:uppercase; font-weight:600; }
+.hero h1 { font-size: clamp(2rem, 4vw, 3.25rem); color: #fff; margin: 0.25rem 0; line-height:1.05; font-weight:700; }
+.hero h2 { font-size: clamp(0.5rem, 1vw, 1.25rem); color: #fff; margin: 0.25rem 0; line-height:1.05; font-weight:600; }
+.hero p.lead { color: rgba(255,255,255,0.9); max-width:700px; font-size:1.05rem; margin-bottom:1rem; }
+.hero .cta { margin-right: 0.6rem; }
+.kicker-badge {
+  display: inline-block;
+  background: rgba(0, 7, 15, 0.315); 
+  color: rgb(255, 255, 255);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  backdrop-filter: blur(3px); /* effet verre moderne */
+  border: 1px solid rgba(255, 255, 255, 0.733);
+}
+
+.service-cards .card { border-radius:12px; }
+.features .icon { font-size:28px; width:56px; height:56px; display:flex; align-items:center; justify-content:center; border-radius:10px; background:#f7f9fc; }
+
+.gallery img { width:100%; height:220px; object-fit:cover; border-radius:8px; }
+
+.team .portrait { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+
+/* small tweak so footer doesn't overlap content — ensure page has bottom padding */
+.page-bottom-pad { padding-bottom: 120px; }
+
+/* Swiper nav color */
+.swiper-button-next, .swiper-button-prev { color: #fff; }
+.swiper-pagination-bullet-active { background:#fff !important; }
+.swiper {
+  position: relative;
+  z-index: 0; /* l’image */
+}
+
+.slider {
+  position: relative;
+  overflow: hidden;
+}
+
+.slide {
+  position: relative;
+  display: none;
+}
+
+.slide.active {
+  display: block;
+}
+
+
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000; /* arrière-plan si image pas full */
+}
+
+.swiper-slide img {
+  width: auto;        /* ne pas forcer la largeur */
+  height: 100%;       /* l'image prend la hauteur du slider */
+  max-width: 100%;    /* empêche l'image de dépasser horizontalement */
+  object-fit: contain; /* voir l'image entière */
+  object-position: center;
+}
+
+.slide-text {
+  position: absolute;
+  bottom: 20%;
+  left: 80%; /* décale le texte vers la droite */
+  transform: translateX(-50%); /* optionnel, pour centrer par rapport au point de départ */
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(0,0,0,0.7);
+  opacity: 0;
+  max-width: 35%; /* ajuste la largeur du texte */
+  z-index: 6;
+}
+
+.hero-content .d-flex a {
+  position: relative; /* nécessaire pour z-index */
+  z-index: 5;         /* au-dessus du slider */
+}
+
+
+</style>
+
+<div class="page-bottom-pad">
+
+  
+
+
+
+<!-- HERO SLIDER -->
+<section class="hero">
+    <!-- overlay pour contraste -->
+
+  <div class="swiper mySwiper" style="height:76vh; min-height:520px;">
+    <div class="swiper-wrapper">
+        {% for slide in slides %}
+        <div class="swiper-slide">
+            <div class="overlay"></div>
+            <img src="{% static 'images/slider/'|add:slide.image %}" 
+                 alt="{{ slide.title }}" 
+                 style="width:100%; height:100%; object-fit:cover;">
+            <div class="slide-text">
+                <h2>{{ slide.title }}</h2>
+                <p>{{ slide.slogan }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+
+
+      <!-- Content over slider -->
+    <div class="hero-content container">
+      <div class="text-start text-white">
+        <div class="kicker" id="kicker">
+            <span class="kicker-badge"><h2>Hôpital Lakhdar BOUCHEMAA</h2></span>
+        </div>
+        <h1 id="heroTitle">Prise en charge moderne et humaine — 24/7</h1>
+        <p class="lead" id="heroLead">
+          Un établissement public moderne, des équipes qualifiées, des technologies adaptées — des soins pour tous.
+        </p>
+        <div class="d-flex">
+          <a href="{% url 'services_list' %}" class="btn btn-primary me-2 " id="btnservices">
+            <i class="bi bi-list-ul me-2"></i> Nos services
+          </a>
+          <a href="{% url 'contact' %}" class="btn btn-outline-light" id="btnContact">
+            <i class="bi bi-telephone me-2"></i> Contact
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTRO / VALEURS -->
+  <section class="container py-5">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <h2 class="mb-3">Notre mission — soigner avec excellence</h2>
+        <p class="text-muted">
+          Offrir des soins accessibles et de qualité, en plaçant l’humain au centre. Equipements modernes, parcours patient optimisé, équipes pluridisciplinaires.
+        </p>
+
+        <div class="row mt-4 gx-3 gy-3 features">
+          <div class="col-md-4">
+            <div class="d-flex gap-3 align-items-start">
+              <div class="icon"><i class="bi bi-heart-pulse"></i></div>
+              <div>
+                <h6 class="mb-1">Urgences 24/7</h6>
+                <p class="text-muted small mb-0">Intervention continue et prise en charge rapide.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="d-flex gap-3 align-items-start">
+              <div class="icon"><i class="bi bi-journal-medical"></i></div>
+              <div>
+                <h6 class="mb-1">Chirurgie & Bloc</h6>
+                <p class="text-muted small mb-0">Blocs opératoires conformes aux normes.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="d-flex gap-3 align-items-start">
+              <div class="icon"><i class="bi bi-people-fill"></i></div>
+              <div>
+                <h6 class="mb-1">Équipe qualifiée</h6>
+                <p class="text-muted small mb-0">Médecins, infirmiers et personnels formés régulièrement.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- image du service à droite -->
+      <div class="col-lg-4 text-end d-none d-lg-block">
+        <img src="{% static 'images/service-photo-right.jpg' %}" alt="Photo service" style="max-width:320px; border-radius:12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES CARDS -->
+  <section class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="mb-0">Nos services</h3>
+      <a href="{% url 'services_list' %}" class="text-muted small">Voir tous les services →</a>
+    </div>
+
+    <div class="row service-cards g-3">
+      <!-- Card 1 -->
+      <div class="col-md-4">
+        <div class="card p-3 h-100">
+          <div class="d-flex align-items-center gap-3">
+            <div class="bg-primary text-white rounded-3 p-2"><i class="bi bi-hospital"></i></div>
+            <div>
+              <h5 class="mb-1">Urgences</h5>
+              <p class="text-muted small mb-0">Prise en charge immédiate 24/7.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="col-md-4">
+        <div class="card p-3 h-100">
+          <div class="d-flex align-items-center gap-3">
+            <div class="bg-success text-white rounded-3 p-2"><i class="bi bi-activity"></i></div>
+            <div>
+              <h5 class="mb-1">Chirurgie</h5>
+              <p class="text-muted small mb-0">Équipes chirurgicales spécialisées.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="col-md-4">
+        <div class="card p-3 h-100">
+          <div class="d-flex align-items-center gap-3">
+            <div class="bg-warning text-white rounded-3 p-2"><i class="bi bi-person-lines-fill"></i></div>
+            <div>
+              <h5 class="mb-1">Consultations</h5>
+              <p class="text-muted small mb-0">Consultations externes multi-spécialités.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="container py-4">
+    <h3 class="mb-3">Galerie</h3>
+    <div class="row g-3 gallery">
+      <div class="col-md-4"><img src="{% static 'images/gallery-1.jpg' %}" alt="Galerie 1"></div>
+      <div class="col-md-4"><img src="{% static 'images/gallery-2.jpg' %}" alt="Galerie 2"></div>
+      <div class="col-md-4"><img src="{% static 'images/gallery-3.jpg' %}" alt="Galerie 3"></div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="mb-0">Notre équipe</h3>
+      <a href="#" class="text-muted small">Voir l'équipe complète →</a>
+    </div>
+
+    <div class="row g-3 team">
+      <div class="col-md-3">
+        <div class="card p-3 text-center h-100">
+          <img src="{% static 'images/team-1.jpg' %}" class="portrait mx-auto mb-2" alt="">
+          <h6 class="mb-0">Dr. Ahmed</h6>
+          <small class="text-muted">Chef de service</small>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card p-3 text-center h-100">
+          <img src="{% static 'images/team-2.jpg' %}" class="portrait mx-auto mb-2" alt="">
+          <h6 class="mb-0">Dr. Leila</h6>
+          <small class="text-muted">Chirurgie</small>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card p-3 text-center h-100">
+          <img src="{% static 'images/team-3.jpg' %}" class="portrait mx-auto mb-2" alt="">
+          <h6 class="mb-0">Dr. Youssef</h6>
+          <small class="text-muted">Maternité</small>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card p-3 text-center h-100">
+          <img src="{% static 'images/team-4.jpg' %}" class="portrait mx-auto mb-2" alt="">
+          <h6 class="mb-0">Mme. Samia</h6>
+          <small class="text-muted">Infirmière en chef</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="container py-5 text-center">
+    <div class="card p-4 shadow-sm">
+      <h3>Besoin d'un rendez-vous ou d'une information ?</h3>
+      <p class="text-muted">Appelez-nous ou remplissez le formulaire de contact — nous vous répondrons rapidement.</p>
+      <div class="d-flex justify-content-center gap-3">
+        <a href="{% url 'contact' %}" class="btn btn-primary btn-lg"><i class="bi bi-telephone-fill me-2"></i> Nous contacter</a>
+        <a href="{% url 'services_list' %}" class="btn btn-outline-primary btn-lg"><i class="bi bi-info-circle me-2"></i> Nos services</a>
+      </div>
+    </div>
+  </section>
+
+</div> <!-- page-bottom-pad -->
+
+
+
+<!-- SCRIPTS: Swiper + GSAP -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.14.1/gsap.min.js"></script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const swiper = new Swiper('.mySwiper', {
+        loop: true,
+        autoplay: { delay: 5000, disableOnInteraction: false },
+        speed: 1000,
+        pagination: { el: '.swiper-pagination', clickable: true },
+        navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+        effect: 'slide',
+        on: {
+            init: function() {
+                const firstText = this.slides[this.activeIndex].querySelector('.slide-text');
+                if(firstText) gsap.to(firstText, { y:0, opacity:1, duration:1, ease:'power3.out' });
+            },
+            slideChangeTransitionStart: function() {
+                gsap.set('.slide-text', { opacity:0, y:50 });
+            },
+            slideChangeTransitionEnd: function() {
+                const activeText = this.slides[this.activeIndex].querySelector('.slide-text');
+                if(activeText) gsap.to(activeText, { y:0, opacity:1, duration:1, ease:'power3.out' });
+            }
+        }
+    });
+});
+
+  // Animations intro du hero
+  gsap.from('#kicker', { y:-20, opacity:0, duration:0.8, delay:0.3, ease:'power2.out' });
+  gsap.from('#heroTitle', { y:20, opacity:0, duration:0.9, delay:0.45, ease:'power2.out' });
+  gsap.from('#heroLead', { y:20, opacity:0, duration:0.9, delay:0.6, ease:'power2.out' });
+  gsap.from('.cta', { scale:0.95, opacity:0, duration:0.6, delay:0.9, stagger:0.08 });
+
+  // Service cards
+  gsap.utils.toArray('.service-cards .card').forEach((el,i)=>{
+    gsap.from(el,{y:20,opacity:0,duration:0.7,delay:0.25+i*0.12,ease:'power2.out'});
+  });
+
+  // Scroll-triggered gallery & team
+  gsap.utils.toArray('.gallery img, .team .card').forEach(el=>{
+    gsap.from(el,{
+      scrollTrigger:{ trigger:el, start:'top 85%' },
+      y:30, opacity:0, duration:0.7, ease:'power2.out'
+    });
+});
+
+</script>
+
+{% endblock %}

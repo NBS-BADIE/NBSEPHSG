@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-4">
+
+
+<h3 class="mb-4">
+    <i class="bi bi-building"></i> Service : {{ service.nom }}
+</h3>
+<div class="card shadow-sm p-4 mb-4 ">
+    <div class="row g-4">
+
+        <!-- COLONNE GAUCHE : Informations -->
+        <div class="col-md-8">
+
+            <h4 class="mb-4">
+                <i class="bi bi-hospital text-primary"></i> Aperçu complet du service
+            </h4>
+
+            <!-- Détails -->
+            {% if details %}
+            <div class="mb-4">
+                <h5 class="text-secondary">
+                    <i class="bi bi-info-circle"></i> Détails
+                </h5>
+
+                <!--<p>
+                    <i class="bi bi-door-open"></i>
+                    <strong>Nombre de lits :</strong> {{ details.nb_lits }}
+                </p>-->
+
+                <p>
+                    <i class="bi bi-cash-stack"></i>
+                    <strong>Coût par journée :</strong> {{ details.cout_journee }} DA
+                </p>
+            </div>
+            {% endif %}
+
+            <!-- Effectifs -->
+            {% if effectifs %}
+            <div class="mb-4">
+                <h5 class="text-secondary">
+                    <i class="bi bi-people"></i> Effectifs
+                </h5>
+
+                <ul class="list-unstyled ms-2">
+                    <li><i class="bi bi-person-badge"></i> Professeurs : {{ effectifs.professeurs }}</li>
+                    <li><i class="bi bi-person-vcard"></i> Spécialistes : {{ effectifs.specialistes }}</li>
+                    <li><i class="bi bi-person"></i> Généralistes : {{ effectifs.generalistes }}</li>
+                    <li><i class="bi bi-person-wheelchair"></i> Paramédicaux : {{ effectifs.paramedicaux }}</li>
+                    <li><i class="bi bi-people-fill"></i> Autres : {{ effectifs.autres }}</li>
+                </ul>
+            </div>
+            {% endif %}
+
+            <!-- Médecins -->
+            {% if medecins_par_grade %}
+            <div class="mb-4">
+                <h5 class="text-secondary">
+                    <i class="bi bi-person-lines-fill"></i> Médecins par grade
+                </h5>
+
+                {% for grade, med_list in medecins_par_grade.items %}
+                <h6 class="text-primary mt-2">{{ grade }}</h6>
+                <ul class="ms-3">
+                    {% for med in med_list %}
+                    <li><i class="bi bi-person-circle"></i> {{ med.nom }} {{ med.prenom }}</li>
+                    {% endfor %}
+                </ul>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Unités -->
+            {% if unites %}
+            <div class="mb-4">
+                <h5 class="text-secondary">
+                    <i class="bi bi-diagram-3"></i> Unités et lits
+                </h5>
+
+                <ul class="ms-2">
+                    {% for unite in unites %}
+                    <li>
+                        <i class="bi bi-building"></i>
+                        <strong>{{ unite.nom }}</strong> — {{ unite.lits }} lits
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <p class="fw-bold mt-2">
+                    <i class="bi bi-hospital-fill"></i>
+                    Total lits : {{ details.nb_lits }}
+                </p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- COLONNE DROITE : Image du service -->
+        <div class="col-md-4 d-flex justify-content-center align-items-start">
+            {% if service.image %}
+            <img src="{{ service.image.url }}"
+                 class="img-fluid rounded shadow-sm"
+                 style="max-height: 300px; object-fit: cover;"
+                 alt="Photo du service">
+            {% else %}
+            <div class="text-center text-muted">
+                <i class="bi bi-image fs-1"></i>
+                <p>Aucune image disponible</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Carte résumé du service -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body d-flex justify-content-between align-items-center">
+        <div>
+            <h5 class="mb-1">{{ service.nom }}</h5>
+            <p class="text-muted mb-0">{{ service.description|truncatewords:20 }}</p>
+        </div>
+        <a href="{% url 'modifier_service_svc' service.id %}" class="btn btn-primary">
+            <i class="bi bi-pencil-square"></i> Modifier service
+        </a>
+    </div>
+</div>
+
+<!-- MENU DE GESTION -->
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <a href="{% url 'service_details_edit' service.id %}" class="text-decoration-none">
+            <div class="card shadow-sm h-100 p-3 hover-card">
+                <h5><i class="bi bi-info-circle"></i> Détails</h5>
+                <p class="text-muted">Nombre de lits, coût journée, photo…</p>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'unites_list' service.id %}" class="text-decoration-none">
+            <div class="card shadow-sm h-100 p-3 hover-card">
+                <h5><i class="bi bi-diagram-3"></i> Unités</h5>
+                <p class="text-muted">Ajouter / modifier les unités du service.</p>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'service_effectifs_edit' service.id %}" class="text-decoration-none">
+            <div class="card shadow-sm h-100 p-3 hover-card">
+                <h5><i class="bi bi-people-fill"></i> Effectifs</h5>
+                <p class="text-muted">Médecins, spécialistes, paramédicaux…</p>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'service_activite_edit' service.id %}" class="text-decoration-none">
+            <div class="card shadow-sm h-100 p-3 hover-card">
+                <h5><i class="bi bi-graph-up"></i> Activité</h5>
+                <p class="text-muted">Admissions, journées, mortalité…</p>
+            </div>
+        </a>
+    </div>
+</div>
+
+</div>
+
+<style>
+.hover-card { transition: 0.25s; }
+.hover-card:hover { transform: translateY(-3px); background: #f8fff6; }
+</style>
+
+{% endblock %}

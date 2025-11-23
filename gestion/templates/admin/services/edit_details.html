@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <h4><i class="bi bi-info-circle"></i> Détails du service : {{ service.nom }}</h4>
+
+    <form method="post" enctype="multipart/form-data" class="mt-4 card p-4 shadow-sm">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label">Nombre de lits</label>
+            <input type="number" name="nb_lits" class="form-control" value="{{ details.nb_lits }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Coût d’une journée (DA)</label>
+            <input type="number" name="cout_journee" class="form-control" value="{{ details.cout_journee }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Photo du service</label><br>
+            {% if details.photo %}
+                <img src="{{ details.photo.url }}" class="img-fluid mb-2" style="max-height:150px;">
+            {% endif %}
+            <input type="file" name="photo" class="form-control">
+        </div>
+
+        <button class="btn btn-success"><i class="bi bi-check-lg"></i> Enregistrer</button>
+        <a href="{% url 'service_manage' service.id %}" class="btn btn-secondary">Retour</a>
+    </form>
+</div>
+{% endblock %}

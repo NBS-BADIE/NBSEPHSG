@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid py-4" >
+
+    <h1 class="mb-3">Tableau de bord Admin</h1>
+    <p>Bonjour, <strong>{{ request.user.username }}</strong> ! Vous êtes connecté en tant que <strong>{{ user_role|title }}</strong>.</p>
+    <p>Dernière mise à jour : {{ date_heure }}</p>
+
+    <!-- Cartes statistiques -->
+    <div class="row mt-4">
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-info shadow-sm card-hover text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Visites totales</h5>
+                    <p class="display-6">{{ compteur_visites }}</p>
+                    <i class="bi bi-people-fill fs-1"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-primary shadow-sm card-hover text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Admins</h5>
+                    <p class="display-6">{{ total_admins }}</p>
+                    <i class="bi bi-person-badge-fill fs-1"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-warning shadow-sm card-hover text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Modérateurs</h5>
+                    <p class="display-6">{{ total_moderateurs }}</p>
+                    <i class="bi bi-person-lines-fill fs-1"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-success shadow-sm card-hover text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Utilisateurs</h5>
+                    <p class="display-6">{{ total_utilisateurs }}</p>
+                    <i class="bi bi-person-fill fs-1"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Graphiques -->
+    <div class="row mt-4">
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Visites</h5>
+                    <canvas id="visitesChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Services</h5>
+                    <canvas id="servicesChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Rôles utilisateurs</h5>
+                    <canvas id="rolesChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Charts
+    new Chart(document.getElementById('visitesChart'), {
+        type: 'line',
+        data: {
+            labels: {{ labels_visites|safe }},
+            datasets: [{
+                label: 'Visites',
+                data: {{ data_visites|safe }},
+                backgroundColor: 'rgba(0,153,255,0.2)',
+                borderColor: 'rgba(0,153,255,1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4
+            }]
+        }
+    });
+
+    new Chart(document.getElementById('servicesChart'), {
+        type: 'bar',
+        data: {
+            labels: {{ services_labels|safe }},
+            datasets: [{
+                label: 'Utilisateurs par service',
+                data: {{ services_data|safe }},
+                backgroundColor: 'rgba(0,200,100,0.5)'
+            }]
+        }
+    });
+
+    new Chart(document.getElementById('rolesChart'), {
+        type: 'pie',
+        data: {
+            labels: ['Admins','Modérateurs','Utilisateurs'],
+            datasets: [{
+                data: [{{ total_admins }}, {{ total_moderateurs }}, {{ total_utilisateurs }}],
+                backgroundColor: ['#007bff', '#ffc107', '#28a745']
+            }]
+        }
+    });
+</script>
+
+<style>
+/* Effet hover sur cartes */
+.card-hover {
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
+}
+.card-hover:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    background-color: rgba(255,255,255,0.9);
+}
+</style>
+{% endblock %}

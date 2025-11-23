@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Modifier l'utilisateur</h2>
+
+<form method="post" class="p-4 bg-light rounded-3 shadow-sm">
+    {% csrf_token %}
+
+    <!-- Username -->
+    <div class="mb-3">
+        {{ form.username.label_tag }}
+        {{ form.username }}
+        {% if form.username.errors %}
+            <div class="text-danger mt-1">{{ form.username.errors }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Email -->
+    <div class="mb-3">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+        {% if form.email.errors %}
+            <div class="text-danger mt-1">{{ form.email.errors }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Role -->
+    <div class="mb-3">
+        {{ form.role.label_tag }}
+        {{ form.role }}
+        {% if form.role.errors %}
+            <div class="text-danger mt-1">{{ form.role.errors }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Mot de passe (optionnel pour modification) -->
+    {% if form.password %}
+    <div class="mb-3">
+        {{ form.password.label_tag }}
+        {{ form.password }}
+        {% if form.password.errors %}
+            <div class="text-danger mt-1">{{ form.password.errors }}</div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Boutons -->
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-warning btn-lg">Modifier</button>
+        <a href="{% url 'liste_usr' %}" class="btn btn-secondary btn-lg">Annuler</a>
+    </div>
+</form>
+
+
+{% endblock %}

@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<div class="container py-4">
+
+    <!-- Titre et image -->
+    <div class="card shadow-sm mb-4 border-0">
+        <img src="{{ service.image.url }}" class="card-img-top" style="height: 260px; object-fit: cover;">
+        <div class="card-body">
+            <h2 class="card-title text-primary">{{ service.nom }}</h2>
+            <p class="card-text text-muted">{{ service.description }}</p>
+        </div>
+    </div>
+
+    <!-- Grille infos -->
+    <div class="row g-4">
+
+        <!-- Détails -->
+        <div class="col-md-6">
+            <div class="card shadow-sm  h-100">
+                <div class="card-header bg-primary text-white">
+                    <i class="bi bi-hospital"></i> Détails
+                </div>
+                <div class="card-body">
+                    {% if details %}
+                        <p><strong>Nombre de lits :</strong> {{ details.nb_lits }}</p>
+                        <p><strong>Coût journée :</strong> {{ details.cout_journee }} DA</p>
+                    {% else %}
+                        <p class="text-muted">Aucune donnée disponible.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Effectifs -->
+        <div class="col-md-6">
+            <div class="card shadow-sm  h-100">
+                <div class="card-header bg-success text-white">
+                    <i class="bi bi-people-fill"></i> Effectifs
+                </div>
+                <div class="card-body">
+                    {% if effectifs %}
+                        <p>Professeurs : <strong>{{ effectifs.professeurs }}</strong></p>
+                        <p>Spécialistes : <strong>{{ effectifs.specialistes }}</strong></p>
+                        <p>Généralistes : <strong>{{ effectifs.generalistes }}</strong></p>
+                        <p>Paramédicaux : <strong>{{ effectifs.paramedicaux }}</strong></p>
+                        <p>Autres : <strong>{{ effectifs.autres }}</strong></p>
+                    {% else %}
+                        <p class="text-muted">Aucune donnée disponible.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Activité -->
+    <div class="card shadow-sm  my-4">
+        <div class="card-header bg-warning text-dark">
+            <i class="bi bi-bar-chart-line"></i> Activité annuelle
+        </div>
+        <div class="card-body">
+            {% if activite %}
+                <p>Admissions : <strong>{{ activite.admissions }}</strong></p>
+                <p>Journées d’hospitalisation : <strong>{{ activite.journees_hospitalisation }}</strong></p>
+                <p>Taux d’occupation : <strong>{{ activite.taux_occupation }} %</strong></p>
+                <p>Durée moyenne séjour : <strong>{{ activite.duree_moy_sejour }} jours</strong></p>
+                <p>Taux mortalité : <strong>{{ activite.taux_mortalite }} %</strong></p>
+            {% else %}
+                <p class="text-muted">Aucune donnée enregistrée.</p>
+            {% endif %}
+        </div>
+    </div>
+
+
+
+    <!-- Unités -->
+
+    <div class="card shadow-sm  my-4">
+        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+            <i class="bi bi-grid-3x3 me-2"></i> Unités
+            <span class="mx-auto badge bg-white text-dark rounded-1">Nombre : {{ unites|length }}</span>
+            <span class="badge bg-white text-dark rounded-1">Total lits : {{ total_lits }}</span>
+        </div>
+        <div class="card-body">
+            {% if unites %}
+                <ul class="list-group">
+                    {% for u in unites %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ u.nom }}</strong>
+                                {% if u.description %}
+                                    <br><span class="text-muted">{{ u.description }}</span>
+                                {% endif %}
+                            </div>
+                            <span class="badge bg-dark rounded-1">{{ u.lits }} lits</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">Aucune unité déclarée.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Médecins du service -->
+    <div class="card shadow-sm border-0 my-4">
+        <div class="card-header bg-danger text-white">
+            <i class="bi bi-person-vcard"></i> Équipe médicale
+        </div>
+        <div class="card-body">
+
+            {% if medecins_par_grade %}
+            {% for grade, medecins_grade in medecins_par_grade.items %}
+                <h5 class="mt-4 mb-3">{{ grade }}</h5>
+                <div class="row">
+                    {% for m in medecins_grade %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm border-0 h-100 doctor-card">
+
+                            <!-- PHOTO circulaire -->
+                            <div class="text-center mt-3">
+                                {% if m.photo %}
+                                    <img src="{{ m.photo.url }}" class="rounded-circle doctor-photo">
+                                {% else %}
+                                    <img src="{% static 'images/default-doctor.jpg' %}" class="rounded-circle doctor-photo">
+                                {% endif %}
+                            </div>
+
+                            <div class="card-body text-center">
+                                <h5 class="card-title mt-2"><i class="bi bi-person-badge-fill me-1"></i>{{ m.nom }}</h5>
+
+                                {% if m.fonction == "Professeur" %}
+                                <span class="badge bg-primary">{{ m.fonction }}</span>
+                                {% elif m.fonction == "Spécialiste" %}
+                                <span class="badge bg-success">{{ m.fonction }}</span>
+                                {% else %}
+                                <span class="badge bg-secondary">{{ m.fonction }}</span>
+                                {% endif %}
+
+                                <p class="text-muted mt-2"><i class="bi bi-mortarboard-fill me-1"></i>{{ m.grade }}</p>
+
+                                {% if m.specialite %}
+                                <p><i class="bi bi-stethoscope me-1"></i>{{ m.specialite }}</p>
+                                {% endif %}
+                                {% if m.telephone %}
+                                <p><i class="bi bi-telephone-fill me-1"></i>{{ m.telephone }}</p>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted">Aucun médecin n'est affecté à ce service.</p>
+        {% endif %}
+        </div>
+
+    </div>
+</div>
+
+<style>
+.doctor-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.doctor-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 1rem 1.5rem rgba(0,0,0,0.25);
+}
+.doctor-photo {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+</style>
+{% endblock %}
