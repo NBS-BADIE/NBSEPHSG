@@ -1,24 +1,15 @@
 from pathlib import Path
 import os
+import dj_database_url
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# SECURITY
+SECRET_KEY = os.environ.get("SECRET_KEY")
+DEBUG = os.environ.get("DEBUG", "False") == "True"
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6ljv)smuzv@vpzvu$*56iqj4()@k=yaw#k8m@d*ij09x1aaw%q'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['*']
-
-
-# Application definition
-
+# Application
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -54,7 +45,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'gestion.context_processors.role_context',
                 'gestion.context_processors.compteur',
-
             ],
         },
     },
@@ -62,85 +52,41 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hopital.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# DATABASE (local SQLite + Render PostgreSQL)
+if 'RENDER' in os.environ:
+    DATABASES = {
+        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
-
-#AUTH_USER_MODEL = 'gestion.CustomUser'
 AUTH_USER_MODEL = 'gestion.AppUser'
 
-
-
-
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
-# Langue
+# Internationalisation
 LANGUAGE_CODE = 'fr-fr'
-
-# Fuseau horaire (GMT+1)
 TIME_ZONE = 'Africa/Algiers'
-
-# Internationalisation et fuseau horaire
 USE_I18N = True
-USE_L10N = True  # Optionnel mais recommandé pour la localisation
 USE_TZ = True
 
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
+# Static files
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Mail receive 
-
+# Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # ou ton serveur SMTP
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'ephsg1985@gmail.com'       # ton email
-EMAIL_HOST_PASSWORD = 'roxo yhta leym uwdq'  # mot de passe spécifique à l’app
+EMAIL_HOST_USER = 'ephsg1985@gmail.com'
+EMAIL_HOST_PASSWORD = 'roxo yhta leym uwdq'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-# Adresse(s) qui recevront les messages du formulaire de contact
 CONTACT_RECIPIENTS = ['ephsg1985@gmail.com']
