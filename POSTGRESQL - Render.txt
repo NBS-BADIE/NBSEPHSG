@@ -1,0 +1,8 @@
+Hostname : dpg-d4hi75p5pdvs7398jndg-a
+Port : 5432
+Database : nbsephsg_db
+user name : nbsephsg_db_user
+Password : PCfYMCSxm0TAUpsF3JzHFYrfIwOuufgE 
+Internal Database URL : postgresql://nbsephsg_db_user:PCfYMCSxm0TAUpsF3JzHFYrfIwOuufgE@dpg-d4hi75p5pdvs7398jndg-a/nbsephsg_db
+External Database URL : postgresql://nbsephsg_db_user:PCfYMCSxm0TAUpsF3JzHFYrfIwOuufgE@dpg-d4hi75p5pdvs7398jndg-a.oregon-postgres.render.com/nbsephsg_db
+PSQL Command : PGPASSWORD=PCfYMCSxm0TAUpsF3JzHFYrfIwOuufgE psql -h dpg-d4hi75p5pdvs7398jndg-a.oregon-postgres.render.com -U nbsephsg_db_user nbsephsg_db
