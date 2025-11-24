@@ -1,3 +1,4 @@
-web: gunicorn hopital.wsgi --bind 0.0.0.0:$PORT
+web: bash migrate.sh && gunicorn hopital.wsgi --bind 0.0.0.0:$PORT
+
 
 
