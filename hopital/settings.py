@@ -8,6 +8,7 @@ load_dotenv()  # charge les variables du fichier .env
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-6ljv)smuzv@vpzvu$*56iqj4()@k=yaw#k8m@d*ij09x1aaw%q")
 # DEBUG = os.environ.get("DEBUG", "False") == "True"
 DEBUG = "True"
@@ -59,13 +60,17 @@ WSGI_APPLICATION = 'hopital.wsgi.application'
 
 # DATABASE (local SQLite + Render PostgreSQL)
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 if 'RENDER' in os.environ:
+    # On est sur Render : PostgreSQL
     DATABASES = {
-        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600,
+            ssl_require=True
+        )
     }
 else:
+    # Local : SQLite
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
