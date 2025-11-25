@@ -1,5 +1,5 @@
-release: ./migrate.sh
-web: gunicorn hopital.wsgi --bind 0.0.0.0:$PORT
+web: ./migrate.sh && gunicorn hopital.wsgi --bind 0.0.0.0:$PORT
+
 
 
 
