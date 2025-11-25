@@ -107,7 +107,7 @@
 }
 
 .btn-primary:hover {
-    background-color: #ec075fec;
+    background-color: #84eea4fa;
 }
 
 /* Couleur pour outline-primary */
@@ -310,6 +310,7 @@ body.dark-mode textarea {
 </head>
 <body>
 
+    
 <!-- Barre de navigation -->
 <nav class="navbar navbar-expand-lg navbar-light topnav shadow-sm">
     <div class="container-fluid">
@@ -326,7 +327,7 @@ body.dark-mode textarea {
         <div class="collapse navbar-collapse" id="mainNav">
             {% if request.user.is_authenticated %}
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'accueil' %}">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'ephsg' %}">Présentation de l'hôpital</a></li>
 
                     {% if user_role == 'admin' %}
                         <ul class="navbar-nav">
@@ -384,7 +385,7 @@ body.dark-mode textarea {
 
             {% else %}
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Accueil</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'ephsg' %}">Présentation de l'hôpital</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'services_list' %}">Services</a></li>
                 <li class="nav-item"><a class="nav-link" >Médecins</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>

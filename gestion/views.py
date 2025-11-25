@@ -48,6 +48,9 @@ def get_compteur(request):
 
 # =================== Accueil ===================
 
+def ephsg(request):
+    return render(request, "ephsg.html")
+
 
 def accueil(request):
     date_heure = datetime.now()

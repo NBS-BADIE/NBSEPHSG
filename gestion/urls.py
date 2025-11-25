@@ -10,6 +10,8 @@ urlpatterns = [
     path('connexion/', views.connexion, name='connexion'),
     path('deconnexion/', views.deconnexion, name='deconnexion'),
     path('redirect/', views.redirect_dashboard, name='redirect_dashboard'),
+    path("ephsg/", views.ephsg, name="ephsg"),
+
 
     # ================= ADMIN PERSONNALISÉ =================
     path('dashboard/', views.admin_dashboard, name='admin_dashboard'),
