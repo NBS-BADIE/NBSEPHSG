@@ -58,16 +58,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'hopital.wsgi.application'
 
 # DATABASE (local SQLite + Render PostgreSQL)
-import dj_database_url
 
 if 'RENDER' in os.environ:
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL'),
-            conn_max_age=600,
-            ssl_require=True  # 🔒 Force la connexion SSL sur Render
-        )
-    }
+    db_from_env = dj_database_url.config(default=os.environ.get('DATABASE_URL'), conn_max_age=600)
+    db_from_env['OPTIONS'] = {'sslmode': 'require'}  # 🔒 Force le SSL explicitement
+    DATABASES = {'default': db_from_env}
 else:
     DATABASES = {
         'default': {
