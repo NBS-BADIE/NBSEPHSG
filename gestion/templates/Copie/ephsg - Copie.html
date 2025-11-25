@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>À propos — EPH Sidi Ghilès</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{--blue:#0b63d3;--glass-bg: rgba(255,255,255,0.55);--card: rgba(255,255,255,0.65)}
+    body{font-family:Inter,system-ui,Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#f7fbff 0%, #ffffff 100%);color:#222}
+    .topnav{backdrop-filter: blur(6px);background:var(--glass-bg);box-shadow:0 6px 18px rgba(2,6,23,0.06)}
+    .hero{padding:5.5rem 0;background:linear-gradient(90deg, rgba(11,99,211,0.06), transparent)}
+    .glass-card{background:var(--card);border-radius:14px;padding:1.4rem;box-shadow:0 8px 30px rgba(2,6,23,0.06)}
+    .badge-glass{background:rgba(255,255,255,0.4);border-radius:999px;padding:.5rem 1rem;display:inline-flex;align-items:center;gap:.6rem}
+    .services .card{border:none}
+    .spec-list li{margin-bottom:.45rem}
+    .cta{background:linear-gradient(90deg,var(--blue),#0066cc);color:white;border-radius:10px;padding:1rem}
+    .map-card{min-height:200px;background:linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.01));border-radius:12px;padding:0}
+    .logo-sm{width:84px}
+
+    /* responsive tweaks */
+    @media(min-width:992px){.hero .hero-right{min-height:250px}}
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg topnav fixed-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="/">
+      <img src="/static/logo.png" alt="EPH Logo" class="logo-sm me-2">
+      <div>
+        <strong style="color:var(--blue);">EPH Sidi Ghilès</strong><br>
+        <small class="text-muted">Hôpital Lakhdar Bouchemaa</small>
+      </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="/services/">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="/medecins/">Médecins</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact/">Contact</a></li>
+        <li class="nav-item ms-3"><a class="btn btn-outline-primary" href="/connexion/">Connexion</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <div class="row align-items-center">
+      <!-- left text -->
+      <div class="col-lg-6">
+        <div class="mb-3">
+          <span class="badge bg-primary">Institution</span>
+        </div>
+        <h1 class="display-6 fw-bold mb-3">Etablissement Public Hospitalier de Sidi Ghilès</h1>
+        <p class="lead text-muted mb-4">Au service de la population depuis son siège à l'hôpital Lakhdar Bouchemaa — soins, prévention et expertise médicale à l'échelle régionale.</p>
+
+        <div class="d-flex gap-3 mb-4">
+          <a class="btn btn-primary btn-lg" href="#presentation">En savoir plus</a>
+          <a class="btn btn-outline-secondary btn-lg" href="/contact/">Nous contacter</a>
+        </div>
+
+        <div class="glass-card d-flex gap-3 align-items-center">
+          <div>
+            <div class="badge-glass">
+              <i class="bi bi-geo-alt-fill fs-3 text-primary"></i>
+              <img src="/static/images/ephsg_loc.png" alt="localisation" style="width:56px;height:56px;object-fit:contain;">
+            </div>
+          </div>
+          <div>
+            <small class="text-muted">Coordonnées GPS</small>
+            <div class="fw-semibold">Lat: 36.583872 • Long: 2.128287</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- right card (image + overlay) -->
+      <div class="col-lg-6 hero-right d-flex justify-content-center">
+        <div class="glass-card w-100 d-flex align-items-center" style="min-height:240px;">
+          <div class="row g-0 align-items-center w-100">
+            <div class="col-md-6 text-center d-none d-md-block">
+              <img src="/static/images/ephsg.jpg" alt="hopital" class="img-fluid rounded" style="max-height:180px;object-fit:cover">
+            </div>
+            <div class="col-md-6 p-3">
+              <h5 class="mb-2">Nos engagements</h5>
+              <ul class="spec-list text-muted">
+                <li>Équipes pluridisciplinaires et temps plein</li>
+                <li>Équipements modernes et maintenance continue</li>
+                <li>Engagement sécurité et prévention 24h/24</li>
+              </ul>
+              <div class="mt-3">
+                <a class="btn btn-sm btn-outline-primary" href="#comite">Comité CLIN</a>
+                <a class="btn btn-sm btn-primary ms-2" href="#specialites">Spécialités</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<main class="container py-5">
+
+  <!-- Présentation détaillée -->
+  <section id="presentation" class="mb-5">
+    <div class="row">
+      <div class="col-lg-8">
+        <h2 class="mb-3">Présentation</h2>
+        <p class="text-muted">L’<strong>Etablissement Public Hospitalier de Sidi Ghilès</strong>, situé au sein de l’hôpital Lakhdar Bouchemaa, est un établissement public algérien à but non lucratif, dédié au service public hospitalier. Situé sur la côte méditerranéenne, à environ 100 km d’Alger, l’EPH Sidi Ghilès est un pôle régional offrant une prise en charge globale et coordonnée.</p>
+
+        <p>Organisé en services d’hospitalisation et en plateaux techniques, l’établissement garantit la continuité des soins avec des équipes salariées et disponibles en permanence. Les médecins sont engagés à temps plein afin d’assurer une égalité d’accès aux soins pour tous.</p>
+
+        <h5 class="mt-4">Nos priorités</h5>
+        <ul>
+          <li>Accessibilité et équité dans l’accès aux soins</li>
+          <li>Qualité et sécurité des soins</li>
+          <li>Prévention et lutte contre les infections nosocomiales (CLIN)</li>
+          <li>Formation continue et amélioration des pratiques</li>
+        </ul>
+
+        <p>Pour assurer une prise en charge adaptée, l’EPH investit continuellement dans ses équipements, la formation et l’organisation interne via des comités et des commissions dédiées à la qualité.</p>
+
+      </div>
+      <div class="col-lg-4">
+        <div class="glass-card p-3 map-card">
+          <h6 class="mb-3">Informations rapides</h6>
+          <p class="mb-1"><strong>Adresse :</strong> Hôpital Lakhdar Bouchemaa, Sidi Ghilès, Wilaya de Tipaza</p>
+          <p class="mb-1"><strong>Téléphone :</strong> +213 XX XXX XXXX</p>
+          <p class="mb-1"><strong>Horaires :</strong> 24h/24 (Urgences)</p>
+          <hr>
+          <p class="mb-1"><strong>Comité CLIN :</strong> Action permanente pour la prévention des infections</p>
+          <a class="btn btn-sm btn-outline-primary mt-3" href="/contact/">Contacter</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Spécialités -->
+  <section id="specialites" class="mb-5">
+    <h3 class="mb-3">Spécialités & plateaux</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4 services">
+      <div class="col">
+        <div class="card p-3 glass-card h-100">
+          <div class="card-body">
+            <h5>Chirurgie</h5>
+            <p class="text-muted small">Chirurgie Générale, Orthopédie, Chirurgie Infantile, Vasculaire.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card p-3 glass-card h-100">
+          <div class="card-body">
+            <h5>Gynécologie & Obstétrique</h5>
+            <p class="text-muted small">Prise en charge obstétricale, maternité et suites de couches.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card p-3 glass-card h-100">
+          <div class="card-body">
+            <h5>Anesthésie & Réanimation</h5>
+            <p class="text-muted small">Unités de réanimation et soins critiques.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card p-3 glass-card h-100">
+          <div class="card-body">
+            <h5>Pédiatrie & Néonatologie</h5>
+            <p class="text-muted small">Soins pédiatriques et néonataux spécialisés.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card p-3 glass-card h-100">
+          <div class="card-body">
+            <h5>Radiologie & Biologie</h5>
+            <p class="text-muted small">Plateaux techniques pour imagerie et analyses.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card p-3 glass-card h-100">
+          <div class="card-body">
+            <h5>Rééducation & Médecine du travail</h5>
+            <p class="text-muted small">Prises en charge de suivi et réhabilitation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Engagements / qualité -->
+  <section id="qualite" class="mb-5">
+    <div class="row">
+      <div class="col-md-6">
+        <h4>Qualité & sécurité</h4>
+        <p class="text-muted">L'EPH Sidi Ghilès a mis en place une gouvernance de la qualité : Comités, audits, protocoles et indicateurs. Le CLIN et les commissions veillent à la maîtrise des risques et à la sécurité du patient.</p>
+        <ul>
+          <li>Protocoles standardisés et traçabilité</li>
+          <li>Audits internes réguliers</li>
+          <li>Formation continue du personnel</li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <div class="glass-card p-3">
+          <h6>Nos chiffres clés</h6>
+          <ul class="text-muted">
+            <li>Équipes pluridisciplinaires</li>
+            <li>Plateaux techniques modernisés</li>
+            <li>Présence 24h/24 aux urgences</li>
+          </ul>
+          <a class="btn btn-sm btn-primary mt-2" href="/dashboard/">Espace Pro</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer CTA -->
+  <section class="cta p-4 text-white d-flex justify-content-between align-items-center mb-5" style="border-radius:12px">
+    <div>
+      <h5 class="mb-1">Besoin d’aide immédiate ?</h5>
+      <small>Contactez nos urgences 24h/24</small>
+    </div>
+    <div>
+      <a class="btn btn-light" href="tel:+213XXXXXXXXXX"><i class="bi bi-telephone"></i> Appeler</a>
+      <a class="btn btn-outline-light ms-2" href="/contact/">Envoyer un message</a>
+    </div>
+  </section>
+
+  <!-- Réputation -->
+  <section id="reputation" class="mb-5">
+    <h4>Rayonnement régional</h4>
+    <p class="text-muted">Grâce à la compétence de ses équipes et à la qualité de ses services, l'EPH Sidi Ghilès est reconnu parmi les établissements de référence de la région, offrant des parcours de soins complets et coordonnés.</p>
+  </section>
+
+  <hr>
+  <div class="text-center small text-muted">© 2025 EPH Sidi Ghilès — Hôpital Lakhdar Bouchemaa</div>
+
+</main>
+
+<!-- JS : Bootstrap + GSAP pour animations -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+<script>
+  // petites animations GSAP
+  document.addEventListener('DOMContentLoaded', function(){
+    gsap.from('.hero h1', {y:30, opacity:0, duration:0.8, ease:'power3.out'});
+    gsap.from('.hero .lead', {y:20, opacity:0, duration:0.9, delay:0.15});
+    gsap.from('.glass-card', {y:10, opacity:0, duration:0.7, stagger:0.08, delay:0.25});
+  });
+</script>
+
+<!-- Lien vers un des fichiers locaux fournis (pour download / debug) -->
+<p style="display:none">local-file: /mnt/data/settings.py</p>
+
+</body>
+</html>
+
+{% endblock %}

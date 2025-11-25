@@ -46,12 +46,30 @@ def get_compteur(request):
         compteur = CompteurVisites.objects.first()
     return compteur.nombre if compteur else 0
 
-# =================== Accueil ===================
+# =================== Présentation de l'hopital ===================
+
 
 def ephsg(request):
-    return render(request, "ephsg.html")
+    specialites = [
+        "Chirurgie",
+        "Gynécologie & Obstétrique",
+        "Anesthésie & Réanimation",
+        "Pédiatrie & Néonatologie",
+        "Radiologie & Biologie",
+        "Rééducation & Médecine du travail"
+    ]
+    return render(request, "ephsg.html", {"specialites": specialites})
 
 
+
+
+
+
+# =================== à propos ===================
+def a_propos(request):
+    return render(request, 'a_propos.html')
+
+# =================== Accueil ===================
 def accueil(request):
     date_heure = datetime.now()
     visiteur = request.session.get('visiteur', False)

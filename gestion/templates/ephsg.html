@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<header class="hero">
+  <div class="container">
+    <div class="row align-items-center">
+      
+      <!-- LEFT SIDE -->
+      <div class="col-lg-6">
+        <div class="mb-3">
+          <span class="badge bg-primary">Institution</span>
+        </div>
+
+        <h1 class="display-6 fw-bold mb-3">Etablissement Public Hospitalier de Sidi Ghilès</h1>
+        <p class="lead text-muted mb-4">
+          Au service de la population depuis l’hôpital Lakhdar Bouchemaa — soins, prévention et expertise médicale à l’échelle régionale.
+        </p>
+
+        <div class="d-flex gap-3 mb-4">
+          <a class="btn btn-primary btn-lg" href="{% url 'a_propos' %}">En savoir plus</a>
+          <a class="btn btn-outline-secondary btn-lg" href="{% url 'contact' %}">Nous contacter</a>
+        </div>
+
+        <div class="glass-card d-flex gap-3 align-items-center">
+          <div class="badge-glass">
+            <i class="bi bi-geo-alt-fill fs-3 text-primary"></i>
+            <img src="{% static 'images/ephsg_loc.png' %}" 
+                 alt="localisation"
+                 style="width:56px;height:56px;object-fit:contain;">
+          </div>
+
+          <div>
+            <small class="text-muted">Coordonnées GPS</small>
+            <div class="fw-semibold">Lat: 36.583872 • Long: 2.128287</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDE -->
+      <div class="col-lg-6 hero-right d-flex justify-content-center">
+        <div class="glass-card w-100 d-flex align-items-center" style="min-height:240px;">
+          <div class="row g-0 align-items-center w-100">
+
+            <div class="col-md-6 text-center d-none d-md-block">
+              <img src="{% static 'images/ephsg.jpg' %}"
+                   alt="hopital"
+                   class="img-fluid rounded"
+                   style="max-height:180px;object-fit:cover">
+            </div>
+
+            <div class="col-md-6 p-3">
+              <h5 class="mb-2">Nos engagements</h5>
+              <ul class="spec-list text-muted">
+                <li>Équipes pluridisciplinaires</li>
+                <li>Équipements modernes</li>
+                <li>Prévention 24h / 7</li>
+              </ul>
+
+              <div class="mt-3">
+                <a class="btn btn-sm btn-outline-primary" href="#comite">Comité CLIN</a>
+                <a class="btn btn-sm btn-primary ms-2" href="#specialites">Spécialités</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<main class="container py-5">
+
+  <!-- PRESENTATION -->
+  <section id="presentation" class="mb-5">
+    <div class="row">
+      <div class="col-lg-8">
+
+        <h2 class="mb-3">Présentation</h2>
+
+        <p class="text-muted">
+          L’<strong>Etablissement Public Hospitalier de Sidi Ghilès</strong>, situé dans l’hôpital Lakhdar Bouchemaa,
+          est un établissement public algérien participant au service public hospitalier. Son accès privilégié sur la côte méditerranéenne
+          en fait un pôle régional de référence.
+        </p>
+
+        <p>
+          Organisé en services d’hospitalisation et plateaux techniques, l’établissement garantit une prise en charge continue,
+          assurée par des médecins à temps plein.
+        </p>
+
+        <h5 class="mt-4">Nos priorités</h5>
+        <ul>
+          <li>Égalité d’accès aux soins</li>
+          <li>Qualité et sécurité</li>
+          <li>Lutte contre les infections (CLIN)</li>
+          <li>Formation continue</li>
+        </ul>
+
+        <p>
+          L’hôpital investit régulièrement dans ses équipements et pratiques professionnelles pour répondre aux besoins de la population.
+        </p>
+
+      </div>
+
+      <div class="col-lg-4">
+        <div class="glass-card p-3">
+          <h6 class="mb-3">Informations rapides</h6>
+
+          <p><strong>Adresse :</strong> Hôpital Lakhdar Bouchemaa, Sidi Ghilès</p>
+          <p><strong>Téléphone :</strong> +213 XX XXX XXXX</p>
+          <p><strong>Horaires :</strong> 24h / 7 (Urgences)</p>
+
+          <hr>
+
+          <p><strong>Comité CLIN :</strong> Prévention permanente des infections</p>
+
+          <a class="btn btn-sm btn-outline-primary mt-3" href="{% url 'contact' %}">Contacter</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SPECIALITES -->
+  <section id="specialites" class="mb-5">
+    <h3 class="mb-3">Spécialités & plateaux</h3>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+
+      <div class="col">
+        <div class="glass-card p-3 h-100">
+          <h5>Chirurgie</h5>
+          <p class="text-muted small">Générale, Orthopédie, Infantile, Vasculaire.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="glass-card p-3 h-100">
+          <h5>Gynécologie & Obstétrique</h5>
+          <p class="text-muted small">Maternité et suivi complet.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="glass-card p-3 h-100">
+          <h5>Anesthésie & Réanimation</h5>
+          <p class="text-muted small">Soins intensifs, réanimation.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="glass-card p-3 h-100">
+          <h5>Pédiatrie & Néonatologie</h5>
+          <p class="text-muted small">Soins spécialisés enfants & nouveau-nés.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="glass-card p-3 h-100">
+          <h5>Radiologie & Biologie</h5>
+          <p class="text-muted small">Imagerie médicale et analyses.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="glass-card p-3 h-100">
+          <h5>Rééducation & Médecine du travail</h5>
+          <p class="text-muted small">Suivi et réadaptation.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta p-4 text-white d-flex justify-content-between align-items-center mb-5"
+           style="border-radius:12px;background:linear-gradient(90deg,#0b63d3,#0066cc)">
+
+    <div>
+      <h5 class="mb-1">Besoin d’aide immédiate ?</h5>
+      <small>Contactez nos urgences 24h / 7</small>
+    </div>
+
+    <div>
+      <a class="btn btn-light" href="tel:+213XXXXXXXXXX"><i class="bi bi-telephone"></i> Appeler</a>
+      <a class="btn btn-outline-light ms-2" href="{% url 'contact' %}">Message</a>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- GSAP -->
+<script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+<script>
+  gsap.from('.hero h1', {y:30, opacity:0, duration:0.8});
+  gsap.from('.glass-card', {y:20, opacity:0, duration:0.6, stagger:0.15});
+</script>
+
+{% endblock %}

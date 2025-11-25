@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Nav interne -->
+<nav class="container py-3 d-flex justify-content-center">
+  <div class="d-inline-flex gap-3">
+    <a class="btn btn-sm btn-outline-primary" href="#histoire"><i class="bi bi-book-half"></i> Histoire</a>
+    <a class="btn btn-sm btn-outline-primary" href="#missions"><i class="bi bi-bullseye"></i> Missions & Vision</a>
+    <a class="btn btn-sm btn-outline-primary" href="#organisation"><i class="bi bi-diagram-3"></i> Organisation</a>
+    <a class="btn btn-sm btn-outline-secondary" href="{% url 'contact' %}"><i class="bi bi-envelope"></i> Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="container hero py-5">
+  <div class="glass-card p-4 d-flex flex-column flex-lg-row gap-4 align-items-center">
+    <div class="flex-grow-1">
+      <h1 class="display-6 fw-bold mb-2">À propos — EPH Sidi Ghilès</h1>
+      <p class="lead text-muted mb-3">Histoire, missions et organisation de l'hôpital Lakhdar Bouchemaa — engagement, qualité et service public.</p>
+      <div class="d-flex gap-2">
+        <a href="#histoire" class="btn btn-primary">En savoir</a>
+        <a href="#missions" class="btn btn-outline-primary">Nos objectifs</a>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center">
+      <img src="{% static 'images/ephsg.jpg' %}" alt="EPH Sidi Ghilès" style="width:180px;height:120px;object-fit:cover;border-radius:8px;">
+    </div>
+  </div>
+</section>
+
+<!-- HISTOIRE -->
+<section id="histoire" class="container py-5">
+  <div class="row g-4 align-items-center">
+    <div class="col-lg-7">
+      <div class="glass-card p-4">
+        <h2 class="mb-3"><i class="bi bi-book-half me-2 text-primary"></i>Histoire & Contexte</h2>
+        <p class="text-muted">L’<strong>Etablissement Public Hospitalier de Sidi Ghilès</strong> a pris racine au sein de l’hôpital Lakhdar Bouchemaa. Situé sur la côte méditerranéenne, à proximité du chef-lieu de la Wilaya de Tipaza, l’établissement s’est développé pour répondre aux besoins sanitaires régionaux, couvrant un large spectre de pathologies médicales et chirurgicales.</p>
+
+        <p class="text-muted">Au fil des années, l’EPH a structuré ses services d’hospitalisation et ses plateaux techniques, placé chaque unité sous la responsabilité d’un praticien chef de service, et instauré une gouvernance basée sur la qualité et la sécurité des soins.</p>
+
+        <div class="mt-3">
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Implantation régionale stratégique</li>
+            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Évolution continue des structures & équipements</li>
+            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Renforcement des compétences médicales</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="glass-card p-3 text-center">
+        <img src="{% static 'images/hero-facade-large.jpg' %}" alt="Histoire" class="img-fluid rounded mb-3">
+        <small class="text-muted">Hôpital Lakhdar Bouchemaa — archives & évolution</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSIONS & VISION -->
+<section id="missions" class="container py-5">
+  <div class="glass-card p-4">
+    <h2 class="mb-3"><i class="bi bi-bullseye me-2 text-primary"></i>Missions & Vision</h2>
+
+    <div class="row gy-4">
+      <div class="col-md-4">
+        <div class="p-3 h-100 d-flex flex-column align-items-start">
+          <div class="badge-glass mb-3"><i class="bi bi-people-fill fs-4 text-primary"></i></div>
+          <h5>Mission sociale</h5>
+          <p class="text-muted small">Assurer l’égalité d’accès aux soins, la prise en charge permanente et la continuité des services hospitaliers.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="p-3 h-100 d-flex flex-column align-items-start">
+          <div class="badge-glass mb-3"><i class="bi bi-gear-fill fs-4 text-primary"></i></div>
+          <h5>Excellence opérationnelle</h5>
+          <p class="text-muted small">Développer des processus qualité, moderniser les plateaux techniques et former continuellement les équipes.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="p-3 h-100 d-flex flex-column align-items-start">
+          <div class="badge-glass mb-3"><i class="bi bi-globe2 fs-4 text-primary"></i></div>
+          <h5>Rayonnement régional</h5>
+          <p class="text-muted small">Consolider la réputation de l’EPH en tant que pôle de référence pour plusieurs spécialités médicales.</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="row gy-3">
+      <div class="col-md-6">
+        <h6><i class="bi bi-shield-lock-fill text-info me-2"></i>Qualité & sécurité</h6>
+        <p class="text-muted small">Comités, protocoles, audits et actions du CLIN pour garantir la sécurité du patient et la prévention des infections.</p>
+      </div>
+      <div class="col-md-6">
+        <h6><i class="bi bi-mortarboard-fill text-info me-2"></i>Formation continue</h6>
+        <p class="text-muted small">Programmes de formation et partage des bonnes pratiques pour maintenir l’excellence clinique.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ORGANISATION / ORGANIGRAMME -->
+<section id="organisation" class="container py-5">
+  <h2 class="mb-3"><i class="bi bi-diagram-3 me-2 text-primary"></i>Organisation & organigramme</h2>
+
+  <div class="row g-4">
+    <div class="col-lg-4">
+      <div class="glass-card p-3">
+        <h5 class="mb-2">Direction</h5>
+        <p class="text-muted small">Directeur, Directeur adjoint, secrétariat général. Supervision stratégique et pilotage des activités hospitalières.</p>
+        <ul class="small text-muted">
+          <li><i class="bi bi-chevron-right"></i> Direction Générale</li>
+          <li><i class="bi bi-chevron-right"></i> Affaires médicales</li>
+          <li><i class="bi bi-chevron-right"></i> Services supports</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="glass-card p-3">
+        <h5 class="mb-2">Services médicaux</h5>
+        <p class="text-muted small">Chaque service (chef de service) coordonne les équipes soignantes et assure la qualité clinique.</p>
+        <ul class="small text-muted">
+          <li><i class="bi bi-people"></i> Chirurgie</li>
+          <li><i class="bi bi-people"></i> Médecine</li>
+          <li><i class="bi bi-people"></i> Pédiatrie</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="glass-card p-3">
+        <h5 class="mb-2">Plateaux techniques & support</h5>
+        <p class="text-muted small">Radiologie, laboratoire, blocs opératoires, réanimation, maintenance technique et logistique.</p>
+        <ul class="small text-muted">
+          <li><i class="bi bi-wrench"></i> Logistique</li>
+          <li><i class="bi bi-heart-pulse"></i> Urgences & réanimation</li>
+          <li><i class="bi bi-flask"></i> Laboratoire & anatomopathologie</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Organigramme visuel simple -->
+  <div class="mt-4 d-flex justify-content-center">
+    <div class="glass-card p-4" style="max-width:900px;width:100%;">
+      <div class="text-center mb-3">
+        <strong>Organigramme synthétique</strong>
+      </div>
+      <div class="row g-3 text-center">
+        <div class="col-12">
+          <div class="p-2"><span class="badge bg-primary">Direction Générale</span></div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-2"><span class="badge badge-glass">Affaires Médicales</span></div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-2"><span class="badge badge-glass">Services de Soins</span></div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-2"><span class="badge badge-glass">Plateaux Techniques</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ANIMATIONS & SCRIPTS -->
+<script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+<script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Fade-in for headings
+    gsap.from('section h2', {y: 30, opacity: 0, duration: 0.7, stagger: 0.12});
+
+    // Staggered cards animation
+    gsap.utils.toArray('.glass-card').forEach(function(card, i) {
+      gsap.from(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: "top 85%",
+          toggleActions: "play none none reverse"
+        },
+        y: 20, opacity: 0, duration: 0.6, delay: i * 0.05
+      });
+    });
+
+    // micro interaction on badges
+    gsap.utils.toArray('.badge-glass').forEach(function(b) {
+      b.addEventListener('mouseenter', () => gsap.to(b, {scale:1.04, duration:0.18}));
+      b.addEventListener('mouseleave', () => gsap.to(b, {scale:1, duration:0.18}));
+    });
+
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (!target) return;
+        target.scrollIntoView({behavior: 'smooth', block: 'start'});
+      });
+    });
+  });
+</script>
+
+<!-- Hidden reference to local uploaded file (debug / tooling) -->
+<p style="display:none">local-file: /mnt/data/settings.py</p>
+
+{% endblock %}

@@ -11,6 +11,7 @@ urlpatterns = [
     path('deconnexion/', views.deconnexion, name='deconnexion'),
     path('redirect/', views.redirect_dashboard, name='redirect_dashboard'),
     path("ephsg/", views.ephsg, name="ephsg"),
+    path('a-propos/', views.a_propos, name='a_propos'),
 
 
     # ================= ADMIN PERSONNALISÉ =================

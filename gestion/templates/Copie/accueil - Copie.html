@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-center my-5 fade-in">
+    <img src="/static/logo.png" alt="Logo EPH" width="480" class="mb-4 home-logo">
+    <h1 class="home-title mb-3">Bienvenue à l’EPH Sidi Ghilès</h1>
+    <p class="lead mb-5 text-muted">
+        Un espace de santé moderne et digital, au service du bien-être de la communauté.
+    </p>
+
+    <div class="card home-card mx-auto shadow-sm" style="max-width: 380px;">
+        <div class="card-body">
+            <h5 class="card-title mb-3">Accès au site</h5>
+            <p class="card-text">Découvrez nos services, nos départements et nos équipes médicales.</p>
+            <a href="{% url 'home' %}" class="btn btn-primary w-100">Accéder en tant que visiteur</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
