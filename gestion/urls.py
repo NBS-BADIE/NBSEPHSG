@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
 
-    path('apply-migrations/', views.apply_migrations),
+     path('apply-migrations/', views.apply_migrations, name='apply_migrations'),
     
     # ================= ACCUEIL / VISITEUR =================
     path('', views.accueil, name='accueil'),
