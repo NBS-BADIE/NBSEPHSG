@@ -4,6 +4,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+
+    path('apply-migrations/', views.apply_migrations),
+    
     # ================= ACCUEIL / VISITEUR =================
     path('', views.accueil, name='accueil'),
     path('home/', views.home, name='home'),  # page visiteur après clic
