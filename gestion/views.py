@@ -30,6 +30,14 @@ from django.http import HttpResponse
 from django.core.management import call_command
 from django.http import HttpResponse
 from django.core.management import call_command
+from pathlib import Path
+
+
+def list_static(request):
+    static_root = Path(settings.STATIC_ROOT)
+    files = [str(f.relative_to(static_root)) for f in static_root.rglob('*') if f.is_file()]
+    return HttpResponse("<br>".join(files))
+
 
 # appliquer migration sur render
 def apply_migrations(request):
