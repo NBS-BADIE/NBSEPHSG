@@ -1,0 +1,5 @@
+Cloudinary :
+Clound Name : dn8efoxtz 
+API Key : 197591493143961
+API Secret : vTu8P0QF0y2E2V79GH0trSU7G5M
+API Cloudinary Variable : CLOUDINARY_URL=cloudinary://197591493143961:vTu8P0QF0y2E2V79GH0trSU7G5M@dn8efoxtz
