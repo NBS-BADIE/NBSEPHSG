@@ -8,13 +8,8 @@ import locale
 # Forcer UTF-8 partout
 if sys.getdefaultencoding().lower() != 'utf-8':
     locale.setlocale(locale.LC_ALL, 'C.UTF-8')
-<<<<<<< HEAD
-=======
-
->>>>>>> a54c443 (Add Cloudinary for media storage)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 load_dotenv(BASE_DIR / ".env")
 
 
