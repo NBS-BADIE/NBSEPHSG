@@ -36,6 +36,10 @@ def list_static(request):
     files = [str(f.relative_to(static_root)) for f in static_root.rglob('*') if f.is_file()]
     return HttpResponse("<br>".join(files))
 
+from pathlib import Path
+from django.http import HttpResponse
+from django.conf import settings
+
 
 # appliquer migration sur render
 def apply_migrations(request):
