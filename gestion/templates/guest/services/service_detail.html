@@ -5,7 +5,11 @@
 
     <!-- Titre et image -->
     <div class="card shadow-sm mb-4 border-0">
-        <img src="{{ service.image.url }}" class="card-img-top" style="height: 260px; object-fit: cover;">
+                {% if service.image %}
+                <img src="{{ service.image.url }}" class="card-img-top" style="height: 260px; object-fit: cover;">
+                {% else %}
+                <img src="/static/images/default-service.jpg" class="card-img-top" style="height: 260px; object-fit: cover;">
+                {% endif %}
         <div class="card-body">
             <h2 class="card-title text-primary">{{ service.nom }}</h2>
             <p class="card-text text-muted">{{ service.description }}</p>

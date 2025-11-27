@@ -17,7 +17,7 @@
 .service-img {
     height: 180px;
     width: 100%;
-    object-fit: cover;
+    object-fit: fill;
 }
 </style>
 
@@ -36,7 +36,7 @@
                 {% if service.image %}
                 <img src="{{ service.image.url }}" class="service-img">
                 {% else %}
-                <img src="/static/img/default-service.jpg" class="service-img">
+                <img src="/static/images/default-service.jpg" class="service-img">
                 {% endif %}
 
                 <div class="card-body">
