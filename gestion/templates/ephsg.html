@@ -6,6 +6,10 @@
 .hero {
     position: relative;
     overflow: hidden;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 20px;
+    margin: 20px 0;
+    padding: 40px 0;
 }
 
 .hero .overlay {
@@ -13,20 +17,164 @@
     inset: 0;
     background: url("/static/images/hero_bg.jpg") center/cover no-repeat;
     filter: blur(6px) brightness(0.8);
-    transform: scale(1.1); /* évite les bords flous */
+    transform: scale(1.1);
     z-index: -1;
-    opacity: 0; /* GSAP animera */
+    opacity: 0;
+    border-radius: 20px;
 }
 
-.hero .glass-card,
-.hero h1, 
-.hero p, 
-.hero .btn,
-.hero .badge {
+.hero .glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero .glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.badge-glass {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.spec-list {
+    list-style: none;
+    padding: 0;
+}
+
+.spec-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    position: relative;
+    padding-left: 30px;
+}
+
+.spec-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #28a745;
+    font-weight: bold;
+}
+
+.spec-list li:last-child {
+    border-bottom: none;
+}
+
+/* Style pour les cartes de spécialités */
+/* Correction pour les cartes de spécialités */
+.specialty-card {
+    background: white;
+    border: none;
+    border-radius: 16px;
+    padding: 25px;
+    height: 100%;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-left: 4px solid #007bff;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+}
+
+.specialty-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+}
+
+.specialty-card h5 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.specialty-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: #007bff;
+    display: block;
+}
+
+.specialty-card .text-muted {
+    color: #6c757d !important;
+    line-height: 1.5;
+}
+
+/* Assurer la visibilité */
+#specialites {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+#specialites .row {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+#specialites .col {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+/* Section CTA améliorée */
+.cta-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    padding: 40px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-section:before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+}
+
+.cta-content {
     position: relative;
     z-index: 2;
 }
+
+/* Mode nuit */
+body.dark-mode .hero {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+}
+
+body.dark-mode .hero .glass-card {
+    background: rgba(30, 30, 30, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .specialty-card {
+    background: #2c3e50;
+    border-left: 4px solid #4dabf7;
+}
+
+body.dark-mode .specialty-card h5 {
+    color: #ecf0f1;
+}
+
+body.dark-mode .spec-list li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
 </style>
+
 <header class="hero position-relative">
   <!-- OVERLAY BACKGROUND -->
   <div class="overlay"></div>
@@ -35,69 +183,78 @@
       <div class="row align-items-center">
       
       <!-- LEFT SIDE -->
-
       <div class="col-lg-6">
         <div class="mb-3">
-          <span class="badge bg-primary">Institution</span>
+          <span class="badge bg-primary px-3 py-2">
+            <i class="bi bi-hospital me-2"></i>Institution Publique
+          </span>
         </div>
 
-        <h1 class="display-6 fw-bold mb-3">Etablissement Public Hospitalier de Sidi Ghilès</h1>
+        <h1 class="display-6 fw-bold mb-3 text-dark">Etablissement Public Hospitalier de Sidi Ghilès</h1>
         <p class="lead text-muted mb-4">
-          Au service de la population depuis l’hôpital Lakhdar Bouchemaa — soins, prévention et expertise médicale à l’échelle régionale.
+          <i class="bi bi-heart-pulse me-2 text-primary"></i>
+          Au service de la population depuis l'hôpital Lakhdar Bouchemaa — soins, prévention et expertise médicale à l'échelle régionale.
         </p>
 
         <div class="d-flex gap-3 mb-4">
-          <a class="btn btn-primary btn-lg" href="{% url 'a_propos' %}">En savoir plus</a>
-          <a class="btn btn-outline-secondary btn-lg" href="{% url 'contact' %}">Nous contacter</a>
+          <a class="btn btn-primary btn-lg px-4" href="{% url 'a_propos' %}">
+            <i class="bi bi-info-circle me-2"></i>En savoir plus
+          </a>
+          <a class="btn btn-outline-primary btn-lg px-4" href="{% url 'contact' %}">
+            <i class="bi bi-envelope me-2"></i>Nous contacter
+          </a>
         </div>
 
-        <div class="glass-card d-flex gap-3 align-items-center">
-          <div class="badge-glass">
-            <i class="bi bi-geo-alt-fill fs-3 text-primary"></i>
-            <img src="{% static 'images/ephsg_loc.jpg' %}" 
-                 alt="localisation"
-                 style="width:56px;height:56px;object-fit:contain;">
+        <div class="glass-card d-flex gap-4 align-items-center">
+          <div class="text-center">
+            <i class="bi bi-geo-alt-fill fs-1 text-primary"></i>
           </div>
-
-          <div>
-            <small class="text-muted">Coordonnées GPS</small>
-            <div class="fw-semibold">Lat: 36.583872 • Long: 2.128287</div>
+          <div class="flex-grow-1">
+            <small class="text-muted d-block mb-1">
+              <i class="bi bi-pin-map me-1"></i>Coordonnées GPS
+            </small>
+            <div class="fw-semibold text-dark">Lat: 36.583872 • Long: 2.128287
+              <img src="{% static 'images/ephsg_loc.png' %}" alt="localisation" style="width:56px;height:56px;object-fit:contain;">
+            </div>
+            <small class="text-muted">Hôpital Lakhdar Bouchemaa, Sidi Ghilès</small>
           </div>
         </div>
-        
       </div>
 
       <!-- RIGHT SIDE -->
-      <div class="col-lg-6 hero-right d-flex justify-content-center">
-        <div class="glass-card w-100 d-flex align-items-center" style="min-height:240px;">
+      <div class="col-lg-6 hero-right d-flex justify-content-center mt-4 mt-lg-0">
+        <div class="glass-card w-100">
           <div class="row g-0 align-items-center w-100">
-
             <div class="col-md-6 text-center d-none d-md-block">
               <img src="{% static 'images/ephsg.jpg' %}"
-                   alt="hopital"
-                   class="img-fluid rounded"
-                   style="max-height:180px;object-fit:cover">
+                   alt="Hôpital Sidi Ghilès"
+                   class="img-fluid rounded-3"
+                   style="max-height:200px;object-fit:cover; width: 100%;">
             </div>
 
             <div class="col-md-6 p-3">
-              <h5 class="mb-2">Nos engagements</h5>
+              <h5 class="mb-3 text-dark">
+                <i class="bi bi-award me-2 text-primary"></i>Nos engagements
+              </h5>
               <ul class="spec-list text-muted">
                 <li>Équipes pluridisciplinaires</li>
                 <li>Équipements modernes</li>
-                <li>Prévention 24h / 7</li>
+                <li>Prévention 24h/24</li>
+                <li>Qualité des soins</li>
               </ul>
 
-              <div class="mt-3 d-flex align-items-center gap-2">
-                <a class="btn btn-sm btn-outline-primary" href="#comite">Comité CLIN</a>
-                <a class="btn btn-sm btn-primary" href="#specialites">Spécialités</a>
+              <div class="mt-4 d-flex gap-2 flex-wrap">
+                <a class="btn btn-sm btn-outline-primary" href="#comite">
+                  <i class="bi bi-shield-check me-1"></i>Comité CLIN
+                </a>
+                <a class="btn btn-sm btn-primary" href="#specialites">
+                  <i class="bi bi-heart me-1"></i>Spécialités
+                </a>
               </div>
-
             </div>
-
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </header>
@@ -108,147 +265,180 @@
   <section id="presentation" class="mb-5">
     <div class="row">
       <div class="col-lg-8">
+        <div class="d-flex align-items-center mb-4">
+          <i class="bi bi-building fs-1 text-primary me-3"></i>
+          <div>
+            <h2 class="mb-1">Présentation</h2>
+            <p class="text-muted mb-0">Découvrez notre établissement et ses valeurs</p>
+          </div>
+        </div>
 
-        <h2 class="mb-3">Présentation</h2>
+        <p class="text-muted lead">
+          L'<strong>Etablissement Public Hospitalier de Sidi Ghilès</strong>, situé dans l'hôpital Lakhdar Bouchemaa,
+          est un établissement public algérien participant au service public hospitalier.
+        </p>
 
         <p class="text-muted">
-          L’<strong>Etablissement Public Hospitalier de Sidi Ghilès</strong>, situé dans l’hôpital Lakhdar Bouchemaa,
-          est un établissement public algérien participant au service public hospitalier. Son accès privilégié sur la côte méditerranéenne
-          en fait un pôle régional de référence.
+          Son accès privilégié sur la côte méditerranéenne en fait un pôle régional de référence, organisé en services 
+          d'hospitalisation et plateaux techniques pour garantir une prise en charge continue assurée par des médecins à temps plein.
         </p>
 
-        <p>
-          Organisé en services d’hospitalisation et plateaux techniques, l’établissement garantit une prise en charge continue,
-          assurée par des médecins à temps plein.
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <div class="d-flex align-items-center mb-3">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              <h6 class="mb-0">Égalité d'accès aux soins</h6>
+            </div>
+            <div class="d-flex align-items-center mb-3">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              <h6 class="mb-0">Qualité et sécurité</h6>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="d-flex align-items-center mb-3">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              <h6 class="mb-0">Lutte contre les infections</h6>
+            </div>
+            <div class="d-flex align-items-center mb-3">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              <h6 class="mb-0">Formation continue</h6>
+            </div>
+          </div>
+        </div>
+
+        <p class="mt-3">
+          L'hôpital investit régulièrement dans ses équipements et pratiques professionnelles pour répondre 
+          aux besoins évolutifs de la population.
         </p>
-
-        <h5 class="mt-4">Nos priorités</h5>
-        <ul>
-          <li>Égalité d’accès aux soins</li>
-          <li>Qualité et sécurité</li>
-          <li>Lutte contre les infections (CLIN)</li>
-          <li>Formation continue</li>
-        </ul>
-
-        <p>
-          L’hôpital investit régulièrement dans ses équipements et pratiques professionnelles pour répondre aux besoins de la population.
-        </p>
-
       </div>
 
       <div class="col-lg-4">
-        <div class="glass-card p-3">
-          <h6 class="mb-3">Informations rapides</h6>
+        <div class="glass-card p-4 h-100">
+          <h6 class="mb-3 text-dark">
+            <i class="bi bi-info-circle me-2 text-primary"></i>Informations rapides
+          </h6>
 
-          <p><strong>Adresse :</strong> Hôpital Lakhdar Bouchemaa, Sidi Ghilès</p>
-          <p><strong>Téléphone :</strong> +213 XX XXX XXXX</p>
-          <p><strong>Horaires :</strong> 24h / 7 (Urgences)</p>
+          <div class="mb-3">
+            <i class="bi bi-geo-alt text-primary me-2"></i>
+            <strong>Adresse :</strong><br>
+            <span class="text-muted">Hôpital Lakhdar Bouchemaa, Sidi Ghilès</span>
+          </div>
+
+          <div class="mb-3">
+            <i class="bi bi-telephone text-primary me-2"></i>
+            <strong>Téléphone :</strong><br>
+            <span class="text-muted">+213 XX XXX XXXX</span>
+          </div>
+
+          <div class="mb-3">
+            <i class="bi bi-clock text-primary me-2"></i>
+            <strong>Horaires :</strong><br>
+            <span class="text-muted">24h/24 - 7j/7 (Urgences)</span>
+          </div>
 
           <hr>
 
-          <p><strong>Comité CLIN :</strong> Prévention permanente des infections</p>
+          <div class="mb-3">
+            <i class="bi bi-shield-check text-primary me-2"></i>
+            <strong>Comité CLIN :</strong><br>
+            <span class="text-muted">Prévention permanente des infections</span>
+          </div>
 
-          <a class="btn btn-sm btn-outline-primary mt-3" href="{% url 'contact' %}">Contacter</a>
+          <a class="btn btn-outline-primary w-100 mt-3" href="{% url 'contact' %}">
+            <i class="bi bi-chat-dots me-2"></i>Nous contacter
+          </a>
         </div>
       </div>
-
     </div>
   </section>
 
   <!-- SPECIALITES -->
   <section id="specialites" class="mb-5">
-    <h3 class="mb-3">Spécialités & plateaux</h3>
+    <div class="text-center mb-5">
+      <i class="bi bi-heart-pulse fs-1 text-primary mb-3 d-block"></i>
+      <h3>Spécialités & Plateaux Techniques</h3>
+      <p class="text-muted">Découvrez l'ensemble de nos services médicaux spécialisés</p>
+    </div>
 
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       <div class="col">
-        <div class="glass-card p-3 h-100">
+        <div class="specialty-card">
+          <i class="bi bi-scissors specialty-icon"></i>
           <h5>Chirurgie</h5>
-          <p class="text-muted small">Générale, Orthopédie, Infantile, Vasculaire.</p>
+          <p class="text-muted small">Générale, Orthopédie, Infantile, Vasculaire. Prise en charge chirurgicale complète.</p>
         </div>
       </div>
 
       <div class="col">
-        <div class="glass-card p-3 h-100">
+        <div class="specialty-card">
+          <i class="bi bi-gender-female specialty-icon"></i>
           <h5>Gynécologie & Obstétrique</h5>
-          <p class="text-muted small">Maternité et suivi complet.</p>
+          <p class="text-muted small">Maternité et suivi gynécologique complet pour toutes les étapes de la vie.</p>
         </div>
       </div>
 
       <div class="col">
-        <div class="glass-card p-3 h-100">
+        <div class="specialty-card">
+          <i class="bi bi-lungs specialty-icon"></i>
           <h5>Anesthésie & Réanimation</h5>
-          <p class="text-muted small">Soins intensifs, réanimation.</p>
+          <p class="text-muted small">Soins intensifs, réanimation et anesthésie pour interventions complexes.</p>
         </div>
       </div>
 
       <div class="col">
-        <div class="glass-card p-3 h-100">
+        <div class="specialty-card">
+          <i class="bi bi-balloon-heart specialty-icon"></i>
           <h5>Pédiatrie & Néonatologie</h5>
-          <p class="text-muted small">Soins spécialisés enfants & nouveau-nés.</p>
+          <p class="text-muted small">Soins spécialisés enfants & nouveau-nés avec unité de néonatologie.</p>
         </div>
       </div>
 
       <div class="col">
-        <div class="glass-card p-3 h-100">
+        <div class="specialty-card">
+          <i class="bi bi-camera specialty-icon"></i>
           <h5>Radiologie & Biologie</h5>
-          <p class="text-muted small">Imagerie médicale et analyses.</p>
+          <p class="text-muted small">Imagerie médicale moderne et analyses biologiques complètes.</p>
         </div>
       </div>
 
       <div class="col">
-        <div class="glass-card p-3 h-100">
+        <div class="specialty-card">
+          <i class="bi bi-activity specialty-icon"></i>
           <h5>Rééducation & Médecine du travail</h5>
-          <p class="text-muted small">Suivi et réadaptation.</p>
+          <p class="text-muted small">Suivi rééducation fonctionnelle et médecine du travail préventive.</p>
         </div>
       </div>
-
     </div>
   </section>
 
   <!-- CTA -->
-  <section class="cta p-4 text-white d-flex justify-content-between align-items-center mb-5"
-           style="border-radius:12px;background:linear-gradient(90deg,#0b63d3,#0066cc)">
-
-    <div>
-      <h5 class="mb-1">Besoin d’aide immédiate ?</h5>
-      <small>Contactez nos urgences 24h / 7</small>
+  <section class="cta-section mb-5">
+    <div class="cta-content">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h4 class="mb-2">
+            <i class="bi bi-telephone-outbound me-2"></i>Besoin d'aide immédiate ?
+          </h4>
+          <p class="mb-0 opacity-75">Contactez nos urgences 24h/24 et 7j/7 pour une prise en charge rapide</p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+          <a class="btn btn-light btn-lg me-2" href="tel:+21328853719">
+            <i class="bi bi-telephone-fill me-2"></i>Appeler
+          </a>
+          <a class="btn btn-outline-light btn-lg" href="{% url 'contact' %}">
+            <i class="bi bi-envelope me-2"></i>Message
+          </a>
+        </div>
+      </div>
     </div>
-
-    <div>
-      <a class="btn btn-light" href="tel:+213 28 853 719 "><i class="bi bi-telephone"></i> Appeler</a>
-      <a class="btn btn-outline-light ms-2" href="{% url 'contact' %}">Message</a>
-    </div>
-
   </section>
 
 </main>
-
 
 <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
 <script>
   gsap.from('.hero h1', {y:30, opacity:0, duration:0.8});
   gsap.from('.glass-card', {y:20, opacity:0, duration:0.6, stagger:0.15});
+  gsap.from('.specialty-card', {y:30, opacity:0, duration:0.8, stagger:0.1, delay:0.5});
 </script>
-
-<!-- GSAP 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Animation overlay image
-    gsap.fromTo(".hero .overlay",
-        { opacity: 0, scale: 1.1, y: 20 },
-        { opacity: 1, scale: 1, y: 0, duration: 2.5, ease: "power2.out" }
-    );
-
-    // Animation du texte et boutons
-    gsap.from(".hero h1", { opacity: 0, y: 30, duration: 1.2, ease: "power3.out", delay: 0.3 });
-    gsap.from(".hero p", { opacity: 0, y: 30, duration: 1, ease: "power3.out", delay: 0.5 });
-    gsap.from(".hero .btn", { opacity: 0, y: 20, duration: 0.8, ease: "power3.out", stagger: 0.1, delay: 0.8 });
-
-    // Animation de la glass-card (GPS + engagements)
-    gsap.from(".glass-card", { opacity: 0, y: 30, duration: 1.2, ease: "power3.out", delay: 1 });
-});
-</script>-->
 {% endblock %}
