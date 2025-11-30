@@ -481,6 +481,20 @@
         background-color: #d4edda !important;
         color: #155724 !important;
     }
+
+    /* Justifier tous les paragraphes */
+p {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+/* Pour les petits écrans, on peut garder l'alignement à gauche pour une meilleure lisibilité */
+@media (max-width: 768px) {
+    p {
+        text-align: left;
+        text-justify: auto;
+    }
+}
 </style>
 </head>
 <body>
