@@ -5,7 +5,7 @@
 <!-- HERO + SLIDER + GSAP -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 <style>
-/* --- Styles principaux (ajouter dans ton CSS global si tu veux) --- */
+/* --- Styles principaux (inchangés sauf slider) --- */
 
 .hero {
   position: relative;
@@ -21,46 +21,95 @@ hero {
   min-height: 520px; /* optionnel, juste pour éviter un slider trop petit */
   overflow: hidden;
 }
+
 .hero .overlay {
-  position: absolute; inset:0; background: linear-gradient(0deg, rgba(4,8,20,0.55), rgba(4,8,20,0.15)); z-index: 1;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(4,8,20,0.55), rgba(4,8,20,0.15));
+  z-index: 1;
 }
+
 .hero .hero-content {
-  position: absolute; z-index:3; inset:0;
-  display:flex; align-items:center; justify-content:flex-start; padding-left:6%;
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 6%;
 }
-.hero .kicker { font-size: clamp(1rem, 2vw, 2.25rem); color:#ffd; opacity:.9; letter-spacing:1px; text-transform:uppercase; font-weight:600; }
-.hero h1 { font-size: clamp(2rem, 4vw, 3.25rem); color: #fff; margin: 0.25rem 0; line-height:1.05; font-weight:700; }
-.hero h2 { font-size: clamp(0.5rem, 1vw, 1.25rem); color: #fff; margin: 0.25rem 0; line-height:1.05; font-weight:600; }
-.hero p.lead { color: rgba(255,255,255,0.9); max-width:700px; font-size:1.05rem; margin-bottom:1rem; }
+
+.hero .kicker {
+  font-size: clamp(1rem, 2vw, 2.25rem);
+  color: #ffd;
+  opacity: .9;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  color: #fff;
+  margin: 0.25rem 0;
+  line-height: 1.05;
+  font-weight: 700;
+}
+
+.hero h2 {
+  font-size: clamp(0.5rem, 1vw, 1.25rem);
+  color: #fff;
+  margin: 0.25rem 0;
+  line-height: 1.05;
+  font-weight: 600;
+}
+
+.hero p.lead {
+  color: rgba(255,255,255,0.9);
+  max-width: 700px;
+  font-size: 1.05rem;
+  margin-bottom: 1rem;
+}
+
 .hero .cta { margin-right: 0.6rem; }
+
 .kicker-badge {
   display: inline-block;
-  background: rgba(0, 7, 15, 0.315); 
+  background: rgba(0, 7, 15, 0.315);
   color: rgb(255, 255, 255);
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 0.95rem;
   font-weight: 700;
-  backdrop-filter: blur(3px); /* effet verre moderne */
+  backdrop-filter: blur(3px);
   border: 1px solid rgba(255, 255, 255, 0.733);
 }
 
-.service-cards .card { border-radius:12px; }
-.features .icon { font-size:28px; width:56px; height:56px; display:flex; align-items:center; justify-content:center; border-radius:10px; background:#f7f9fc; }
+.service-cards .card { border-radius: 12px; }
+.features .icon { font-size: 28px; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: #f7f9fc; }
 
-.gallery img { width:100%; height:220px; object-fit:cover; border-radius:8px; }
+.gallery img { width: 100%; height: 220px; object-fit: cover; border-radius: 8px; }
 
-.team .portrait { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+.team .portrait { width: 96px; height: 96px; object-fit: cover; border-radius: 50%; }
 
-/* small tweak so footer doesn't overlap content — ensure page has bottom padding */
+/* Évite le chevauchement du footer */
 .page-bottom-pad { padding-bottom: 120px; }
 
-/* Swiper nav color */
-.swiper-button-next, .swiper-button-prev { color: #fff; }
-.swiper-pagination-bullet-active { background:#fff !important; }
+/* Swiper */
 .swiper {
   position: relative;
-  z-index: 0; /* l’image */
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #fff;
+}
+
+.swiper-pagination-bullet-active {
+  background: #fff !important;
 }
 
 .slider {
@@ -77,49 +126,46 @@ hero {
   display: block;
 }
 
-
-
+/* ✅ SLIDER IMAGES PLEINE LARGEUR ET HAUTEUR */
 .swiper-slide {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #000; /* arrière-plan si image pas full */
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background: #000;
 }
 
 .swiper-slide img {
-  width: auto;        /* ne pas forcer la largeur */
-  height: 100%;       /* l'image prend la hauteur du slider */
-  max-width: 100%;    /* empêche l'image de dépasser horizontalement */
-  object-fit: contain; /* voir l'image entière */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;     /* occupe toute la surface */
   object-position: center;
+  display: block;        /* supprime les espaces */
 }
 
+/* Texte du slider */
 .slide-text {
   position: absolute;
   bottom: 20%;
-  left: 80%; /* décale le texte vers la droite */
-  transform: translateX(-50%); /* optionnel, pour centrer par rapport au point de départ */
+  left: 80%; /* texte vers la droite */
+  transform: translateX(-50%);
   color: #ffffff;
   text-shadow: 0 0 10px rgba(0,0,0,0.7);
   opacity: 0;
-  max-width: 35%; /* ajuste la largeur du texte */
+  max-width: 35%;
   z-index: 6;
 }
 
 .hero-content .d-flex a {
-  position: relative; /* nécessaire pour z-index */
-  z-index: 5;         /* au-dessus du slider */
+  position: relative;
+  z-index: 5;
 }
-
-
 </style>
+
 
 <div class="page-bottom-pad">
 
   
-
-
-
 <!-- HERO SLIDER -->
 <section class="hero">
     <!-- overlay pour contraste -->
