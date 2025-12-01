@@ -1,1 +1,1656 @@
+{% extends "base.html" %}
+{% load static %}
 
+{% block content %}
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    :root {
+        --primary-blue: #1a6dbb;
+        --dark-blue: #0d4d8c;
+        --light-blue: #e9f2fa;
+        --green-success: #28a745;
+        --orange-warning: #fd7e14;
+        --purple-quality: #6f42c1;
+    }
+    
+    .quality-header {
+        background: linear-gradient(135deg, var(--purple-quality) 0%, #5a32a3 100%);
+        color: white;
+        padding: 4rem 0;
+        text-align: center;
+        margin-bottom: 3rem;
+        border-radius: 0 0 15px 15px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .quality-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("{% static 'images/quality-bg.jpg' %}") center/cover;
+        opacity: 0.1;
+        z-index: 0;
+    }
+    
+    .quality-header h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .quality-header .subtitle {
+        font-size: 1.3rem;
+        opacity: 0.9;
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .quality-cycle-section {
+        padding: 4rem 0;
+        background-color: #f8f9fa;
+    }
+    
+    .cycle-container {
+        position: relative;
+        margin: 3rem auto;
+        max-width: 1000px;
+    }
+    
+    .cycle-step {
+        position: absolute;
+        width: 250px;
+        padding: 1.5rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        text-align: center;
+        transition: all 0.3s ease;
+        z-index: 2;
+    }
+    
+    .cycle-step:hover {
+        transform: scale(1.05);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    }
+    
+    .cycle-step-1 { top: 0; left: 50%; transform: translateX(-50%); }
+    .cycle-step-2 { top: 200px; left: 10%; }
+    .cycle-step-3 { top: 200px; right: 10%; }
+    .cycle-step-4 { top: 400px; left: 50%; transform: translateX(-50%); }
+    
+    .step-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: var(--light-blue);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 2rem;
+        color: var(--primary-blue);
+    }
+    
+    .step-number {
+        position: absolute;
+        top: -15px;
+        left: -15px;
+        width: 40px;
+        height: 40px;
+        background: var(--primary-blue);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+    
+    .cycle-line {
+        position: absolute;
+        background: var(--primary-blue);
+        width: 2px;
+        left: 50%;
+        top: 80px;
+        bottom: 200px;
+        transform: translateX(-50%);
+    }
+    
+    .patient-centered-section {
+        padding: 4rem 0;
+        background: linear-gradient(to right, var(--light-blue) 0%, #e3f2fd 100%);
+    }
+    
+    .pillar-card {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        border-top: 5px solid var(--primary-blue);
+    }
+    
+    .pillar-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+    }
+    
+    .pillar-icon {
+        font-size: 2.5rem;
+        color: var(--primary-blue);
+        margin-bottom: 1.5rem;
+    }
+    
+    .pillar-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .comite-section {
+        padding: 4rem 0;
+        background-color: white;
+    }
+    
+    .comite-card {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border-left: 5px solid var(--green-success);
+    }
+    
+    .comite-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--green-success);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .indicator-section {
+        padding: 4rem 0;
+        background-color: #f8f9fa;
+    }
+    
+    .indicator-item {
+        text-align: center;
+        padding: 2rem;
+    }
+    
+    .indicator-number {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--primary-blue);
+        margin-bottom: 1rem;
+        font-family: 'Montserrat', sans-serif;
+    }
+    
+    .chart-container {
+        height: 300px;
+        margin: 2rem 0;
+        position: relative;
+    }
+    
+    .chart-bar {
+        position: absolute;
+        bottom: 0;
+        width: 60px;
+        background: linear-gradient(to top, var(--primary-blue) 0%, var(--dark-blue) 100%);
+        border-radius: 8px 8px 0 0;
+        transition: height 1.5s ease;
+    }
+    
+    .formation-section {
+        padding: 4rem 0;
+        background: linear-gradient(to right, #e3f2fd 0%, var(--light-blue) 100%);
+    }
+    
+    .formation-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    
+    .formation-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--orange-warning);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+    
+    .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    
+    .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    @media (max-width: 992px) {
+        .cycle-step {
+            position: static !important;
+            margin: 2rem auto;
+            width: 90%;
+            transform: none !important;
+        }
+        
+        .cycle-line {
+            display: none;
+        }
+        
+        .cycle-container {
+            position: static;
+        }
+        
+        .quality-header h1 {
+            font-size: 2.2rem;
+        }
+    }
+
+    /* Styles supplémentaires pour le graphique */
+    .data-point:hover .point-circle {
+        box-shadow: 0 0 0 8px rgba(78, 84, 200, 0.2);
+    }
+    
+    .data-point[data-year="2025"] .point-circle {
+        animation: pulse-target 2s infinite;
+    }
+    
+    @keyframes pulse-target {
+        0%, 100% {
+            box-shadow: 0 0 0 0 rgba(78, 84, 200, 0.4);
+        }
+        50% {
+            box-shadow: 0 0 0 10px rgba(78, 84, 200, 0);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .chart-container {
+            height: 350px;
+        }
+        
+        .y-axis {
+            width: 40px;
+            font-size: 0.7rem;
+        }
+        
+        .main-chart {
+            left: 40px;
+        }
+        
+        .x-axis > div {
+            font-size: 0.8rem;
+        }
+        
+        .point-tooltip {
+            font-size: 0.7rem;
+            padding: 0.3rem 0.5rem;
+        }
+    }
+ /* Styles supplémentaires pour les pillars */
+    .year-pillar:hover .pillar-bar {
+        filter: brightness(1.1);
+        transform: translateY(-5px);
+        transition: all 0.3s ease;
+    }
+    
+    .year-pillar[data-year="2025"] .pillar-bar {
+        animation: pulse-objective 3s infinite;
+    }
+    
+    @keyframes pulse-objective {
+        0%, 100% {
+            box-shadow: 0 0 0 0 rgba(78, 84, 200, 0.2);
+        }
+        50% {
+            box-shadow: 0 0 0 10px rgba(78, 84, 200, 0);
+        }
+    }
+    
+    .progress-bar {
+        transition: width 1.5s ease !important;
+    }
+    
+    @media (max-width: 768px) {
+        .chart-container {
+            height: 400px;
+        }
+        
+        .pillar-bar {
+            width: 30px !important;
+        }
+        
+        .year-label {
+            font-size: 0.9rem !important;
+        }
+        
+        .pillar-value {
+            font-size: 0.8rem !important;
+        }
+        
+        .y-axis {
+            width: 40px !important;
+        }
+        
+        .main-chart {
+            left: 40px !important;
+        }
+    }
+
+</style>
+
+<!-- HERO SECTION -->
+<header class="quality-header">
+    <div class="container">
+        <h1><i class="fas fa-award me-3"></i>Démarche Qualité</h1>
+        <p class="subtitle">L'excellence au service des patients - Une culture d'amélioration continue depuis la création de l'EPH</p>
+    </div>
+</header>
+
+<!-- SECTION CYCLE PDCA AMÉLIORÉE -->
+<section class="pdca-cycle-section" style="padding: 5rem 0; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+    <div class="container">
+        <h2 class="text-center mb-1" style="color: var(--dark-blue); font-size: 2.8rem; font-weight: 700;">
+            <i class="fas fa-sync-alt me-2"></i>Cycle PDCA
+        </h2>
+        <p class="text-center text-muted mb-5" style="font-size: 1.2rem; max-width: 800px; margin: 0 auto;">
+            Le modèle Plan-Do-Check-Act assure une amélioration continue et systématique de la qualité
+        </p>
+        
+        <!-- CYCLE PDCA VISUEL -->
+        <div class="pdca-visual-container" style="position: relative; max-width: 1000px; margin: 3rem auto;">
+            
+            <!-- CERCLE PRINCIPAL -->
+            <div class="pdca-circle" style="position: relative; width: 600px; height: 600px; margin: 0 auto; border: 8px solid var(--primary-blue); border-radius: 50%; background: white;">
+                
+                <!-- FLÈCHES DE CYCLE -->
+                <div class="cycle-arrow" style="position: absolute; top: 50%; left: 0; width: 50%; height: 4px; background: var(--primary-blue); transform-origin: right center;">
+                    <div style="position: absolute; right: 0; top: -10px; width: 0; height: 0; border-left: 20px solid var(--primary-blue); border-top: 10px solid transparent; border-bottom: 10px solid transparent;"></div>
+                </div>
+                
+                <!-- ÉTAPE 1: PLAN -->
+                <div class="pdca-step step-plan" style="position: absolute; top: 50px; left: 50%; transform: translateX(-50%); width: 220px; text-align: center;">
+                    <div class="step-icon" style="width: 100px; height: 100px; margin: 0 auto 1rem; background: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2.5rem;">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <div class="step-content" style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);">
+                        <h3 style="color: #4e54c8; margin-bottom: 0.5rem;">PLANIFIER</h3>
+                        <p style="color: #666; margin: 0;">Définir les objectifs à atteindre et planifier la mise en œuvre des actions</p>
+                    </div>
+                </div>
+                
+                <!-- ÉTAPE 2: DO -->
+                <div class="pdca-step step-do" style="position: absolute; top: 50%; right: 50px; transform: translateY(-50%); width: 220px; text-align: center;">
+                    <div class="step-icon" style="width: 100px; height: 100px; margin: 0 auto 1rem; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2.5rem;">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="step-content" style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);">
+                        <h3 style="color: #11998e; margin-bottom: 0.5rem;">METTRE EN ŒUVRE</h3>
+                        <p style="color: #666; margin: 0;">Mettre en place les actions correctives et préventives</p>
+                    </div>
+                </div>
+                
+                <!-- ÉTAPE 3: CHECK -->
+                <div class="pdca-step step-check" style="position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); width: 220px; text-align: center;">
+                    <div class="step-icon" style="width: 100px; height: 100px; margin: 0 auto 1rem; background: linear-gradient(135deg, #f46b45 0%, #eea849 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2.5rem;">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="step-content" style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);">
+                        <h3 style="color: #f46b45; margin-bottom: 0.5rem;">VÉRIFIER</h3>
+                        <p style="color: #666; margin: 0;">Évaluer l'atteinte des objectifs fixés et mesurer les résultats</p>
+                    </div>
+                </div>
+                
+                <!-- ÉTAPE 4: ACT -->
+                <div class="pdca-step step-act" style="position: absolute; top: 50%; left: 50px; transform: translateY(-50%); width: 220px; text-align: center;">
+                    <div class="step-icon" style="width: 100px; height: 100px; margin: 0 auto 1rem; background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2.5rem;">
+                        <i class="fas fa-redo"></i>
+                    </div>
+                    <div class="step-content" style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);">
+                        <h3 style="color: #8e2de2; margin-bottom: 0.5rem;">AMÉLIORER</h3>
+                        <p style="color: #666; margin: 0;">Prendre des mesures préventives et assurer le suivi des actions</p>
+                    </div>
+                </div>
+                
+                <!-- CENTRE DU CYCLE -->
+                <div class="cycle-center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 180px; height: 180px; background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; flex-direction: column;">
+                    <h2 style="font-size: 3rem; font-weight: 700; margin: 0; line-height: 1;">PDCA</h2>
+                    <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">Cycle d'Amélioration Continue</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- EXPLICATION DU CYCLE -->
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-10">
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <div class="pdca-explanation" style="text-align: center; padding: 1.5rem;">
+                            <div style="width: 60px; height: 60px; background: #4e54c8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin: 0 auto 1rem;">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <h5 style="color: #4e54c8;">Planifier</h5>
+                            <p class="small text-muted">Identifier les problèmes et établir des objectifs mesurables</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="pdca-explanation" style="text-align: center; padding: 1.5rem;">
+                            <div style="width: 60px; height: 60px; background: #11998e; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin: 0 auto 1rem;">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <h5 style="color: #11998e;">Mettre en œuvre</h5>
+                            <p class="small text-muted">Exécuter le plan et mettre en place les solutions</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="pdca-explanation" style="text-align: center; padding: 1.5rem;">
+                            <div style="width: 60px; height: 60px; background: #f46b45; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin: 0 auto 1rem;">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h5 style="color: #f46b45;">Vérifier</h5>
+                            <p class="small text-muted">Évaluer les résultats et comparer avec les objectifs</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="pdca-explanation" style="text-align: center; padding: 1.5rem;">
+                            <div style="width: 60px; height: 60px; background: #8e2de2; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin: 0 auto 1rem;">
+                                <i class="fas fa-redo"></i>
+                            </div>
+                            <h5 style="color: #8e2de2;">Améliorer</h5>
+                            <p class="small text-muted">Standardiser les réussites et ajuster pour l'avenir</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION PATIENT AU CENTRE AVEC GRID VISUELLE -->
+<section class="patient-grid-section" style="padding: 5rem 0; background: white;">
+    <div class="container">
+        <h2 class="text-center mb-5" style="color: var(--dark-blue); font-size: 2.5rem;">
+            <i class="fas fa-user-injured me-2"></i>Le Patient au Centre de Notre Démarche
+        </h2>
+        
+        <div class="row g-4">
+            <!-- Ligne 1 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="patient-pillar" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-radius: 15px; padding: 2rem; height: 100%; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%;"></div>
+                    <div class="icon-container" style="width: 70px; height: 70px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                        <i class="fas fa-handshake" style="font-size: 2rem; color: var(--primary-blue);"></i>
+                    </div>
+                    <h4 style="color: var(--dark-blue); margin-bottom: 1rem;">Conditions d'accueil</h4>
+                    <p style="color: #555; margin: 0;">Un accueil chaleureux et personnalisé pour chaque patient dès son arrivée à l'établissement</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="patient-pillar" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 15px; padding: 2rem; height: 100%; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%;"></div>
+                    <div class="icon-container" style="width: 70px; height: 70px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                        <i class="fas fa-heartbeat" style="font-size: 2rem; color: #2e7d32;"></i>
+                    </div>
+                    <h4 style="color: #2e7d32; margin-bottom: 1rem;">Continuité des soins</h4>
+                    <p style="color: #555; margin: 0;">Coordination optimale entre les différents services et professionnels pour assurer un suivi cohérent</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="patient-pillar" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border-radius: 15px; padding: 2rem; height: 100%; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%;"></div>
+                    <div class="icon-container" style="width: 70px; height: 70px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                        <i class="fas fa-shield-virus" style="font-size: 2rem; color: #ef6c00;"></i>
+                    </div>
+                    <h4 style="color: #ef6c00; margin-bottom: 1rem;">Prévention des infections</h4>
+                    <p style="color: #555; margin: 0;">Strict respect des protocoles d'hygiène et prévention systématique des risques infectieux</p>
+                </div>
+            </div>
+            
+            <!-- Ligne 2 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="patient-pillar" style="background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border-radius: 15px; padding: 2rem; height: 100%; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%;"></div>
+                    <div class="icon-container" style="width: 70px; height: 70px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                        <i class="fas fa-comments-medical" style="font-size: 2rem; color: #8e24aa;"></i>
+                    </div>
+                    <h4 style="color: #8e24aa; margin-bottom: 1rem;">Information & Écoute</h4>
+                    <p style="color: #555; margin: 0;">Information claire, complète et écoute active des besoins et préoccupations du patient</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="patient-pillar" style="background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%); border-radius: 15px; padding: 2rem; height: 100%; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%;"></div>
+                    <div class="icon-container" style="width: 70px; height: 70px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                        <i class="fas fa-balance-scale" style="font-size: 2rem; color: #00695c;"></i>
+                    </div>
+                    <h4 style="color: #00695c; margin-bottom: 1rem;">Respect des droits</h4>
+                    <p style="color: #555; margin: 0;">Respect strict de la dignité, de la vie privée et des droits fondamentaux de chaque patient</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="patient-pillar" style="background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); border-radius: 15px; padding: 2rem; height: 100%; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%;"></div>
+                    <div class="icon-container" style="width: 70px; height: 70px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                        <i class="fas fa-pain-scale" style="font-size: 2rem; color: #c62828;"></i>
+                    </div>
+                    <h4 style="color: #c62828; margin-bottom: 1rem;">Lutte contre la douleur</h4>
+                    <p style="color: #555; margin: 0;">Évaluation systématique et traitement adapté de la douleur pour un confort optimal</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- BANNIÈRE D'ENGAGEMENT -->
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-10">
+                <div style="background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%); border-radius: 15px; padding: 3rem; text-align: center; color: white; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') bottom/cover no-repeat;"></div>
+                    <div style="position: relative; z-index: 1;">
+                        <h3 style="font-size: 2.2rem; margin-bottom: 1rem;">
+                            <i class="fas fa-star me-2"></i>Engagement d'Excellence
+                        </h3>
+                        <p class="lead mb-0" style="opacity: 0.9;">
+                            L'ensemble des professionnels est impliqué dans l'amélioration continue de la qualité du service médical, 
+                            sous la supervision des comités dédiés et avec la participation active des patients.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- PATIENT AU CENTRE -->
+<section class="patient-centered-section">
+    <div class="container">
+        <h2 class="text-center mb-5" style="color: var(--dark-blue);">
+            <i class="fas fa-user-injured me-2"></i>Le Patient au Cœur de Notre Démarche
+        </h2>
+        <p class="lead text-center text-muted mb-5 max-width-800 mx-auto">
+            À l'EPH Sidi Ghilès, la démarche qualité accorde au patient une place centrale dans tous nos processus
+        </p>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="pillar-card fade-in">
+                    <div class="pillar-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <img src="{% static 'images/accueil-patient.jpg' %}" alt="Accueil patient" class="pillar-image">
+                    <h4>Conditions d'accueil</h4>
+                    <p class="text-muted">Un accueil chaleureux et personnalisé pour chaque patient dès son arrivée</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="pillar-card fade-in">
+                    <div class="pillar-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <img src="{% static 'images/continuite-soins.jpg' %}" alt="Continuité des soins" class="pillar-image">
+                    <h4>Continuité des soins</h4>
+                    <p class="text-muted">Coordination optimale entre les différents services et professionnels</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="pillar-card fade-in">
+                    <div class="pillar-icon">
+                        <i class="fas fa-shield-virus"></i>
+                    </div>
+                    <img src="{% static 'images/prevention-infections.jpg' %}" alt="Prévention infections" class="pillar-image">
+                    <h4>Prévention des infections</h4>
+                    <p class="text-muted">Strict respect des protocoles d'hygiène et prévention des risques</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="pillar-card fade-in">
+                    <div class="pillar-icon">
+                        <i class="fas fa-comments-medical"></i>
+                    </div>
+                    <img src="{% static 'images/information-patient.jpg' %}" alt="Information patient" class="pillar-image">
+                    <h4>Information & Écoute</h4>
+                    <p class="text-muted">Information claire et écoute active des besoins du patient</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="pillar-card fade-in">
+                    <div class="pillar-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <img src="{% static 'images/droits-patient.jpg' %}" alt="Droits patient" class="pillar-image">
+                    <h4>Respect des droits</h4>
+                    <p class="text-muted">Respect strict de la dignité, de la vie privée et des droits des patients</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="pillar-card fade-in">
+                    <div class="pillar-icon">
+                        <i class="fas fa-pain-scale"></i>
+                    </div>
+                    <img src="{% static 'images/lutte-douleur.jpg' %}" alt="Lutte contre la douleur" class="pillar-image">
+                    <h4>Lutte contre la douleur</h4>
+                    <p class="text-muted">Évaluation et traitement systématique de la douleur</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- COMITÉS ET GOUVERNANCE -->
+<section class="comite-section">
+    <div class="container">
+        <h2 class="text-center mb-5" style="color: var(--dark-blue);">
+            <i class="fas fa-users-cog me-2"></i>Gouvernance & Comités
+        </h2>
+        
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="comite-card fade-in">
+                    <div class="comite-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h4>Conseil Médical</h4>
+                    <p class="text-muted">Oriente la politique médicale et veille à la qualité des pratiques professionnelles</p>
+                    <ul class="text-muted mt-3">
+                        <li>Élaboration des protocoles</li>
+                        <li>Évaluation des pratiques</li>
+                        <li>Formation continue</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="comite-card fade-in">
+                    <div class="comite-icon">
+                        <i class="fas fa-first-aid"></i>
+                    </div>
+                    <h4>Comité de Garde & Urgences</h4>
+                    <p class="text-muted">Optimise l'organisation des gardes et la prise en charge des urgences</p>
+                    <ul class="text-muted mt-3">
+                        <li>Planification des gardes</li>
+                        <li>Gestion des flux urgents</li>
+                        <li>Protocoles d'urgence</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="comite-card fade-in">
+                    <div class="comite-icon">
+                        <i class="fas fa-hand-sparkles"></i>
+                    </div>
+                    <h4>Commission Hygiène & Sécurité</h4>
+                    <p class="text-muted">Garantit la sécurité des patients et du personnel</p>
+                    <ul class="text-muted mt-3">
+                        <li>Contrôle des infections</li>
+                        <li>Sécurité des équipements</li>
+                        <li>Prévention des risques</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5 fade-in">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="alert alert-info" style="background-color: var(--light-blue); border-color: var(--primary-blue);">
+                        <h5><i class="fas fa-chart-network me-2"></i>Approche Transversale</h5>
+                        <p class="mb-0">L'ensemble des professionnels est impliqué dans l'amélioration de la qualité du service médical rendu au patient.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- INDICATEURS ET SUIVI - SECTION AVEC GRAPHE ANIMÉ -->
+<section class="indicator-section" style="padding: 4rem 0; background-color: #f8f9fa;">
+    <div class="container">
+        <h2 class="text-center mb-5" style="color: var(--dark-blue);">
+            <i class="fas fa-chart-line me-2"></i>Évolution du taux de satisfaction des patients (2020-2025)
+        </h2>
+        
+        <!-- LEGENDE -->
+        <div class="chart-legend text-center mb-4">
+            <div class="d-flex justify-content-center gap-4 flex-wrap">
+                <div class="d-flex align-items-center">
+                    <div style="width: 20px; height: 4px; background: linear-gradient(to right, #4e54c8, #8f94fb); border-radius: 2px; margin-right: 8px;"></div>
+                    <span style="font-size: 0.9rem; color: #666;">Taux de satisfaction</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div style="width: 16px; height: 16px; background: rgba(78, 84, 200, 0.1); border: 2px solid #4e54c8; border-radius: 50%; margin-right: 8px;"></div>
+                    <span style="font-size: 0.9rem; color: #666;">Objectif annuel</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- GRAPHE PRINCIPAL -->
+        <div class="chart-container fade-in" style="position: relative; height: 450px; margin: 3rem 0;">
+            
+            <!-- Axe Y (pourcentages) -->
+            <div class="y-axis" style="position: absolute; left: 0; top: 0; bottom: 60px; width: 50px; display: flex; flex-direction: column; justify-content: space-between; padding-right: 10px; border-right: 1px solid #dee2e6;">
+                <div style="text-align: right; font-size: 0.9rem; color: #666; font-weight: 500;">100%</div>
+                <div style="text-align: right; font-size: 0.9rem; color: #666;">75%</div>
+                <div style="text-align: right; font-size: 0.9rem; color: #666;">50%</div>
+                <div style="text-align: right; font-size: 0.9rem; color: #666;">25%</div>
+                <div style="text-align: right; font-size: 0.9rem; color: #666; font-weight: 500;">0%</div>
+            </div>
+            
+            <!-- Conteneur principal du graphique -->
+            <div class="main-chart" style="position: absolute; left: 50px; right: 0; top: 0; bottom: 60px;">
+                
+                <!-- Grille -->
+                <div class="chart-grid" style="position: absolute; left: 0; right: 0; top: 0; bottom: 0;">
+                    <!-- Lignes horizontales -->
+                    <div style="position: absolute; left: 0; right: 0; top: 0%; height: 1px; background: #dee2e6;"></div>
+                    <div style="position: absolute; left: 0; right: 0; top: 25%; height: 1px; background: rgba(222, 226, 230, 0.5);"></div>
+                    <div style="position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: rgba(222, 226, 230, 0.5);"></div>
+                    <div style="position: absolute; left: 0; right: 0; top: 75%; height: 1px; background: rgba(222, 226, 230, 0.5);"></div>
+                    <div style="position: absolute; left: 0; right: 0; top: 100%; height: 1px; background: #dee2e6;"></div>
+                </div>
+                
+                <!-- PILLARS/COLONNES POUR CHAQUE ANNÉE -->
+                <div class="year-pillars" style="position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; justify-content: space-around; align-items: flex-end;">
+                    
+                    <!-- Pillar 2020 -->
+                    <div class="year-pillar" data-year="2020" data-value="65" 
+                         style="position: relative; width: 14%; display: flex; flex-direction: column; align-items: center;">
+                        <div class="pillar-bar" style="width: 40px; background: linear-gradient(to top, #4e54c8 0%, #8f94fb 100%); border-radius: 4px 4px 0 0; position: relative; transition: height 1.5s ease;">
+                            <div class="pillar-value" style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-size: 0.9rem; font-weight: 600; color: #4e54c8; opacity: 0;">65%</div>
+                        </div>
+                        <div class="year-label" style="margin-top: 10px; font-weight: 600; color: #4e54c8; font-size: 1rem;">2020</div>
+                        <div class="pillar-tooltip" style="position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #4e54c8; color: white; padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.8rem; white-space: nowrap; opacity: 0; visibility: hidden; margin-bottom: 10px; transition: all 0.3s;">
+                            <strong>2020:</strong> 65% de satisfaction
+                            <div class="tooltip-arrow" style="position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid #4e54c8;"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pillar 2021 -->
+                    <div class="year-pillar" data-year="2021" data-value="75" 
+                         style="position: relative; width: 14%; display: flex; flex-direction: column; align-items: center;">
+                        <div class="pillar-bar" style="width: 40px; background: linear-gradient(to top, #4e54c8 0%, #8f94fb 100%); border-radius: 4px 4px 0 0; position: relative; transition: height 1.5s ease;">
+                            <div class="pillar-value" style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-size: 0.9rem; font-weight: 600; color: #4e54c8; opacity: 0;">75%</div>
+                        </div>
+                        <div class="year-label" style="margin-top: 10px; font-weight: 600; color: #4e54c8; font-size: 1rem;">2021</div>
+                        <div class="pillar-tooltip" style="position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #4e54c8; color: white; padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.8rem; white-space: nowrap; opacity: 0; visibility: hidden; margin-bottom: 10px; transition: all 0.3s;">
+                            <strong>2021:</strong> 75% de satisfaction
+                            <div class="tooltip-arrow" style="position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid #4e54c8;"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pillar 2022 -->
+                    <div class="year-pillar" data-year="2022" data-value="82" 
+                         style="position: relative; width: 14%; display: flex; flex-direction: column; align-items: center;">
+                        <div class="pillar-bar" style="width: 40px; background: linear-gradient(to top, #4e54c8 0%, #8f94fb 100%); border-radius: 4px 4px 0 0; position: relative; transition: height 1.5s ease;">
+                            <div class="pillar-value" style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-size: 0.9rem; font-weight: 600; color: #4e54c8; opacity: 0;">82%</div>
+                        </div>
+                        <div class="year-label" style="margin-top: 10px; font-weight: 600; color: #4e54c8; font-size: 1rem;">2022</div>
+                        <div class="pillar-tooltip" style="position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #4e54c8; color: white; padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.8rem; white-space: nowrap; opacity: 0; visibility: hidden; margin-bottom: 10px; transition: all 0.3s;">
+                            <strong>2022:</strong> 82% de satisfaction
+                            <div class="tooltip-arrow" style="position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid #4e54c8;"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pillar 2023 -->
+                    <div class="year-pillar" data-year="2023" data-value="90" 
+                         style="position: relative; width: 14%; display: flex; flex-direction: column; align-items: center;">
+                        <div class="pillar-bar" style="width: 40px; background: linear-gradient(to top, #4e54c8 0%, #8f94fb 100%); border-radius: 4px 4px 0 0; position: relative; transition: height 1.5s ease;">
+                            <div class="pillar-value" style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-size: 0.9rem; font-weight: 600; color: #4e54c8; opacity: 0;">90%</div>
+                        </div>
+                        <div class="year-label" style="margin-top: 10px; font-weight: 600; color: #4e54c8; font-size: 1rem;">2023</div>
+                        <div class="pillar-tooltip" style="position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #4e54c8; color: white; padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.8rem; white-space: nowrap; opacity: 0; visibility: hidden; margin-bottom: 10px; transition: all 0.3s;">
+                            <strong>2023:</strong> 90% de satisfaction
+                            <div class="tooltip-arrow" style="position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid #4e54c8;"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pillar 2024 -->
+                    <div class="year-pillar" data-year="2024" data-value="95" 
+                         style="position: relative; width: 14%; display: flex; flex-direction: column; align-items: center;">
+                        <div class="pillar-bar" style="width: 40px; background: linear-gradient(to top, #4e54c8 0%, #8f94fb 100%); border-radius: 4px 4px 0 0; position: relative; transition: height 1.5s ease;">
+                            <div class="pillar-value" style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-size: 0.9rem; font-weight: 600; color: #4e54c8; opacity: 0;">95%</div>
+                        </div>
+                        <div class="year-label" style="margin-top: 10px; font-weight: 600; color: #4e54c8; font-size: 1rem;">2024</div>
+                        <div class="pillar-tooltip" style="position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #4e54c8; color: white; padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.8rem; white-space: nowrap; opacity: 0; visibility: hidden; margin-bottom: 10px; transition: all 0.3s;">
+                            <strong>2024:</strong> 95% de satisfaction
+                            <div class="tooltip-arrow" style="position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid #4e54c8;"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pillar 2025 (OBJECTIF) -->
+                    <div class="year-pillar" data-year="2025" data-value="98" 
+                         style="position: relative; width: 14%; display: flex; flex-direction: column; align-items: center;">
+                        <div class="pillar-bar" style="width: 40px; background: linear-gradient(to top, rgba(78, 84, 200, 0.3) 0%, rgba(143, 148, 251, 0.3) 100%); border: 2px dashed #4e54c8; border-radius: 4px 4px 0 0; position: relative; transition: height 1.5s ease;">
+                            <div class="pillar-value" style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-size: 0.9rem; font-weight: 600; color: #4e54c8; opacity: 0;">98%</div>
+                        </div>
+                        <div class="year-label" style="margin-top: 10px; font-weight: 700; color: #4e54c8; font-size: 1rem; position: relative;">
+                            2025*
+                            <div style="position: absolute; top: -5px; right: -15px; color: #ff6b6b; font-size: 0.8rem;">★</div>
+                        </div>
+                        <div class="pillar-tooltip" style="position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #4e54c8; color: white; padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.8rem; white-space: nowrap; opacity: 0; visibility: hidden; margin-bottom: 10px; transition: all 0.3s;">
+                            <strong>2025 (objectif):</strong> 98% de satisfaction<br>
+                            <small style="opacity: 0.9;">Objectif à atteindre (projeté)</small>
+                            <div class="tooltip-arrow" style="position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid #4e54c8;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- LIGNE DE TENDANCE (courbe qui relie les pillars) -->
+                <svg class="trend-line" style="position: absolute; left: 0; right: 0; top: 0; bottom: 0; overflow: visible; pointer-events: none;" 
+                     viewBox="0 0 1000 400" preserveAspectRatio="none">
+                    <path id="trend-line-path" 
+                          d="M70,350 L200,250 L330,180 L460,100 L590,50 L720,20" 
+                          fill="none" 
+                          stroke="url(#line-gradient)" 
+                          stroke-width="3" 
+                          stroke-linecap="round"
+                          stroke-dasharray="1000"
+                          stroke-dashoffset="1000">
+                    </path>
+                    <defs>
+                        <linearGradient id="line-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#4e54c8" />
+                            <stop offset="100%" stop-color="#8f94fb" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            
+            <!-- NOTE EN BAS -->
+            <div class="chart-note text-center mt-4" style="position: absolute; left: 0; right: 0; bottom: 0; font-size: 0.85rem; color: #666; padding-top: 10px; border-top: 1px solid #dee2e6;">
+                *2025 : Objectif à atteindre (projeté) - <span style="color: #4e54c8; font-weight: 500;">Progression constante de la satisfaction patient</span>
+            </div>
+        </div>
+        
+        <!-- STATISTIQUES DÉTAILLÉES -->
+        <div class="row mt-5 g-4">
+            <div class="col-md-6">
+                <div class="stats-card fade-in" style="background: white; border-radius: 10px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                    <h5 style="color: var(--dark-blue); margin-bottom: 1rem;">
+                        <i class="fas fa-chart-pie me-2"></i>Analyse de la progression
+                    </h5>
+                    <div class="progress-stats">
+                        <div class="progress-item mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span style="font-size: 0.9rem;">2020 → 2021</span>
+                                <span style="font-size: 0.9rem; font-weight: 600; color: #4e54c8;">+10 points</span>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar" style="width: 100%; background: linear-gradient(to right, #4e54c8, #8f94fb);"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span style="font-size: 0.9rem;">2021 → 2022</span>
+                                <span style="font-size: 0.9rem; font-weight: 600; color: #4e54c8;">+7 points</span>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar" style="width: 70%; background: linear-gradient(to right, #4e54c8, #8f94fb);"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span style="font-size: 0.9rem;">2022 → 2023</span>
+                                <span style="font-size: 0.9rem; font-weight: 600; color: #4e54c8;">+8 points</span>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar" style="width: 80%; background: linear-gradient(to right, #4e54c8, #8f94fb);"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span style="font-size: 0.9rem;">2023 → 2024</span>
+                                <span style="font-size: 0.9rem; font-weight: 600; color: #4e54c8;">+5 points</span>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar" style="width: 50%; background: linear-gradient(to right, #4e54c8, #8f94fb);"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span style="font-size: 0.9rem;">2024 → 2025 (objectif)</span>
+                                <span style="font-size: 0.9rem; font-weight: 600; color: #4e54c8;">+3 points</span>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar" style="width: 30%; background: linear-gradient(to right, rgba(78, 84, 200, 0.5), rgba(143, 148, 251, 0.5)); border: 1px dashed #4e54c8;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="stats-card fade-in" style="background: white; border-radius: 10px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                    <h5 style="color: var(--dark-blue); margin-bottom: 1rem;">
+                        <i class="fas fa-bullseye me-2"></i>Objectifs atteints
+                    </h5>
+                    <div class="achievements">
+                        <div class="achievement-item d-flex align-items-center mb-3">
+                            <div class="achievement-icon me-3" style="width: 40px; height: 40px; background: rgba(78, 84, 200, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-check" style="color: #4e54c8;"></i>
+                            </div>
+                            <div>
+                                <h6 style="margin: 0; color: #4e54c8;">Amélioration continue</h6>
+                                <p style="margin: 0; font-size: 0.85rem; color: #666;">Augmentation constante chaque année depuis 2020</p>
+                            </div>
+                        </div>
+                        <div class="achievement-item d-flex align-items-center mb-3">
+                            <div class="achievement-icon me-3" style="width: 40px; height: 40px; background: rgba(78, 84, 200, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-bullseye" style="color: #4e54c8;"></i>
+                            </div>
+                            <div>
+                                <h6 style="margin: 0; color: #4e54c8;">Objectif 2024 dépassé</h6>
+                                <p style="margin: 0; font-size: 0.85rem; color: #666;">95% atteints contre 92% prévus initialement</p>
+                            </div>
+                        </div>
+                        <div class="achievement-item d-flex align-items-center">
+                            <div class="achievement-icon me-3" style="width: 40px; height: 40px; background: rgba(78, 84, 200, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-trophy" style="color: #4e54c8;"></i>
+                            </div>
+                            <div>
+                                <h6 style="margin: 0; color: #4e54c8;">Excellence 2025</h6>
+                                <p style="margin: 0; font-size: 0.85rem; color: #666;">Objectif d'atteindre 98% de satisfaction patient</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- FORMATION ET INFORMATION -->
+<section class="formation-section">
+    <div class="container">
+        <h2 class="text-center mb-5" style="color: var(--dark-blue);">
+            <i class="fas fa-graduation-cap me-2"></i>Formation & Information du Personnel
+        </h2>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="formation-card fade-in">
+                    <div class="formation-icon">
+                        <i class="fas fa-book-medical"></i>
+                    </div>
+                    <div>
+                        <h5>Formations Qualité</h5>
+                        <p class="text-muted mb-0">Programmes de formation continue sur les procédures qualité, la sécurité des soins et l'amélioration des pratiques professionnelles.</p>
+                    </div>
+                </div>
+                
+                <div class="formation-card fade-in">
+                    <div class="formation-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div>
+                        <h5>Réunions d'Information</h5>
+                        <p class="text-muted mb-0">Sessions régulières d'information sur les évolutions des protocoles et les résultats des indicateurs qualité.</p>
+                    </div>
+                </div>
+                
+                <div class="formation-card fade-in">
+                    <div class="formation-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <div>
+                        <h5>Ateliers Participatifs</h5>
+                        <p class="text-muted mb-0">Ateliers pratiques impliquant l'ensemble du personnel pour l'amélioration des processus de soins.</p>
+                    </div>
+                </div>
+                
+                <div class="formation-card fade-in">
+                    <div class="formation-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div>
+                        <h5>Retour d'Expérience</h5>
+                        <p class="text-muted mb-0">Analyse systématique des retours d'expérience pour l'amélioration continue des pratiques.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5 fade-in">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="alert alert-success">
+                        <h5><i class="fas fa-rocket me-2"></i>Engagement Continu</h5>
+                        <p class="mb-0">Cette démarche qualité s'accompagne d'une formation et information permanente du personnel, garantissant une amélioration constante de la prise en charge des patients.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ANIMATIONS & SCRIPTS -->
+<script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+<script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // 1. ANIMATION GÉNÉRALE DES ÉLÉMENTS .fade-in
+        gsap.utils.toArray('.fade-in').forEach(element => {
+            gsap.from(element, {
+                scrollTrigger: {
+                    trigger: element,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 40,
+                opacity: 0,
+                duration: 1,
+                ease: "power2.out"
+            });
+        });
+        
+        // 2. ANIMATION DU CYCLE DE QUALITÉ
+        if (document.querySelector('.quality-cycle-section')) {
+            gsap.from('.cycle-step', {
+                scrollTrigger: {
+                    trigger: '.quality-cycle-section',
+                    start: "top 70%",
+                    toggleActions: "play none none reverse"
+                },
+                scale: 0,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.3,
+                ease: "back.out(1.7)"
+            });
+        }
+        
+        // 3. ANIMATION DES BARRES DU GRAPHIQUE (ancien)
+        gsap.utils.toArray('.chart-bar').forEach((bar, index) => {
+            gsap.from(bar, {
+                scrollTrigger: {
+                    trigger: '.chart-container',
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                height: 0,
+                duration: 1.5,
+                delay: index * 0.2,
+                ease: "power2.out"
+            });
+        });
+        
+        // 4. ANIMATION DES NOMBRES QUI COMPTENT
+        const counters = document.querySelectorAll('.indicator-number');
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-target'));
+            const duration = 2000;
+            const increment = target / (duration / 16);
+            
+            ScrollTrigger.create({
+                trigger: counter,
+                start: "top 90%",
+                onEnter: () => {
+                    let current = 0;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            current = target;
+                            clearInterval(timer);
+                        }
+                        counter.textContent = Math.floor(current);
+                    }, 16);
+                }
+            });
+        });
+        
+        // 5. ANIMATION DES CARTES "PILLAR"
+        gsap.utils.toArray('.pillar-card').forEach((card, index) => {
+            card.addEventListener('mouseenter', () => {
+                gsap.to(card, {
+                    scale: 1.05,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+        });
+        
+        // 6. ANIMATION DU HEADER
+        if (document.querySelector('.quality-header h1')) {
+            gsap.from('.quality-header h1', {
+                duration: 1.5,
+                y: -50,
+                opacity: 0,
+                ease: "power3.out"
+            });
+            
+            gsap.from('.quality-header .subtitle', {
+                duration: 1.5,
+                y: 30,
+                opacity: 0,
+                delay: 0.5,
+                ease: "power3.out"
+            });
+        }
+        
+        // 7. EFFET PARALLAXE SUR LE HEADER
+        if (document.querySelector('.quality-header')) {
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const rate = scrolled * -0.5;
+                document.querySelector('.quality-header').style.backgroundPosition = `50% ${rate}px`;
+            });
+        }
+
+        // 8. ANIMATION DU CYCLE PDCA
+        if (document.querySelector('.pdca-circle')) {
+            gsap.from('.pdca-circle', {
+                scrollTrigger: {
+                    trigger: '.pdca-cycle-section',
+                    start: "top 70%",
+                    toggleActions: "play none none reverse"
+                },
+                scale: 0,
+                rotation: -180,
+                duration: 1.5,
+                ease: "back.out(1.7)"
+            });
+            
+            // Animation séquentielle des étapes PDCA
+            gsap.from('.step-plan', {
+                scrollTrigger: {
+                    trigger: '.step-plan',
+                    start: "top 90%",
+                    toggleActions: "play none none reverse"
+                },
+                y: -100,
+                opacity: 0,
+                duration: 1,
+                delay: 0.3
+            });
+            
+            gsap.from('.step-do', {
+                scrollTrigger: {
+                    trigger: '.step-do',
+                    start: "top 90%",
+                    toggleActions: "play none none reverse"
+                },
+                x: 100,
+                opacity: 0,
+                duration: 1,
+                delay: 0.5
+            });
+            
+            gsap.from('.step-check', {
+                scrollTrigger: {
+                    trigger: '.step-check',
+                    start: "top 90%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 100,
+                opacity: 0,
+                duration: 1,
+                delay: 0.7
+            });
+            
+            gsap.from('.step-act', {
+                scrollTrigger: {
+                    trigger: '.step-act',
+                    start: "top 90%",
+                    toggleActions: "play none none reverse"
+                },
+                x: -100,
+                opacity: 0,
+                duration: 1,
+                delay: 0.9
+            });
+        }
+        
+        // 9. ANIMATION DES PILIERS PATIENT
+        if (document.querySelector('.patient-pillar')) {
+            gsap.utils.toArray('.patient-pillar').forEach((pillar, index) => {
+                gsap.from(pillar, {
+                    scrollTrigger: {
+                        trigger: pillar,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    },
+                    y: 50,
+                    opacity: 0,
+                    duration: 0.8,
+                    delay: index * 0.1
+                });
+                
+                // Effet hover
+                pillar.addEventListener('mouseenter', () => {
+                    gsap.to(pillar, {
+                        y: -10,
+                        duration: 0.3,
+                        ease: "power2.out"
+                    });
+                });
+                
+                pillar.addEventListener('mouseleave', () => {
+                    gsap.to(pillar, {
+                        y: 0,
+                        duration: 0.3,
+                        ease: "power2.out"
+                    });
+                });
+            });
+            
+            // Animation de la bannière d'engagement
+            const engagementBanner = document.querySelector('.patient-grid-section .row.justify-content-center:last-child');
+            if (engagementBanner) {
+                gsap.from(engagementBanner, {
+                    scrollTrigger: {
+                        trigger: engagementBanner,
+                        start: "top 90%",
+                        toggleActions: "play none none reverse"
+                    },
+                    scale: 0.9,
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power2.out"
+                });
+            }
+        }
+        
+        // 10. ANIMATION DU GRAPHIQUE DE SATISFACTION AVEC POINTS
+        const chartSectionWithPoints = document.querySelector('.chart-container');
+        if (chartSectionWithPoints) {
+            // Animation de la ligne de tendance
+            const satisfactionPath = document.getElementById('satisfaction-path');
+            if (satisfactionPath) {
+                gsap.from(satisfactionPath, {
+                    scrollTrigger: {
+                        trigger: chartSectionWithPoints,
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    },
+                    strokeDashoffset: 0,
+                    duration: 2.5,
+                    ease: "power2.out"
+                });
+            }
+            
+            // Animation séquentielle des points de données
+            const dataPoints = document.querySelectorAll('.data-point');
+            dataPoints.forEach((point, index) => {
+                gsap.from(point.querySelector('.point-circle'), {
+                    scrollTrigger: {
+                        trigger: chartSectionWithPoints,
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    },
+                    scale: 0,
+                    duration: 0.8,
+                    delay: index * 0.3,
+                    ease: "back.out(1.7)"
+                });
+                
+                // Ajouter des tooltips interactifs
+                const circle = point.querySelector('.point-circle');
+                const tooltip = point.querySelector('.point-tooltip');
+                
+                if (circle && tooltip) {
+                    circle.addEventListener('mouseenter', () => {
+                        gsap.to(circle, {
+                            scale: 1.3,
+                            duration: 0.2,
+                            ease: "power2.out"
+                        });
+                        
+                        gsap.to(tooltip, {
+                            opacity: 1,
+                            visibility: 'visible',
+                            y: -5,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                    
+                    circle.addEventListener('mouseleave', () => {
+                        gsap.to(circle, {
+                            scale: 1,
+                            duration: 0.2,
+                            ease: "power2.out"
+                        });
+                        
+                        gsap.to(tooltip, {
+                            opacity: 0,
+                            visibility: 'hidden',
+                            y: 0,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                }
+            });
+            
+            // Animation de la zone cible 2025
+            const targetZone = document.querySelector('.target-zone');
+            if (targetZone) {
+                gsap.from(targetZone, {
+                    scrollTrigger: {
+                        trigger: chartSectionWithPoints,
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    },
+                    opacity: 0,
+                    width: 0,
+                    duration: 1.5,
+                    delay: 2,
+                    ease: "power2.out"
+                });
+            }
+            
+            // Animation des étiquettes d'années
+            const yearLabels = document.querySelectorAll('.x-axis > div');
+            yearLabels.forEach((label, index) => {
+                gsap.from(label, {
+                    scrollTrigger: {
+                        trigger: chartSectionWithPoints,
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    },
+                    y: 20,
+                    opacity: 0,
+                    duration: 0.6,
+                    delay: index * 0.1,
+                    ease: "power2.out"
+                });
+            });
+            
+            // Effet de "pulse" sur le point 2025 (objectif)
+            const targetPoint = document.querySelector('.data-point[data-year="2025"] .point-circle');
+            if (targetPoint) {
+                // Démarrer l'animation de pulse après un délai
+                setTimeout(() => {
+                    gsap.to(targetPoint, {
+                        scale: 1.2,
+                        duration: 1,
+                        repeat: -1,
+                        yoyo: true,
+                        ease: "power1.inOut"
+                    });
+                }, 3000);
+            }
+        }
+        
+        // 11. ANIMATION DU GRAPHIQUE AVEC PILLARS (2020-2025)
+        const chartWithPillars = document.querySelector('.chart-container');
+        if (chartWithPillars) {
+            // ANIMATION DES PILLARS (colonnes) - SÉQUENTIELLE DE 2020 À 2025
+            const yearPillars = document.querySelectorAll('.year-pillar');
+            
+            yearPillars.forEach((pillar, index) => {
+                const value = parseInt(pillar.getAttribute('data-value'));
+                const bar = pillar.querySelector('.pillar-bar');
+                const valueLabel = pillar.querySelector('.pillar-value');
+                const tooltip = pillar.querySelector('.pillar-tooltip');
+                
+                if (bar) {
+                    // Définir la hauteur initiale à 0
+                    bar.style.height = '0px';
+                    
+                    // Animer la croissance du pillar
+                    gsap.to(bar, {
+                        scrollTrigger: {
+                            trigger: chartWithPillars,
+                            start: "top 80%",
+                            toggleActions: "play none none reverse"
+                        },
+                        height: `${value * 4}px`,
+                        duration: 1.5,
+                        delay: index * 0.3,
+                        ease: "power2.out",
+                        onStart: () => {
+                            // Afficher la valeur au début de l'animation
+                            if (valueLabel) {
+                                gsap.to(valueLabel, {
+                                    opacity: 1,
+                                    y: -5,
+                                    duration: 0.5,
+                                    delay: 0.2
+                                });
+                            }
+                        }
+                    });
+                    
+                    // Animation du label d'année
+                    const yearLabel = pillar.querySelector('.year-label');
+                    if (yearLabel) {
+                        gsap.from(yearLabel, {
+                            scrollTrigger: {
+                                trigger: chartWithPillars,
+                                start: "top 80%",
+                                toggleActions: "play none none reverse"
+                            },
+                            y: 20,
+                            opacity: 0,
+                            duration: 0.6,
+                            delay: index * 0.3 + 0.5
+                        });
+                    }
+                    
+                    // Ajouter les tooltips interactifs
+                    if (bar && tooltip) {
+                        pillar.addEventListener('mouseenter', () => {
+                            gsap.to(bar, {
+                                scaleX: 1.2,
+                                duration: 0.2,
+                                ease: "power2.out"
+                            });
+                            
+                            gsap.to(tooltip, {
+                                opacity: 1,
+                                visibility: 'visible',
+                                y: -5,
+                                duration: 0.3,
+                                ease: "power2.out"
+                            });
+                        });
+                        
+                        pillar.addEventListener('mouseleave', () => {
+                            gsap.to(bar, {
+                                scaleX: 1,
+                                duration: 0.2,
+                                ease: "power2.out"
+                            });
+                            
+                            gsap.to(tooltip, {
+                                opacity: 0,
+                                visibility: 'hidden',
+                                y: 0,
+                                duration: 0.3,
+                                ease: "power2.out"
+                            });
+                        });
+                    }
+                }
+            });
+            
+            // ANIMATION DE LA LIGNE DE TENDANCE
+            const trendLine = document.getElementById('trend-line-path');
+            if (trendLine) {
+                gsap.from(trendLine, {
+                    scrollTrigger: {
+                        trigger: chartWithPillars,
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    },
+                    strokeDashoffset: 0,
+                    duration: 2.5,
+                    delay: 1,
+                    ease: "power2.out"
+                });
+            }
+            
+            // ANIMATION POUR LE PILLAR 2025 (OBJECTIF) - EFFET SPÉCIAL
+            const pillar2025 = document.querySelector('.year-pillar[data-year="2025"] .pillar-bar');
+            if (pillar2025) {
+                // Effet de pulse après l'animation principale
+                setTimeout(() => {
+                    gsap.to(pillar2025, {
+                        boxShadow: '0 0 0 5px rgba(78, 84, 200, 0.3)',
+                        duration: 1,
+                        repeat: 3,
+                        yoyo: true,
+                        ease: "power1.inOut"
+                    });
+                }, 3500);
+                
+                // Animation continue de pulse légère
+                gsap.to(pillar2025, {
+                    borderColor: 'rgba(78, 84, 200, 0.8)',
+                    duration: 2,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut",
+                    delay: 5
+                });
+            }
+            
+            // ANIMATION DES STATISTIQUES DE PROGRESSION
+            const progressBars = document.querySelectorAll('.progress-bar');
+            progressBars.forEach((bar, index) => {
+                const currentWidth = bar.style.width;
+                bar.style.width = '0%';
+                
+                gsap.to(bar, {
+                    scrollTrigger: {
+                        trigger: '.progress-stats',
+                        start: "top 90%",
+                        toggleActions: "play none none reverse"
+                    },
+                    width: currentWidth,
+                    duration: 1.5,
+                    delay: index * 0.2,
+                    ease: "power2.out"
+                });
+            });
+            
+            // ANIMATION DES ACHIEVEMENTS
+            const achievementItems = document.querySelectorAll('.achievement-item');
+            achievementItems.forEach((item, index) => {
+                gsap.from(item, {
+                    scrollTrigger: {
+                        trigger: '.achievements',
+                        start: "top 90%",
+                        toggleActions: "play none none reverse"
+                    },
+                    x: -30,
+                    opacity: 0,
+                    duration: 0.8,
+                    delay: index * 0.2,
+                    ease: "power2.out"
+                });
+            });
+        }
+    });
+</script>
+
+<style>
+    /* Styles supplémentaires pour les pillars */
+    .year-pillar:hover .pillar-bar {
+        filter: brightness(1.1);
+        transform: translateY(-5px);
+        transition: all 0.3s ease;
+    }
+    
+    .year-pillar[data-year="2025"] .pillar-bar {
+        animation: pulse-objective 3s infinite;
+    }
+    
+    @keyframes pulse-objective {
+        0%, 100% {
+            box-shadow: 0 0 0 0 rgba(78, 84, 200, 0.2);
+        }
+        50% {
+            box-shadow: 0 0 0 10px rgba(78, 84, 200, 0);
+        }
+    }
+    
+    .progress-bar {
+        transition: width 1.5s ease !important;
+    }
+    
+    @media (max-width: 768px) {
+        .chart-container {
+            height: 400px;
+        }
+        
+        .pillar-bar {
+            width: 30px !important;
+        }
+        
+        .year-label {
+            font-size: 0.9rem !important;
+        }
+        
+        .pillar-value {
+            font-size: 0.8rem !important;
+        }
+        
+        .y-axis {
+            width: 40px !important;
+        }
+        
+        .main-chart {
+            left: 40px !important;
+        }
+    }
+</style>
+{% endblock %}
