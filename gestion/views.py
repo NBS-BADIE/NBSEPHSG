@@ -93,6 +93,10 @@ def ephsg(request):
 def a_propos(request):
     return render(request, 'a_propos.html')
 
+# =================== P.E Malade ===================
+def pemalade(request):
+    return render(request, 'pemalade.html')
+
 # =================== Accueil ===================
 def accueil(request):
     date_heure = datetime.now()
