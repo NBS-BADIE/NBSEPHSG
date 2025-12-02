@@ -1,0 +1,986 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* ============================================
+       VARIABLES CSS POUR LES THÈMES
+       ============================================ */
+    :root {
+        /* Couleurs de base */
+        --primary-blue: #1a6dbb;
+        --dark-blue: #0d4d8c;
+        --light-blue: #e9f2fa;
+        --surgical-green: #28a745;
+        --imaging-purple: #6f42c1;
+        --lab-orange: #fd7e14;
+        --pharmacy-teal: #17a2b8;
+        --emergency-red: #dc3545;
+        
+        /* Variables pour le mode clair */
+        --bg-primary: #ffffff;
+        --bg-secondary: #f8f9fa;
+        --bg-tertiary: #e9ecef;
+        --text-primary: #212529;
+        --text-secondary: #495057;
+        --text-muted: #6c757d;
+        --card-bg: #ffffff;
+        --card-shadow: rgba(0, 0, 0, 0.1);
+        --border-color: rgba(0, 0, 0, 0.1);
+        --section-bg: #f8f9fa;
+        --header-bg: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+        --tech-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    body.dark-mode {
+        /* Variables pour le mode nuit */
+        --bg-primary: #121212;
+        --bg-secondary: #1e1e1e;
+        --bg-tertiary: #2d2d2d;
+        --text-primary: #e0e0e0;
+        --text-secondary: #b0b0b0;
+        --text-muted: #8a8a8a;
+        --card-bg: #1e1e1e;
+        --card-shadow: rgba(0, 0, 0, 0.25);
+        --border-color: rgba(255, 255, 255, 0.1);
+        --section-bg: #2d2d2d;
+        --header-bg: linear-gradient(135deg, #0a3a6b 0%, #062952 100%);
+        --tech-gradient: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+    }
+    
+    /* ============================================
+       STYLES GÉNÉRAUX
+       ============================================ */
+    
+    body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        transition: background-color 0.3s ease, color 0.3s ease;
+        padding-top: 80px; /* Pour la navbar fixe */
+    }
+    
+    /* ============================================
+       HEADER HÉRO
+       ============================================ */
+    
+    .tech-hero {
+        background: var(--header-bg);
+        color: white;
+        padding: 6rem 0 4rem;
+        text-align: center;
+        margin-bottom: 3rem;
+        border-radius: 0 0 20px 20px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .tech-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("{% static 'images/tech-hero-bg.jpg' %}") center/cover;
+        opacity: 0.15;
+        z-index: 0;
+    }
+    
+    .tech-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    
+    .tech-hero .subtitle {
+        font-size: 1.5rem;
+        opacity: 0.95;
+        max-width: 800px;
+        margin: 0 auto 2rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .hero-stats {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        margin-top: 3rem;
+        position: relative;
+        z-index: 1;
+        flex-wrap: wrap;
+    }
+    
+    .stat-item {
+        text-align: center;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+        font-size: 1rem;
+        opacity: 0.9;
+    }
+    
+    /* ============================================
+       SECTIONS TECHNIQUES
+       ============================================ */
+    
+    .tech-section {
+        padding: 5rem 0;
+    }
+    
+    .tech-section:nth-child(even) {
+        background-color: var(--section-bg);
+    }
+    
+    .tech-card {
+        background: var(--card-bg);
+        border-radius: 20px;
+        overflow: hidden;
+        margin-bottom: 3rem;
+        box-shadow: 0 15px 35px var(--card-shadow);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border-top: 8px solid;
+    }
+    
+    .tech-card:hover {
+        transform: translateY(-15px);
+        box-shadow: 0 25px 50px var(--card-shadow);
+    }
+    
+    .tech-card.bloc-operatoire {
+        border-top-color: var(--surgical-green);
+    }
+    
+    .tech-card.imagerie {
+        border-top-color: var(--imaging-purple);
+    }
+    
+    .tech-card.laboratoire {
+        border-top-color: var(--lab-orange);
+    }
+    
+    .tech-card.pharmacie {
+        border-top-color: var(--pharmacy-teal);
+    }
+    
+    .tech-icon-wrapper {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: -60px auto 2rem;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    
+    .tech-card.bloc-operatoire .tech-icon-wrapper {
+        background: linear-gradient(135deg, var(--surgical-green) 0%, #1e7e34 100%);
+    }
+    
+    .tech-card.imagerie .tech-icon-wrapper {
+        background: linear-gradient(135deg, var(--imaging-purple) 0%, #5a32a3 100%);
+    }
+    
+    .tech-card.laboratoire .tech-icon-wrapper {
+        background: linear-gradient(135deg, var(--lab-orange) 0%, #e8590c 100%);
+    }
+    
+    .tech-card.pharmacie .tech-icon-wrapper {
+        background: linear-gradient(135deg, var(--pharmacy-teal) 0%, #138496 100%);
+    }
+    
+    .tech-icon {
+        font-size: 3.5rem;
+        color: white;
+    }
+    
+    .tech-content {
+        padding: 0 3rem 3rem;
+        text-align: center;
+    }
+    
+    .tech-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+    }
+    
+    .tech-card.bloc-operatoire .tech-title {
+        color: var(--surgical-green);
+    }
+    
+    .tech-card.imagerie .tech-title {
+        color: var(--imaging-purple);
+    }
+    
+    .tech-card.laboratoire .tech-title {
+        color: var(--lab-orange);
+    }
+    
+    .tech-card.pharmacie .tech-title {
+        color: var(--pharmacy-teal);
+    }
+    
+    .tech-description {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        line-height: 1.7;
+        margin-bottom: 2rem;
+    }
+    
+    /* ============================================
+       ÉQUIPEMENTS ET CARACTÉRISTIQUES
+       ============================================ */
+    
+    .equipements-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin: 2.5rem 0;
+    }
+    
+    .equipement-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.2rem;
+        background: var(--bg-secondary);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+    
+    .equipement-item:hover {
+        background: var(--bg-tertiary);
+        transform: translateX(10px);
+    }
+    
+    .equipement-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 1.5rem;
+        color: white;
+    }
+    
+    .bloc-operatoire .equipement-icon {
+        background: var(--surgical-green);
+    }
+    
+    .imagerie .equipement-icon {
+        background: var(--imaging-purple);
+    }
+    
+    .laboratoire .equipement-icon {
+        background: var(--lab-orange);
+    }
+    
+    .pharmacie .equipement-icon {
+        background: var(--pharmacy-teal);
+    }
+    
+    /* ============================================
+       GALLERIE D'IMAGES
+       ============================================ */
+    
+    .tech-gallery {
+        margin: 3rem 0;
+    }
+    
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .gallery-item {
+        position: relative;
+        border-radius: 15px;
+        overflow: hidden;
+        height: 250px;
+        transition: all 0.3s ease;
+    }
+    
+    .gallery-item:hover {
+        transform: scale(1.03);
+    }
+    
+    .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .gallery-item:hover img {
+        transform: scale(1.1);
+    }
+    
+    .gallery-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        color: white;
+        padding: 1.5rem;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .gallery-item:hover .gallery-caption {
+        transform: translateY(0);
+    }
+    
+    /* ============================================
+       STATISTIQUES ET CHIFFRES CLÉS
+       ============================================ */
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin: 3rem 0;
+    }
+    
+    .stat-card {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 8px 25px var(--card-shadow);
+        transition: all 0.3s ease;
+        border-top: 4px solid;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-10px);
+    }
+    
+    .stat-card.bloc {
+        border-top-color: var(--surgical-green);
+    }
+    
+    .stat-card.imagerie {
+        border-top-color: var(--imaging-purple);
+    }
+    
+    .stat-card.labo {
+        border-top-color: var(--lab-orange);
+    }
+    
+    .stat-card.pharma {
+        border-top-color: var(--pharmacy-teal);
+    }
+    
+    .stat-card .number {
+        font-size: 2.8rem;
+        font-weight: 800;
+        display: block;
+        margin-bottom: 0.5rem;
+        font-family: 'Montserrat', sans-serif;
+    }
+    
+    .stat-card.bloc .number {
+        color: var(--surgical-green);
+    }
+    
+    .stat-card.imagerie .number {
+        color: var(--imaging-purple);
+    }
+    
+    .stat-card.labo .number {
+        color: var(--lab-orange);
+    }
+    
+    .stat-card.pharma .number {
+        color: var(--pharmacy-teal);
+    }
+    
+    /* ============================================
+       ANIMATIONS
+       ============================================ */
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .fade-in {
+        opacity: 0;
+        animation: fadeInUp 0.8s ease forwards;
+    }
+    
+    .fade-in-delay-1 {
+        animation-delay: 0.2s;
+    }
+    
+    .fade-in-delay-2 {
+        animation-delay: 0.4s;
+    }
+    
+    .fade-in-delay-3 {
+        animation-delay: 0.6s;
+    }
+    
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    
+    @media (max-width: 768px) {
+        .tech-hero h1 {
+            font-size: 2.5rem;
+        }
+        
+        .tech-hero .subtitle {
+            font-size: 1.2rem;
+        }
+        
+        .tech-hero {
+            padding: 4rem 0 3rem;
+        }
+        
+        .hero-stats {
+            gap: 2rem;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+        }
+        
+        .tech-section {
+            padding: 3rem 0;
+        }
+        
+        .tech-content {
+            padding: 0 1.5rem 2rem;
+        }
+        
+        .tech-title {
+            font-size: 1.8rem;
+        }
+        
+        .tech-icon-wrapper {
+            width: 100px;
+            height: 100px;
+            margin-top: -50px;
+        }
+        
+        .tech-icon {
+            font-size: 2.8rem;
+        }
+        
+        .gallery-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .equipements-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .tech-hero h1 {
+            font-size: 2rem;
+        }
+        
+        .tech-title {
+            font-size: 1.6rem;
+        }
+        
+        .hero-stats {
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .tech-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            margin-top: -40px;
+        }
+        
+        .tech-icon {
+            font-size: 2.2rem;
+        }
+    }
+</style>
+
+<!-- HEADER HÉRO -->
+<section class="tech-hero">
+    <div class="container">
+        <h1 class="fade-in"><i class="fas fa-microscope me-3"></i>Plateaux Techniques</h1>
+        <p class="subtitle fade-in-delay-1">L'excellence technologique au service de la santé - Des équipements de pointe pour des soins de qualité</p>
+        
+        <div class="hero-stats fade-in-delay-2">
+            <div class="stat-item">
+                <span class="stat-number">7</span>
+                <span class="stat-label">Salles Opératoires</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">24/7</span>
+                <span class="stat-label">Disponibilité</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">100%</span>
+                <span class="stat-label">Équipements Modernes</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BLOC OPÉRATOIRE -->
+<section class="tech-section">
+    <div class="container">
+        <div class="tech-card bloc-operatoire fade-in">
+            <div class="tech-icon-wrapper">
+                <i class="fas fa-procedures tech-icon"></i>
+            </div>
+            <div class="tech-content">
+                <h2 class="tech-title">Bloc Opératoire</h2>
+                <p class="tech-description">
+                    Notre bloc opératoire représente l'excellence chirurgicale avec 7 salles opératoires de haute technologie, 
+                    dont une salle dédiée aux urgences (stérile). Équipé des dernières générations d'appareils médicaux et 
+                    d'un personnel hautement qualifié, nous assurons des interventions chirurgicales de précision dans des 
+                    conditions optimales de sécurité et d'hygiène.
+                </p>
+                
+                <div class="equipements-grid">
+                    <div class="equipement-item">
+                        <div class="equipement-icon">
+                            <i class="fas fa-syringe"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">Salles High-Tech</h5>
+                            <p class="mb-0 small">7 salles équipées dernière génération</p>
+                        </div>
+                    </div>
+                    <div class="equipement-item">
+                        <div class="equipement-icon">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">Équipe Spécialisée</h5>
+                            <p class="mb-0 small">Chirurgiens et infirmiers qualifiés</p>
+                        </div>
+                    </div>
+                    <div class="equipement-item">
+                        <div class="equipement-icon">
+                            <i class="fas fa-biohazard"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">Salle Urgences</h5>
+                            <p class="mb-0 small">Salle sceptique disponible 24/7</p>
+                        </div>
+                    </div>
+                    <div class="equipement-item">
+                        <div class="equipement-icon">
+                            <i class="fas fa-prescription-bottle-alt"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">Pharmacie Locale</h5>
+                            <p class="mb-0 small">Approvisionnement permanent</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tech-gallery">
+                    <h4 class="text-center mb-4"><i class="fas fa-images me-2"></i>Galerie du Bloc Opératoire</h4>
+                    <div class="gallery-grid">
+                        <div class="gallery-item">
+                            <img src="{% static 'images/bloc2.png' %}" alt="Salle opératoire moderne">
+                            <div class="gallery-caption">
+                                <h5 class="mb-0">Salle Opératoire Principale</h5>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'images/bloc1.png' %}" alt="Équipement chirurgical">
+                            <div class="gallery-caption">
+                                <h5 class="mb-0">Équipements de Pointe</h5>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'images/bloc3.png' %}" alt="Autoclave de stérilisation">
+                            <div class="gallery-caption">
+                                <h5 class="mb-0">Unité de Stérilisation</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card bloc fade-in-delay-1">
+                        <span class="number">7</span>
+                        <span class="stat-label">Salles Opératoires</span>
+                    </div>
+                    <div class="stat-card bloc fade-in-delay-2">
+                        <span class="number">24/7</span>
+                        <span class="stat-label">Équipe de Garde</span>
+                    </div>
+                    <div class="stat-card bloc fade-in-delay-3">
+                        <span class="number">100%</span>
+                        <span class="stat-label">Stérilisation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- IMAGERIE MÉDICALE -->
+<section class="tech-section">
+    <div class="container">
+        <div class="tech-card imagerie fade-in">
+            <div class="tech-icon-wrapper">
+                <i class="fas fa-x-ray tech-icon"></i>
+            </div>
+            <div class="tech-content">
+                <h2 class="tech-title">Imagerie Médicale</h2>
+                <p class="tech-description">
+                    Notre département d'imagerie médicale est équipé des technologies les plus avancées pour des diagnostics 
+                    précis et rapides. Avec un IRM 3 Tesla dernière génération, un scanner multicoupes et des appareils de 
+                    radiologie numérique, nous assurons une couverture complète des besoins diagnostiques de l'hôpital.
+                </p>
+                
+                <div class="equipements-grid">
+                    <div class="equipement-item">
+                        <div class="equipement-icon">
+                            <i class="fas fa-magnet"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">IRM 3 Tesla</h5>
+                            <p class="mb-0 small">Haute résolution pour diagnostics précis</p>
+                        </div>
+                    </div>
+                    <div class="equipement-item">
+                        <div class="equipement-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">Scanner 128 Barrettes</h5>
+                            <p class="mb-0 small">Acquisition ultra-rapide et précise</p>
+                        </div>
+                    </div>
+                    <div class="equipement-item">
+                        <div class="equipement-icon">
+                            <i class="fas fa-broadcast-tower"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">Radiologie Numérique</h5>
+                            <p class="mb-0 small">Images haute qualité, faible irradiation</p>
+                        </div>
+                    </div>
+                    <div class="equipement-item">
+                        <div class="equipement-icon">
+                            <i class="fas fa-user-nurse"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">Radiologues Experts</h5>
+                            <p class="mb-0 small">Interprétation spécialisée 24/7</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tech-gallery">
+                    <h4 class="text-center mb-4"><i class="fas fa-images me-2"></i>Galerie d'Imagerie</h4>
+                    <div class="gallery-grid">
+                        <div class="gallery-item">
+                            <img src="{% static 'images/irm.png' %}" alt="Appareil IRM">
+                            <div class="gallery-caption">
+                                <h5 class="mb-0">IRM 3 Tesla</h5>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'images/scanner.png' %}" alt="Scanner médical">
+                            <div class="gallery-caption">
+                                <h5 class="mb-0">Scanner Multicut</h5>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'images/radio.png' %}" alt="Salle de radiologie">
+                            <div class="gallery-caption">
+                                <h5 class="mb-0">Salle de Radiologie</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card imagerie fade-in-delay-1">
+                        <span class="number">≤30min</span>
+                        <span class="stat-label">Délai IRM</span>
+                    </div>
+                    <div class="stat-card imagerie fade-in-delay-2">
+                        <span class="number">24/7</span>
+                        <span class="stat-label">Disponibilité</span>
+                    </div>
+                    <div class="stat-card imagerie fade-in-delay-3">
+                        <span class="number">98%</span>
+                        <span class="stat-label">Précision Diagnostic</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- LABORATOIRE ET ANATOMOPATHOLOGIE -->
+<section class="tech-section">
+    <div class="container">
+        <div class="tech-card laboratoire fade-in">
+            <div class="tech-icon-wrapper">
+                <i class="fas fa-flask tech-icon"></i>
+            </div>
+            <div class="tech-content">
+                <h2 class="tech-title">Laboratoire & Anatomopathologie</h2>
+                <p class="tech-description">
+                    Notre laboratoire d'analyses médicales et service d'anatomopathologie disposent d'équipements automatisés 
+                    de dernière génération. Nous assurons des résultats rapides et fiables pour tous les types d'analyses, 
+                    de la biochimie à l'hématologie, avec un département spécialisé en anatomopathologie pour les diagnostics 
+                    histologiques et cytologiques.
+                </p>
+                
+                <div class="equipements-grid">
+                    <div class="equipement-item">
+                        <div class="equipement-icon">
+                            <i class="fas fa-vial"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">Biochimie Automatisée</h5>
+                            <p class="mb-0 small">Analyseurs haute capacité</p>
+                        </div>
+                    </div>
+                    <div class="equipement-item">
+                        <div class="equipement-icon">
+                            <i class="fas fa-microscope"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">Microscopie Digitale</h5>
+                            <p class="mb-0 small">Analyses histologiques précises</p>
+                        </div>
+                    </div>
+                    <div class="equipement-item">
+                        <div class="equipement-icon">
+                            <i class="fas fa-dna"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">Biologie Moléculaire</h5>
+                            <p class="mb-0 small">PCR et séquençage</p>
+                        </div>
+                    </div>
+                    <div class="equipement-item">
+                        <div class="equipement-icon">
+                            <i class="fas fa-prescription-bottle"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">Toxicologie</h5>
+                            <p class="mb-0 small">Dépistages spécialisés</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tech-gallery">
+                    <h4 class="text-center mb-4"><i class="fas fa-images me-2"></i>Galerie du Laboratoire</h4>
+                    <div class="gallery-grid">
+                        <div class="gallery-item">
+                            <img src="{% static 'images/Labo3.png' %}" alt="Laboratoire moderne">
+                            <div class="gallery-caption">
+                                <h5 class="mb-0">Laboratoire d'Analyses</h5>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'images/Labo2.png' %}" alt="Anatomopathologie">
+                            <div class="gallery-caption">
+                                <h5 class="mb-0">Salle d'Anatomopathologie</h5>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'images/Labo1.png' %}" alt="Microscope digital">
+                            <div class="gallery-caption">
+                                <h5 class="mb-0">Microscopie Digitale</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card labo fade-in-delay-1">
+                        <span class="number">≤2h</span>
+                        <span class="stat-label">Résultats Urgents</span>
+                    </div>
+                    <div class="stat-card labo fade-in-delay-2">
+                        <span class="number">500+</span>
+                        <span class="stat-label">Analyses/Jour</span>
+                    </div>
+                    <div class="stat-card labo fade-in-delay-3">
+                        <span class="number">99.8%</span>
+                        <span class="stat-label">Fiabilité</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PHARMACIE -->
+<section class="tech-section">
+    <div class="container">
+        <div class="tech-card pharmacie fade-in">
+            <div class="tech-icon-wrapper">
+                <i class="fas fa-prescription-bottle-alt tech-icon"></i>
+            </div>
+            <div class="tech-content">
+                <h2 class="tech-title">Pharmacie Hospitalière</h2>
+                <p class="tech-description">
+                    Notre pharmacie hospitalière assure l'approvisionnement permanent en médicaments et dispositifs médicaux 
+                    pour tous les services. Avec un système de gestion informatisé et des procédures de traçabilité rigoureuses, 
+                    nous garantissons la disponibilité des traitements, la sécurité des médicaments et l'optimisation des 
+                    thérapies pour chaque patient.
+                </p>
+                
+                <div class="equipements-grid">
+                    <div class="equipement-item">
+                        <div class="equipement-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">Robot de Dispensation</h5>
+                            <p class="mb-0 small">Préparation automatisée sécurisée</p>
+                        </div>
+                    </div>
+                    <div class="equipement-item">
+                        <div class="equipement-icon">
+                            <i class="fas fa-temperature-low"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">Chaîne du Froid</h5>
+                            <p class="mb-0 small">Stockage contrôlé 24/7</p>
+                        </div>
+                    </div>
+                    <div class="equipement-item">
+                        <div class="equipement-icon">
+                            <i class="fas fa-barcode"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">Traçabilité Complète</h5>
+                            <p class="mb-0 small">Système informatique intégré</p>
+                        </div>
+                    </div>
+                    <div class="equipement-item">
+                        <div class="equipement-icon">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1">Pharmaciens Cliniciens</h5>
+                            <p class="mb-0 small">Optimisation thérapeutique</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tech-gallery">
+                    <h4 class="text-center mb-4"><i class="fas fa-images me-2"></i>Galerie de la Pharmacie</h4>
+                    <div class="gallery-grid">
+                        <div class="gallery-item">
+                            <img src="{% static 'images/Pharmacie.png' %}" alt="Pharmacie moderne">
+                            <div class="gallery-caption">
+                                <h5 class="mb-0">Pharmacie Centrale</h5>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'images/Robot.png' %}" alt="Robot de pharmacie">
+                            <div class="gallery-caption">
+                                <h5 class="mb-0">Robot de Dispensation</h5>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="{% static 'images/PStock.png' %}" alt="Stock de médicaments">
+                            <div class="gallery-caption">
+                                <h5 class="mb-0">Stockage Sécurisé</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card pharma fade-in-delay-1">
+                        <span class="number">5000+</span>
+                        <span class="stat-label">Médicaments Stockés</span>
+                    </div>
+                    <div class="stat-card pharma fade-in-delay-2">
+                        <span class="number">100%</span>
+                        <span class="stat-label">Disponibilité</span>
+                    </div>
+                    <div class="stat-card pharma fade-in-delay-3">
+                        <span class="number">24/7</span>
+                        <span class="stat-label">Service Permanent</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION DE SYNTHÈSE -->
+<section class="tech-section" style="background: var(--tech-gradient) !important;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="text-center text-white fade-in">
+                    <h2 class="display-5 mb-4"><i class="fas fa-star me-3"></i>L'Excellence Technique au Service des Patients</h2>
+                    <p class="lead mb-4" style="opacity: 0.9;">
+                        Nos plateaux techniques réunissent les équipements les plus modernes et les compétences les plus 
+                        pointues pour offrir à chaque patient des soins de qualité optimale. De la chirurgie de précision 
+                        aux diagnostics avancés, chaque service est conçu pour répondre aux exigences les plus élevées 
+                        de la médecine moderne.
+                    </p>
+                    <div class="d-flex justify-content-center gap-4 flex-wrap mt-5">
+                        <div class="text-center">
+                            <div class="display-4 fw-bold mb-2">7</div>
+                            <div>Départements Techniques</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="display-4 fw-bold mb-2">150+</div>
+                            <div>Équipements de Pointe</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="display-4 fw-bold mb-2">24/7</div>
+                            <div>Disponibilité Technique</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
