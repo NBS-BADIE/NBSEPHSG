@@ -1,0 +1,1037 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+
+    <style>
+    /* AJOUTER CES STYLES POUR CORRIGER LA NAVBAR */
+    /* S'assurer que la navbar de base.html fonctionne correctement */
+    .navbar-collapse {
+        display: flex !important;
+        flex-wrap: wrap;
+    }
+    
+    /* Correction pour l'affichage des boutons dans la navbar */
+    .d-flex.ms-auto {
+        display: flex !important;
+        align-items: center;
+        flex-wrap: nowrap;
+        margin-left: auto !important;
+    }
+    
+    /* Sur mobile: réorganiser les boutons */
+    @media (max-width: 768px) {
+        .navbar-collapse {
+            flex-direction: column;
+        }
+        
+        .d-flex.ms-auto {
+            order: 3;
+            width: 100%;
+            justify-content: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0,0,0,.1);
+        }
+        
+        .theme-selector,
+        .btn-outline-primary,
+        .btn-outline-danger {
+            margin: 0 5px;
+        }
+        
+        /* Mode nuit */
+        body.dark-mode .d-flex.ms-auto {
+            border-top-color: rgba(255,255,255,.1);
+        }
+    }
+    
+    /* STYLES SPÉCIFIQUES POUR LA PAGE SERVICES GÉNÉRAUX */
+    :root {
+        --primary-blue: #1a6dbb;
+        --dark-blue: #0d4d8c;
+        --light-blue: #e9f2fa;
+        --success-green: #28a745;
+        --warning-orange: #fd7e14;
+        --info-teal: #17a2b8;
+    }
+    
+    .services-header {
+        background: linear-gradient(135deg, #2c3e50 0%, #4a6491 100%);
+        color: white;
+        padding: 4rem 0;
+        text-align: center;
+        margin-bottom: 3rem;
+        border-radius: 0 0 15px 15px;
+        position: relative;
+        overflow: hidden;
+        /* Ajouter un margin-top pour éviter le chevauchement avec la navbar fixe */
+        margin-top: 80px;
+    }
+    
+    .services-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("{% static 'images/services-bg.jpg' %}") center/cover;
+        opacity: 0.15;
+        z-index: 0;
+    }
+    
+    .services-header h1 {
+        font-size: 3.2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .services-header .subtitle {
+        font-size: 1.4rem;
+        opacity: 0.9;
+        max-width: 900px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    :root {
+        --primary-blue: #1a6dbb;
+        --dark-blue: #0d4d8c;
+        --light-blue: #e9f2fa;
+        --success-green: #28a745;
+        --warning-orange: #fd7e14;
+        --info-teal: #17a2b8;
+    }
+    
+    .services-header {
+        background: linear-gradient(135deg, #2c3e50 0%, #4a6491 100%);
+        color: white;
+        padding: 4rem 0;
+        text-align: center;
+        margin-bottom: 3rem;
+        border-radius: 0 0 15px 15px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .services-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("{% static 'images/services-bg.jpg' %}") center/cover;
+        opacity: 0.15;
+        z-index: 0;
+    }
+    
+    .services-header h1 {
+        font-size: 3.2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .services-header .subtitle {
+        font-size: 1.4rem;
+        opacity: 0.9;
+        max-width: 900px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .service-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        margin-bottom: 3rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        transition: all 0.4s ease;
+        border-top: 5px solid var(--primary-blue);
+    }
+    
+    .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    }
+    
+    .service-icon-wrapper {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: -50px auto 1.5rem;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0 8px 25px rgba(26, 109, 187, 0.3);
+    }
+    
+    .service-icon {
+        font-size: 2.8rem;
+        color: white;
+    }
+    
+    .service-content {
+        padding: 2rem;
+    }
+    
+    .service-title {
+        color: var(--dark-blue);
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1.2rem;
+        text-align: center;
+    }
+    
+    .stats-bar {
+        background: var(--light-blue);
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin: 1.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        border-left: 4px solid var(--primary-blue);
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary-blue);
+        font-family: 'Montserrat', sans-serif;
+        min-width: 100px;
+        text-align: center;
+    }
+    
+    .stat-desc {
+        flex: 1;
+        color: #555;
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.2rem;
+        margin: 1.5rem 0;
+    }
+    
+    .feature-item {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.8rem;
+        background: rgba(26, 109, 187, 0.05);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    .feature-item:hover {
+        background: rgba(26, 109, 187, 0.1);
+        transform: translateX(5px);
+    }
+    
+    .feature-icon {
+        color: var(--primary-blue);
+        font-size: 1.2rem;
+        min-width: 24px;
+    }
+    
+    .timeline-section {
+        background: linear-gradient(to right, #f8f9fa 0%, #e9ecef 100%);
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin: 1.5rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .timeline-badge {
+        position: absolute;
+        top: -10px;
+        right: 20px;
+        background: var(--warning-orange);
+        color: white;
+        padding: 0.3rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+    
+    .process-flow {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 2rem 0;
+        position: relative;
+    }
+    
+    .process-step {
+        text-align: center;
+        width: 20%;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .process-circle {
+        width: 60px;
+        height: 60px;
+        background: white;
+        border: 3px solid var(--primary-blue);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-weight: bold;
+        color: var(--primary-blue);
+        font-size: 1.2rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .process-line {
+        position: absolute;
+        top: 30px;
+        left: 10%;
+        right: 10%;
+        height: 3px;
+        background: linear-gradient(to right, var(--primary-blue), #8f94fb);
+        z-index: 1;
+    }
+    
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    .team-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+    }
+    
+    .team-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+    
+    .team-icon {
+        font-size: 2.5rem;
+        color: var(--primary-blue);
+        margin-bottom: 1rem;
+    }
+    
+    .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    
+    .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    @media (max-width: 768px) {
+        .services-header h1 {
+            font-size: 2.2rem;
+        }
+        
+        .services-header {
+            padding: 3rem 0;
+        }
+        
+        .service-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            margin-top: -40px;
+        }
+        
+        .service-icon {
+            font-size: 2.2rem;
+        }
+        
+        .stats-bar {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+        
+        .process-flow {
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .process-step {
+            width: 100%;
+        }
+        
+        .process-line {
+            display: none;
+        }
+    }
+</style>
+
+<!-- HERO SECTION -->
+<header class="services-header">
+    <div class="container">
+        <h1><i class="fas fa-cogs me-3"></i>Services Généraux</h1>
+        <p class="subtitle">L'excellence opérationnelle au service des patients - Des infrastructures modernes et une logistique optimisée pour garantir la qualité des soins</p>
+    </div>
+</header>
+
+<!-- NAV INTERNE POUR CETTE PAGE -->
+<nav class="container py-3 d-flex justify-content-center mb-4">
+  <div class="d-inline-flex gap-3 flex-wrap">
+    <a class="btn btn-sm btn-outline-primary" href="#cuisine"><i class="fas fa-utensils"></i> Cuisine</a>
+    <a class="btn btn-sm btn-outline-primary" href="#blanchisserie"><i class="fas fa-tshirt"></i> Blanchisserie</a>
+    <a class="btn btn-sm btn-outline-primary" href="#transport"><i class="fas fa-ambulance"></i> Transport</a>
+    <a class="btn btn-sm btn-outline-primary" href="#ateliers"><i class="fas fa-tools"></i> Ateliers</a>
+    <a class="btn btn-sm btn-outline-primary" href="#hygiene"><i class="fas fa-hand-sparkles"></i> Hygiène</a>
+  </div>
+</nav>
+
+<!-- SECTION CUISINE CENTRALE -->
+<section id="cuisine" class="container py-5 fade-in">
+    <div class="service-card">
+        <div class="service-icon-wrapper">
+            <i class="fas fa-utensils service-icon"></i>
+        </div>
+        <div class="service-content">
+            <h2 class="service-title">Cuisine Centrale</h2>
+            
+            <div class="stats-bar">
+                <div class="stat-number">350+</div>
+                <div class="stat-desc">
+                    <strong>Repas préparés quotidiennement</strong> dans des conditions d'hygiène strictes conformes aux normes HACCP. Chaque plat suit un processus de contrôle qualité rigoureux.
+                </div>
+            </div>
+            
+            <p class="lead text-muted">La cuisine centrale de l'EPH Sidi Ghilès constitue un pilier essentiel de la prise en charge globale des patients, assurant une alimentation saine, équilibrée et adaptée à chaque pathologie.</p>
+            
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-clipboard-check text-primary me-2"></i>Programme Nutritionnel</h5>
+                    <p>Un menu hebdomadaire élaboré par nos diététiciens, respectant les régimes spécifiques (sans sel, diabétique, hypoallergénique, etc.) et les besoins nutritionnels particuliers de chaque patient.</p>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-user-md feature-icon"></i>
+                            <span>Suivi diététique personnalisé</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-clipboard-list feature-icon"></i>
+                            <span>Menus adaptés aux pathologies</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-temperature-high feature-icon"></i>
+                            <span>Chaîne du froid maîtrisée</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <h5><i class="fas fa-shield-alt text-primary me-2"></i>Sécurité Alimentaire</h5>
+                    <p>Chaque jour, un repas témoin est systématiquement conservé pendant 24 heures pour analyse, garantissant une traçabilité complète et permettant une réaction immédiate en cas de besoin.</p>
+                    
+                    <div class="timeline-section">
+                        <div class="timeline-badge">Modernisation 2008</div>
+                        <p class="mb-0">Le 4ème trimestre 2008 a marqué la <strong>rénovation complète</strong> de la cuisine centrale, permettant sa <strong>modélisation et sa normalisation</strong> selon les standards internationaux les plus exigeants.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="process-flow">
+                <div class="process-line"></div>
+                <div class="process-step">
+                    <div class="process-circle">1</div>
+                    <div>Préparation</div>
+                    <small>En cuisine centrale</small>
+                </div>
+                <div class="process-step">
+                    <div class="process-circle">2</div>
+                    <div>Conditionnement</div>
+                    <small>Emballage sous vide</small>
+                </div>
+                <div class="process-step">
+                    <div class="process-circle">3</div>
+                    <div>Transport</div>
+                    <small>Équipe qualifiée</small>
+                </div>
+                <div class="process-step">
+                    <div class="process-circle">4</div>
+                    <div>Service</div>
+                    <small>Au chevet du patient</small>
+                </div>
+                <div class="process-step">
+                    <div class="process-circle">5</div>
+                    <div>Contrôle</div>
+                    <small>Repas témoin 24h</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION BLANCHISSERIE -->
+<section id="blanchisserie" class="container py-5 fade-in">
+    <div class="service-card">
+        <div class="service-icon-wrapper">
+            <i class="fas fa-tshirt service-icon"></i>
+        </div>
+        <div class="service-content">
+            <h2 class="service-title">Blanchisserie Hospitalière</h2>
+            
+            <div class="stats-bar">
+                <div class="stat-number">200kg</div>
+                <div class="stat-desc">
+                    <strong>De linge traité quotidiennement</strong> avec une séparation stricte entre le linge médical, chirurgical et d'isolement pour prévenir tout risque de contamination croisée.
+                </div>
+            </div>
+            
+            <p class="lead text-muted">Notre blanchisserie hospitalière assure la propreté et la stérilisation du linge selon des protocoles rigoureux, contribuant directement à la lutte contre les infections nosocomiales.</p>
+            
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="team-grid">
+                        <div class="team-card">
+                            <i class="fas fa-water team-icon"></i>
+                            <h6>Salle de Lavage</h6>
+                            <p class="small text-muted">Équipements industriels dernière génération avec contrôle automatique des températures et produits désinfectants</p>
+                        </div>
+                        <div class="team-card">
+                            <i class="fas fa-wind team-icon"></i>
+                            <h6>Séchage & Repassage</h6>
+                            <p class="small text-muted">Systèmes de séchage et repassage professionnels garantissant une élimination complète des agents pathogènes</p>
+                        </div>
+                        <div class="team-card">
+                            <i class="fas fa-box team-icon"></i>
+                            <h6>Conditionnement</h6>
+                            <p class="small text-muted">Emballage sous cellophane scellée pour maintenir la stérilité jusqu'à l'utilisation au chevet du patient</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <h5><i class="fas fa-project-diagram text-primary me-2"></i>Circuit Propre/Sale</h5>
+                    <p>La blanchisserie applique strictement le principe de <strong>séparation des flux propres et sales</strong> :</p>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-ban feature-icon"></i>
+                            <span>Pas de croisement des circuits</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-arrows-alt-h feature-icon"></i>
+                            <span>Flux linéaire unidirectionnel</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-exclamation-triangle feature-icon"></i>
+                            <span>Zones d'isolement distinctes</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-shield-virus feature-icon"></i>
+                            <span>Protocoles anti-contamination</span>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info mt-3">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Processus certifié :</strong> Le linge des services chirurgicaux et des unités d'isolement suit des circuits et traitements spécifiques avec traçabilité complète.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION TRANSPORT & PARC AUTO -->
+<section id="transport" class="container py-5 fade-in">
+    <div class="service-card">
+        <div class="service-icon-wrapper">
+            <i class="fas fa-ambulance service-icon"></i>
+        </div>
+        <div class="service-content">
+            <h2 class="service-title">Transport Médical & Parc Automobile</h2>
+            
+            <div class="stats-bar">
+                <div class="stat-number">100km</div>
+                <div class="stat-desc">
+                    <strong>Distance des CHU référents</strong> - Situé à 100km des Centres Hospitalo-Universitaires d'Alger et Blida, notre parc automobile assure les transferts médicaux urgents 24h/24.
+                </div>
+            </div>
+            
+            <p class="lead text-muted">Notre service de transport médicalisé garantit la continuité des soins en assurant le transfert sécurisé des patients vers les centres spécialisés, avec un parc automobile entretenu par nos propres ateliers.</p>
+            
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-hospital text-primary me-2"></i>Transferts Médicaux</h5>
+                    <p>L'EPH assure le transfert des patients nécessitant des soins de <strong>très haut niveau (soins tertiaires)</strong> vers les CHU spécialisés, avec :</p>
+                    
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-user-md text-success me-2"></i>
+                            <span>Équipage médical qualifié (SAMU, SMUR)</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-heartbeat text-danger me-2"></i>
+                            <span>Matériel de réanimation embarqué</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-clock text-warning me-2"></i>
+                            <span>Disponibilité 24h/24 et 7j/7</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-file-medical text-info me-2"></i>
+                            <span>Dossier médical accompagnant le patient</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-6">
+                    <h5><i class="fas fa-tools text-primary me-2"></i>Maintenance & Entretien</h5>
+                    <p>Nos <strong>garages intégrés</strong> permettent un entretien préventif et curatif de l'ensemble du parc automobile :</p>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-cogs feature-icon"></i>
+                            <span>Maintenance préventive programmée</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-wrench feature-icon"></i>
+                            <span>Réparations urgentes sur site</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-gas-pump feature-icon"></i>
+                            <span>Contrôle technique régulier</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-user-tie feature-icon"></i>
+                            <span>Personnel qualifié et formé</span>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-success mt-3">
+                        <i class="fas fa-chart-line me-2"></i>
+                        <strong>Optimisation des coûts :</strong> L'entretien interne permet une réduction de 40% des frais de maintenance et une disponibilité permanente des véhicules.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION ATELIERS -->
+<section id="ateliers" class="container py-5 fade-in">
+    <div class="service-card">
+        <div class="service-icon-wrapper">
+            <i class="fas fa-tools service-icon"></i>
+        </div>
+        <div class="service-content">
+            <h2 class="service-title">Ateliers Techniques</h2>
+            
+            <p class="lead text-muted">Les ateliers techniques de l'EPH assurent la maintenance préventive et curative de l'ensemble des équipements médicaux et des infrastructures, garantissant la continuité et la sécurité des activités hospitalières.</p>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="team-card h-100">
+                        <i class="fas fa-heartbeat team-icon" style="color: #dc3545;"></i>
+                        <h5>Équipements Médicaux</h5>
+                        <p class="text-muted">Maintenance des appareils de monitoring, respirateurs, pompes à perfusion, matériel chirurgical et de bloc opératoire selon les normes constructeurs.</p>
+                        <div class="mt-2">
+                            <span class="badge bg-danger">Critique</span>
+                            <span class="badge bg-warning">Préventif</span>
+                            <span class="badge bg-info">Correctif</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="team-card h-100">
+                        <i class="fas fa-industry team-icon" style="color: #17a2b8;"></i>
+                        <h5>Équipements Industriels</h5>
+                        <p class="text-muted">Entretien des groupes électrogènes, climatisation centrale, systèmes d'oxygène médical, stérilisateurs, et équipements de la blanchisserie industrielle.</p>
+                        <div class="mt-2">
+                            <span class="badge bg-primary">Génie civil</span>
+                            <span class="badge bg-success">Électricité</span>
+                            <span class="badge bg-info">Plomberie</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="team-card h-100">
+                        <i class="fas fa-leaf team-icon" style="color: #28a745;"></i>
+                        <h5>Infrastructures & Espaces Verts</h5>
+                        <p class="text-muted">Entretien des bâtiments, maintenance des systèmes de sécurité, et aménagement des espaces verts pour un environnement hospitalier apaisant et sécurisé.</p>
+                        <div class="mt-2">
+                            <span class="badge bg-success">Paysagisme</span>
+                            <span class="badge bg-secondary">Bâtiment</span>
+                            <span class="badge bg-dark">Urgences</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-section mt-4">
+                <h5><i class="fas fa-bolt text-warning me-2"></i>Interventions Urgentes</h5>
+                <p>Nos équipes techniques sont organisées en <strong>cellules d'intervention rapide</strong> disponibles 24h/24 pour :</p>
+                
+                <div class="row g-3 mt-3">
+                    <div class="col-md-4">
+                        <div class="text-center p-3 border rounded">
+                            <i class="fas fa-clock fa-2x text-danger mb-2"></i>
+                            <h6 class="mb-1">Réponse en < 15min</h6>
+                            <small class="text-muted">Pour les incidents critiques</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center p-3 border rounded">
+                            <i class="fas fa-user-shield fa-2x text-primary mb-2"></i>
+                            <h6 class="mb-1">Équipes spécialisées</h6>
+                            <small class="text-muted">Par domaine d'expertise</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center p-3 border rounded">
+                            <i class="fas fa-clipboard-check fa-2x text-success mb-2"></i>
+                            <h6 class="mb-1">Traçabilité complète</h6>
+                            <small class="text-muted">De l'intervention à la résolution</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION HYGIÈNE & ENTRETIEN -->
+<section id="hygiene" class="container py-5 fade-in">
+    <div class="service-card">
+        <div class="service-icon-wrapper">
+            <i class="fas fa-hand-sparkles service-icon"></i>
+        </div>
+        <div class="service-content">
+            <h2 class="service-title">Hygiène & Entretien Hospitalier</h2>
+            
+            <div class="stats-bar">
+                <div class="stat-number">100%</div>
+                <div class="stat-desc">
+                    <strong>Des locaux aux normes</strong> - Une équipe dédiée garantit la propreté et l'hygiène optimales de tous les espaces hospitaliers, contribuant activement à la lutte contre les infections nosocomiales.
+                </div>
+            </div>
+            
+            <p class="lead text-muted">La Direction accorde une importance capitale à l'hygiène hospitalière, considérée comme un élément fondamental de la sécurité des patients et de la qualité des soins.</p>
+            
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-users-cog text-primary me-2"></i>Personnel Qualifié</h5>
+                    <p>Notre personnel d'entretien est :</p>
+                    
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i><strong>Sélectionné rigoureusement</strong> sur des critères d'aptitude et de motivation</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i><strong>Formé continuellement</strong> aux dernières techniques et produits d'hygiène hospitalière</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i><strong>Supervisé quotidiennement</strong> par les surveillants de services et la coordination paramédicale</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i><strong>Équipé professionnellement</strong> avec du matériel adapté et des produits homologués</li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-6">
+                    <h5><i class="fas fa-trash-alt text-primary me-2"></i>Gestion des Déchets</h5>
+                    <p>Tri et traitement spécifique selon la typologie :</p>
+                    
+                    <div class="row g-2 mt-2">
+                        <div class="col-6">
+                            <div class="p-3 border rounded" style="background: #e3f2fd;">
+                                <h6 class="mb-1"><i class="fas fa-hospital text-danger"></i> DASRI</h6>
+                                <small class="text-muted">Déchets d'activités de soins à risques infectieux</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 border rounded" style="background: #f3e5f5;">
+                                <h6 class="mb-1"><i class="fas fa-pills text-purple"></i> Médicaments</h6>
+                                <small class="text-muted">Médicaments non utilisés et périmés</small>
+                            </div>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <div class="p-3 border rounded" style="background: #e8f5e9;">
+                                <h6 class="mb-1"><i class="fas fa-home text-success"></i> Domestiques</h6>
+                                <small class="text-muted">Déchets assimilables aux ordures ménagères</small>
+                            </div>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <div class="p-3 border rounded" style="background: #fff3e0;">
+                                <h6 class="mb-1"><i class="fas fa-flask text-warning"></i> Chimiques</h6>
+                                <small class="text-muted">Produits chimiques et solvants</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="alert alert-warning mt-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-chalkboard-teacher fa-2x me-3"></i>
+                    <div>
+                        <h5 class="mb-1">Formation Continue & CLIN</h5>
+                        <p class="mb-0">Le personnel participe activement au <strong>Comité de Lutte contre les Infections Nosocomiales (CLIN)</strong> et suit régulièrement des programmes de formation spécifiques à l'hygiène hospitalière et à la prévention des infections.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <div class="d-inline-flex gap-4 flex-wrap">
+                    <div class="text-center">
+                        <div class="display-6 text-primary mb-1">365</div>
+                        <div class="text-muted">Jours/an</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="display-6 text-success mb-1">24/7</div>
+                        <div class="text-muted">Disponibilité</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="display-6 text-info mb-1">100%</div>
+                        <div class="text-muted">Conformité</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="display-6 text-warning mb-1">50+</div>
+                        <div class="text-muted">Agents formés</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ANIMATIONS GSAP -->
+<script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+<script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Animation des cartes de service
+        gsap.utils.toArray('.service-card').forEach((card, index) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                delay: index * 0.2,
+                ease: "power2.out"
+            });
+            
+            // Animation au survol (effet supplémentaire)
+            card.addEventListener('mouseenter', () => {
+                gsap.to(card.querySelector('.service-icon-wrapper'), {
+                    scale: 1.1,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card.querySelector('.service-icon-wrapper'), {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+        });
+        
+        // Animation des statistiques
+        gsap.utils.toArray('.stats-bar').forEach((bar, index) => {
+            gsap.from(bar.querySelector('.stat-number'), {
+                scrollTrigger: {
+                    trigger: bar,
+                    start: "top 90%",
+                    toggleActions: "play none none reverse"
+                },
+                scale: 0,
+                opacity: 0,
+                duration: 1,
+                delay: 0.5,
+                ease: "back.out(1.7)"
+            });
+        });
+        
+        // Animation des éléments de processus
+        gsap.utils.toArray('.process-circle').forEach((circle, index) => {
+            gsap.from(circle, {
+                scrollTrigger: {
+                    trigger: circle.closest('.process-flow'),
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                scale: 0,
+                rotation: -180,
+                duration: 0.8,
+                delay: index * 0.15,
+                ease: "back.out(1.7)"
+            });
+        });
+        
+        // Animation de la ligne de processus
+        const processLine = document.querySelector('.process-line');
+        if (processLine) {
+            gsap.from(processLine, {
+                scrollTrigger: {
+                    trigger: processLine,
+                    start: "top 90%",
+                    toggleActions: "play none none reverse"
+                },
+                scaleX: 0,
+                duration: 1.5,
+                ease: "power2.out"
+            });
+        }
+        
+        // Animation des cartes d'équipe
+        gsap.utils.toArray('.team-card').forEach((card, index) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card.closest('.team-grid'),
+                    start: "top 90%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 30,
+                opacity: 0,
+                duration: 0.6,
+                delay: index * 0.1,
+                ease: "power2.out"
+            });
+        });
+        
+        // Animation du header
+        gsap.from('.services-header h1', {
+            duration: 1.5,
+            y: -50,
+            opacity: 0,
+            ease: "power3.out"
+        });
+        
+        gsap.from('.services-header .subtitle', {
+            duration: 1.5,
+            y: 30,
+            opacity: 0,
+            delay: 0.5,
+            ease: "power3.out"
+        });
+        
+        // Animation de la navigation interne
+        const navButtons = document.querySelectorAll('nav .btn');
+        navButtons.forEach((btn, index) => {
+            gsap.from(btn, {
+                duration: 0.8,
+                scale: 0,
+                opacity: 0,
+                delay: 1 + (index * 0.1),
+                ease: "back.out(1.7)"
+            });
+        });
+    });
+
+     // Script pour forcer l'affichage des boutons de la navbar
+    document.addEventListener('DOMContentLoaded', function() {
+        // Vérifier si les boutons de thème et connexion existent
+        const themeSelector = document.querySelector('.theme-selector');
+        const authButtons = document.querySelector('.d-flex.ms-auto');
+        
+        if (themeSelector && authButtons) {
+            console.log('Boutons trouvés dans le DOM');
+            
+            // Forcer l'affichage
+            themeSelector.style.display = 'block';
+            themeSelector.style.visibility = 'visible';
+            authButtons.style.display = 'flex';
+            authButtons.style.visibility = 'visible';
+            
+            // Ajouter une classe pour débogage
+            themeSelector.classList.add('force-visible');
+            authButtons.classList.add('force-visible');
+        } else {
+            console.warn('Boutons non trouvés dans le DOM');
+            // Vérifier la structure de la navbar
+            const navbarCollapse = document.getElementById('mainNav');
+            if (navbarCollapse) {
+                console.log('Contenu de navbar-collapse:', navbarCollapse.innerHTML);
+            }
+        }
+        
+        // Vérifier aussi sur les événements de Bootstrap
+        document.getElementById('mainNav')?.addEventListener('shown.bs.collapse', function() {
+            console.log('Navbar déployée - vérifier les boutons');
+            document.querySelectorAll('.d-flex.ms-auto *').forEach(el => {
+                el.style.display = 'block';
+                el.style.visibility = 'visible';
+            });
+        });
+    });
+</script>
+
+<style>
+    /* Styles de débogage */
+    .force-visible {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 9999 !important;
+    }
+    
+    /* Important: Override tous les styles qui pourraient cacher les boutons */
+    .d-flex.ms-auto,
+    .theme-selector,
+    .btn-outline-primary,
+    .btn-outline-danger,
+    .btn-outline-secondary {
+        display: inline-flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    /* Sur mobile */
+    @media (max-width: 768px) {
+        .navbar-collapse .d-flex.ms-auto {
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: center !important;
+            width: 100% !important;
+            margin-top: 10px !important;
+        }
+        
+        .navbar-collapse.collapsing .d-flex.ms-auto,
+        .navbar-collapse.show .d-flex.ms-auto {
+            display: flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+    }
+</style>
+{% endblock %}
