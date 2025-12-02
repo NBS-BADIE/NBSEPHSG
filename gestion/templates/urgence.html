@@ -1,0 +1,1099 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    /* ============================================
+       VARIABLES CSS POUR LES THÈMES
+       ============================================ */
+    :root {
+        --urgence-red: #dc3545;
+        --urgence-dark-red: #c82333;
+        --urgence-orange: #fd7e14;
+        --urgence-yellow: #ffc107;
+        --urgence-blue: #007bff;
+        --urgence-light: #f8d7da;
+        --urgence-bg: #fff5f5;
+    }
+    
+    body.dark-mode {
+        --urgence-red: #ff6b6b;
+        --urgence-dark-red: #ff5252;
+        --urgence-orange: #ff922b;
+        --urgence-yellow: #ffd43b;
+        --urgence-blue: #4dabf7;
+        --urgence-light: #2a0f0f;
+        --urgence-bg: #1a0a0a;
+    }
+    
+    /* ============================================
+       HEADER URGENCES
+       ============================================ */
+    .urgence-header {
+        background: linear-gradient(135deg, var(--urgence-red) 0%, var(--urgence-dark-red) 100%);
+        color: white;
+        padding: 5rem 0 3rem;
+        text-align: center;
+        margin-bottom: 3rem;
+        border-radius: 0 0 20px 20px;
+        position: relative;
+        overflow: hidden;
+        animation: pulseRed 3s infinite;
+    }
+    
+    @keyframes pulseRed {
+        0%, 100% {
+            box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4);
+        }
+        50% {
+            box-shadow: 0 0 0 20px rgba(220, 53, 69, 0);
+        }
+    }
+    
+    .urgence-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("{% static 'images/urgence-bg.jpg' %}") center/cover;
+        opacity: 0.15;
+        z-index: 0;
+    }
+    
+    .urgence-header h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        animation: blink 2s infinite;
+    }
+    
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.9; }
+    }
+    
+    .urgence-header .subtitle {
+        font-size: 1.5rem;
+        opacity: 0.95;
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+        font-weight: 500;
+    }
+    
+    .urgence-alert {
+        background: rgba(255, 255, 255, 0.2);
+        border: 2px solid white;
+        border-radius: 15px;
+        padding: 1rem 2rem;
+        margin-top: 2rem;
+        display: inline-block;
+        position: relative;
+        z-index: 1;
+        backdrop-filter: blur(10px);
+    }
+    
+    /* ============================================
+       NUMÉROS D'URGENCE
+       ============================================ */
+    .urgence-numbers {
+        background: var(--urgence-bg);
+        border-radius: 20px;
+        padding: 3rem;
+        margin-bottom: 3rem;
+        border: 3px solid var(--urgence-red);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .urgence-numbers::before {
+        content: '⚠️';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 3rem;
+        opacity: 0.1;
+    }
+    
+    .urgence-card {
+        text-align: center;
+        padding: 2rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(220, 53, 69, 0.1);
+        transition: all 0.3s ease;
+        border-top: 5px solid var(--urgence-red);
+        height: 100%;
+    }
+    
+    body.dark-mode .urgence-card {
+        background: var(--card-bg);
+    }
+    
+    .urgence-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(220, 53, 69, 0.2);
+    }
+    
+    .urgence-card.ambulance {
+        border-top-color: var(--urgence-blue);
+    }
+    
+    .urgence-card.samu {
+        border-top-color: var(--urgence-red);
+    }
+    
+    .urgence-card.pompiers {
+        border-top-color: var(--urgence-orange);
+    }
+    
+    .urgence-card.police {
+        border-top-color: var(--urgence-blue);
+    }
+    
+    .urgence-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2.5rem;
+        color: white;
+    }
+    
+    .urgence-card.samu .urgence-icon {
+        background: linear-gradient(135deg, var(--urgence-red), var(--urgence-dark-red));
+    }
+    
+    .urgence-card.ambulance .urgence-icon {
+        background: linear-gradient(135deg, var(--urgence-blue), #0056b3);
+    }
+    
+    .urgence-card.pompiers .urgence-icon {
+        background: linear-gradient(135deg, var(--urgence-orange), #e8590c);
+    }
+    
+    .urgence-card.police .urgence-icon {
+        background: linear-gradient(135deg, #343a40, #212529);
+    }
+    
+    .urgence-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        margin: 1rem 0;
+        font-family: 'Montserrat', sans-serif;
+        letter-spacing: 2px;
+    }
+    
+    .urgence-number a {
+        color: inherit;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .urgence-number a:hover {
+        color: var(--urgence-red);
+        text-decoration: none;
+    }
+    
+    /* ============================================
+       TEMPS D'ATTENTE
+       ============================================ */
+    .waiting-time {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 20px;
+        padding: 3rem;
+        margin-bottom: 3rem;
+        position: relative;
+    }
+    
+    body.dark-mode .waiting-time {
+        background: linear-gradient(135deg, #2d2d2d 0%, #3d3d3d 100%);
+    }
+    
+    .waiting-time::before {
+        content: '⏱️';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 3rem;
+        opacity: 0.1;
+    }
+    
+    .time-indicator {
+        height: 20px;
+        background: linear-gradient(90deg, 
+            #28a745 0%, 
+            #28a745 var(--low-time), 
+            #ffc107 var(--low-time), 
+            #ffc107 var(--medium-time), 
+            #dc3545 var(--medium-time), 
+            #dc3545 100%);
+        border-radius: 10px;
+        margin: 2rem 0;
+        position: relative;
+    }
+    
+    .time-marker {
+        position: absolute;
+        top: 25px;
+        transform: translateX(-50%);
+        text-align: center;
+        width: 100px;
+    }
+    
+    .time-marker::before {
+        content: '';
+        position: absolute;
+        top: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 2px;
+        height: 20px;
+        background: currentColor;
+    }
+    
+    /* ============================================
+       PARCOURS PATIENT
+       ============================================ */
+    .patient-journey {
+        padding: 3rem 0;
+    }
+    
+    .journey-step {
+        position: relative;
+        padding: 2rem;
+        background: white;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        border-left: 5px solid var(--urgence-red);
+        transition: all 0.3s ease;
+    }
+    
+    body.dark-mode .journey-step {
+        background: var(--card-bg);
+    }
+    
+    .journey-step:hover {
+        transform: translateX(10px);
+        box-shadow: 0 10px 25px rgba(220, 53, 69, 0.1);
+    }
+    
+    .step-number {
+        position: absolute;
+        top: -15px;
+        left: -15px;
+        width: 40px;
+        height: 40px;
+        background: var(--urgence-red);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+        box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+    }
+    
+    /* ============================================
+       ÉQUIPE URGENCES
+       ============================================ */
+    .equipe-urgences {
+        background: var(--urgence-light);
+        border-radius: 20px;
+        padding: 3rem;
+        margin-bottom: 3rem;
+    }
+    
+    .medecin-card {
+        text-align: center;
+        padding: 1.5rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    body.dark-mode .medecin-card {
+        background: var(--card-bg);
+    }
+    
+    .medecin-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(220, 53, 69, 0.1);
+    }
+    
+    .medecin-photo {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin: 0 auto 1rem;
+        border: 3px solid var(--urgence-red);
+        padding: 3px;
+        background: white;
+    }
+    
+    /* ============================================
+       FAQ URGENCES
+       ============================================ */
+    .faq-urgences {
+        margin-bottom: 3rem;
+    }
+    
+    .faq-item {
+        margin-bottom: 1rem;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+    }
+    
+    .faq-question {
+        background: var(--bg-secondary);
+        padding: 1.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+        color: var(--text-primary);
+    }
+    
+    .faq-question:hover {
+        background: var(--bg-tertiary);
+    }
+    
+    .faq-question.active {
+        background: var(--urgence-light);
+        color: var(--urgence-red);
+    }
+    
+    .faq-answer {
+        padding: 0 1.5rem;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        background: var(--bg-primary);
+    }
+    
+    .faq-answer.show {
+        padding: 1.5rem;
+        max-height: 500px;
+    }
+    
+    /* ============================================
+       CTA URGENT
+       ============================================ */
+    .cta-urgent {
+        background: linear-gradient(135deg, var(--urgence-red) 0%, var(--urgence-dark-red) 100%);
+        color: white;
+        padding: 4rem;
+        border-radius: 20px;
+        text-align: center;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .cta-urgent::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') bottom/cover no-repeat;
+    }
+    
+    .cta-urgent h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .cta-urgent .btn-lg {
+        background: white;
+        color: var(--urgence-red);
+        padding: 1rem 3rem;
+        font-size: 1.2rem;
+        font-weight: 700;
+        border-radius: 50px;
+        border: none;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .cta-urgent .btn-lg:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    
+    /* ============================================
+       MODE URGENCE ACTIVÉ
+       ============================================ */
+    .urgence-mode {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+    }
+    
+    .urgence-btn {
+        width: 60px;
+        height: 60px;
+        background: var(--urgence-red);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        transition: all 0.3s ease;
+        border: none;
+        animation: pulseBtn 2s infinite;
+    }
+    
+    @keyframes pulseBtn {
+        0%, 100% {
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+        50% {
+            box-shadow: 0 5px 25px rgba(220, 53, 69, 0.8);
+        }
+    }
+    
+    .urgence-btn:hover {
+        transform: scale(1.1);
+    }
+    
+    .urgence-panel {
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        width: 300px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        padding: 1.5rem;
+        z-index: 9998;
+        display: none;
+    }
+    
+    body.dark-mode .urgence-panel {
+        background: var(--card-bg);
+    }
+    
+    .urgence-panel.show {
+        display: block;
+        animation: slideUp 0.3s ease;
+    }
+    
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+        .urgence-header h1 {
+            font-size: 2.5rem;
+        }
+        
+        .urgence-header .subtitle {
+            font-size: 1.2rem;
+        }
+        
+        .urgence-numbers,
+        .waiting-time,
+        .equipe-urgences {
+            padding: 2rem 1rem;
+        }
+        
+        .urgence-number {
+            font-size: 2rem;
+        }
+        
+        .cta-urgent {
+            padding: 2rem 1rem;
+        }
+        
+        .cta-urgent h2 {
+            font-size: 2rem;
+        }
+        
+        .urgence-panel {
+            width: calc(100vw - 40px);
+            right: 20px;
+            left: 20px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .urgence-header {
+            padding: 3rem 0 2rem;
+        }
+        
+        .urgence-header h1 {
+            font-size: 2rem;
+        }
+        
+        .urgence-card {
+            padding: 1.5rem;
+        }
+        
+        .urgence-icon {
+            width: 60px;
+            height: 60px;
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<!-- HEADER URGENCES -->
+<section class="urgence-header">
+    <div class="container">
+        <h1><i class="fas fa-ambulance me-3"></i>SERVICE D'URGENCES</h1>
+        <p class="subtitle">Prêts à vous accueillir 24h/24 et 7j/7 - Soins immédiats garantis</p>
+        
+        <div class="urgence-alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <strong>EN CAS D'URGENCE VITALE, APPELEZ LE 15 (SAMU) IMMÉDIATEMENT</strong>
+        </div>
+    </div>
+</section>
+
+<!-- NUMÉROS D'URGENCE -->
+<section class="urgence-numbers">
+    <div class="container">
+        <h2 class="text-center mb-5">
+            <i class="fas fa-phone-alt me-2"></i>Numéros d'Urgence
+        </h2>
+        
+        <div class="row g-4">
+            <div class="col-md-3 col-6">
+                <div class="urgence-card samu">
+                    <div class="urgence-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h4>SAMU</h4>
+                    <div class="urgence-number">
+                        <a href="tel:15">15</a>
+                    </div>
+                    <p class="text-muted small">Urgences médicales graves</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3 col-6">
+                <div class="urgence-card ambulance">
+                    <div class="urgence-icon">
+                        <i class="fas fa-ambulance"></i>
+                    </div>
+                    <h4>Ambulance</h4>
+                    <div class="urgence-number">
+                        <a href="tel:112">112</a>
+                    </div>
+                    <p class="text-muted small">Numéro d'urgence européen</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3 col-6">
+                <div class="urgence-card pompiers">
+                    <div class="urgence-icon">
+                        <i class="fas fa-fire-extinguisher"></i>
+                    </div>
+                    <h4>Pompiers</h4>
+                    <div class="urgence-number">
+                        <a href="tel:18">18</a>
+                    </div>
+                    <p class="text-muted small">Incendies, accidents</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3 col-6">
+                <div class="urgence-card police">
+                    <div class="urgence-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>Police</h4>
+                    <div class="urgence-number">
+                        <a href="tel:17">17</a>
+                    </div>
+                    <p class="text-muted small">Sécurité, ordre public</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <p class="text-muted">
+                <i class="fas fa-info-circle me-1"></i>
+                Ces numéros sont gratuits depuis tous les téléphones
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- TEMPS D'ATTENTE -->
+<section class="waiting-time">
+    <div class="container">
+        <h2 class="text-center mb-4">
+            <i class="fas fa-clock me-2"></i>Temps d'Attente en Direct
+        </h2>
+        
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <div class="time-indicator" style="--low-time: 30%; --medium-time: 70%;">
+                    <!-- Barre de progression -->
+                </div>
+                
+                <div class="d-flex justify-content-between position-relative">
+                    <div class="time-marker" style="left: 0%; color: #28a745;">
+                        <small>≤ 30min</small>
+                    </div>
+                    <div class="time-marker" style="left: 30%; color: #ffc107;">
+                        <small>≤ 1h</small>
+                    </div>
+                    <div class="time-marker" style="left: 70%; color: #dc3545;">
+                        <small>≥ 1h</small>
+                    </div>
+                    <div class="time-marker" style="left: 100%;">
+                        <small>> 2h</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 text-center">
+                <div class="display-4 fw-bold mb-2" id="currentWaitTime">45 min</div>
+                <p class="text-muted">Temps d'attente moyen actuel</p>
+                <div class="badge bg-success">
+                    <i class="fas fa-check-circle me-1"></i>
+                    Mis à jour il y a 5 minutes
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="text-center p-3">
+                    <div class="h4 mb-2">8</div>
+                    <small class="text-muted">Patients en attente</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center p-3">
+                    <div class="h4 mb-2">12</div>
+                    <small class="text-muted">Patients traités/heure</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center p-3">
+                    <div class="h4 mb-2">3</div>
+                    <small class="text-muted">Médecins en service</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PARCOURS PATIENT -->
+<section class="patient-journey">
+    <div class="container">
+        <h2 class="text-center mb-5">
+            <i class="fas fa-map-signs me-2"></i>Votre Parcours aux Urgences
+        </h2>
+        
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="journey-step">
+                    <div class="step-number">1</div>
+                    <h4><i class="fas fa-sign-in-alt me-2 text-primary"></i>Accueil</h4>
+                    <p class="text-muted">Présentez-vous à l'accueil des urgences avec votre carte vitale et pièce d'identité.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="journey-step">
+                    <div class="step-number">2</div>
+                    <h4><i class="fas fa-stethoscope me-2 text-primary"></i>Triage</h4>
+                    <p class="text-muted">Évaluation médicale prioritaire par une infirmière pour déterminer l'urgence.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="journey-step">
+                    <div class="step-number">3</div>
+                    <h4><i class="fas fa-user-md me-2 text-primary"></i>Consultation</h4>
+                    <p class="text-muted">Examen médical complet par un médecin urgentiste.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="journey-step">
+                    <div class="step-number">4</div>
+                    <h4><i class="fas fa-clipboard-check me-2 text-primary"></i>Orientation</h4>
+                    <p class="text-muted">Hospitalisation, retour à domicile ou orientation vers un spécialiste.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{% static 'pdf/parcours-urgences.pdf' %}" class="btn btn-outline-primary">
+                <i class="fas fa-download me-2"></i>Télécharger le guide patient
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ÉQUIPE URGENCES -->
+<section class="equipe-urgences">
+    <div class="container">
+        <h2 class="text-center mb-5">
+            <i class="fas fa-users me-2"></i>Notre Équipe Médicale
+        </h2>
+        
+        <div class="row g-4">
+            <div class="col-md-3 col-6">
+                <div class="medecin-card">
+                    <img src="{% static 'images/medecin1.jpg' %}" alt="Dr. Martin" class="medecin-photo">
+                    <h5 class="mb-1">Dr. Martin</h5>
+                    <p class="text-muted small">Médecin urgentiste</p>
+                    <div class="badge bg-danger">Chef de service</div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 col-6">
+                <div class="medecin-card">
+                    <img src="{% static 'images/medecin2.jpg' %}" alt="Dr. Dubois" class="medecin-photo">
+                    <h5 class="mb-1">Dr. Dubois</h5>
+                    <p class="text-muted small">Urgentiste pédiatrique</p>
+                    <div class="badge bg-info">Spécialiste enfants</div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 col-6">
+                <div class="medecin-card">
+                    <img src="{% static 'images/medecin3.jpg' %}" alt="Dr. Lambert" class="medecin-photo">
+                    <h5 class="mb-1">Dr. Lambert</h5>
+                    <p class="text-muted small">Chirurgien urgentiste</p>
+                    <div class="badge bg-warning">Traumatologie</div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 col-6">
+                <div class="medecin-card">
+                    <img src="{% static 'images/medecin4.jpg' %}" alt="Dr. Moreau" class="medecin-photo">
+                    <h5 class="mb-1">Dr. Moreau</h5>
+                    <p class="text-muted small">Cardiologue urgentiste</p>
+                    <div class="badge bg-danger">Urgences cardiaques</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <p class="text-muted">
+                <i class="fas fa-info-circle me-1"></i>
+                Équipe disponible 24h/24 avec rotation toutes les 8 heures
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ URGENCES -->
+<section class="faq-urgences">
+    <div class="container">
+        <h2 class="text-center mb-5">
+            <i class="fas fa-question-circle me-2"></i>Questions Fréquentes
+        </h2>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Quand dois-je me rendre aux urgences ?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>En cas de : douleur thoracique, difficultés respiratoires, traumatisme crânien, hémorragie importante, brûlures étendues, perte de connaissance, paralysie soudaine.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Faut-il appeler avant de se déplacer ?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Non, les urgences sont accessibles sans rendez-vous. En cas d'urgence vitale, appelez directement le 15 (SAMU) qui vous orientera.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Quels documents apporter ?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Carte Vitale, pièce d'identité, carte de mutuelle, ordonnances en cours, carnet de santé pour les enfants.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Puis-je être accompagné ?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Oui, une personne peut vous accompagner. Pour les enfants, la présence d'un parent est obligatoire.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Quels sont les horaires ?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Les urgences sont ouvertes 24h/24 et 7j/7, y compris les weekends et jours fériés.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA URGENT -->
+<section class="cta-urgent">
+    <div class="container">
+        <h2>Besoin de soins urgents ?</h2>
+        <p class="lead mb-4" style="opacity: 0.9;">
+            Notre équipe médicale est prête à vous accueillir à tout moment.<br>
+            Ne retardez pas une prise en charge nécessaire.
+        </p>
+        
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="tel:0123456789" class="btn btn-lg btn-light">
+                <i class="fas fa-phone-alt me-2"></i>Appeler les urgences
+            </a>
+            <a href="#map" class="btn btn-lg btn-outline-light">
+                <i class="fas fa-map-marker-alt me-2"></i>Voir l'itinéraire
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- CARTE LOCALISATION -->
+<section id="map" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">
+            <i class="fas fa-map-marker-alt me-2"></i>Localisation des Urgences
+        </h2>
+        
+        <div class="card">
+            <div class="card-body p-0">
+                <div class="row g-0">
+                    <div class="col-md-8">
+                        <div class="p-4">
+                            <div id="map-container" style="height: 400px; border-radius: 10px; overflow: hidden; background: #f8f9fa;">
+                                <!-- Carte Google Maps intégrée -->
+                                <iframe 
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2678.8881877983635!2d-0.5780880844256242!3d35.69734828019753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd7e8a6c8d5d5d5d%3A0x5d5d5d5d5d5d5d5d!2sH%C3%B4pital%20Sidi%20Ghil%C3%A8s!5e0!3m2!1sfr!2sdz!4v1623345678901!5m2!1sfr!2sdz" 
+                                    width="100%" 
+                                    height="100%" 
+                                    style="border:0;" 
+                                    allowfullscreen="" 
+                                    loading="lazy">
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-4">
+                            <h5>Accès aux Urgences</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-3">
+                                    <i class="fas fa-car text-primary me-2"></i>
+                                    <strong>En voiture :</strong> Entrée principale, parking dédié
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-ambulance text-danger me-2"></i>
+                                    <strong>Ambulance :</strong> Entrée côté Urgences
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-wheelchair text-info me-2"></i>
+                                    <strong>Accès PMR :</strong> Rampe d'accès disponible
+                                </li>
+                                <li>
+                                    <i class="fas fa-bus text-success me-2"></i>
+                                    <strong>Transport public :</strong> Ligne 4, arrêt Hôpital
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BOUTON URGENCE FIXE -->
+<div class="urgence-mode">
+    <button class="urgence-btn" id="urgenceToggle">
+        <i class="fas fa-crosshairs"></i>
+    </button>
+    
+    <div class="urgence-panel" id="urgencePanel">
+        <h5 class="mb-3"><i class="fas fa-first-aid me-2"></i>Mode Urgence</h5>
+        <div class="mb-3">
+            <button class="btn btn-danger w-100 mb-2" onclick="window.location.href='tel:15'">
+                <i class="fas fa-phone-alt me-2"></i>Appeler le 15
+            </button>
+            <button class="btn btn-warning w-100 mb-2" onclick="window.location.href='tel:112'">
+                <i class="fas fa-ambulance me-2"></i>Appeler le 112
+            </button>
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="urgenceModeSwitch">
+            <label class="form-check-label" for="urgenceModeSwitch">
+                Mode haute visibilité
+            </label>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Gestion du panneau d'urgence
+    const urgenceToggle = document.getElementById('urgenceToggle');
+    const urgencePanel = document.getElementById('urgencePanel');
+    
+    urgenceToggle.addEventListener('click', function() {
+        urgencePanel.classList.toggle('show');
+    });
+    
+    // Fermer le panneau en cliquant ailleurs
+    document.addEventListener('click', function(event) {
+        if (!urgenceToggle.contains(event.target) && !urgencePanel.contains(event.target)) {
+            urgencePanel.classList.remove('show');
+        }
+    });
+    
+    // Mode haute visibilité
+    const urgenceSwitch = document.getElementById('urgenceModeSwitch');
+    urgenceSwitch.addEventListener('change', function() {
+        if (this.checked) {
+            document.body.classList.add('urgence-high-contrast');
+            document.documentElement.style.setProperty('--primary-blue', '#ff0000');
+            document.documentElement.style.setProperty('--text-primary', '#000000');
+            document.body.style.backgroundColor = '#ffffff';
+        } else {
+            document.body.classList.remove('urgence-high-contrast');
+            document.documentElement.style.removeProperty('--primary-blue');
+            document.documentElement.style.removeProperty('--text-primary');
+            document.body.style.backgroundColor = '';
+        }
+    });
+    
+    // FAQ accordéon
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', function() {
+            const answer = this.nextElementSibling;
+            const icon = this.querySelector('i');
+            
+            // Fermer les autres réponses
+            document.querySelectorAll('.faq-answer').forEach(ans => {
+                if (ans !== answer) {
+                    ans.classList.remove('show');
+                    ans.previousElementSibling.classList.remove('active');
+                    ans.previousElementSibling.querySelector('i').classList.remove('fa-chevron-up');
+                    ans.previousElementSibling.querySelector('i').classList.add('fa-chevron-down');
+                }
+            });
+            
+            // Basculer la réponse actuelle
+            answer.classList.toggle('show');
+            this.classList.toggle('active');
+            
+            if (answer.classList.contains('show')) {
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            } else {
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
+        });
+    });
+    
+    // Simulation temps d'attente
+    function updateWaitingTime() {
+        const times = ['30 min', '45 min', '1h', '1h 15min', '1h 30min'];
+        const currentTime = times[Math.floor(Math.random() * times.length)];
+        document.getElementById('currentWaitTime').textContent = currentTime;
+        
+        // Mettre à jour la barre de progression
+        let percentage;
+        switch(currentTime) {
+            case '30 min': percentage = 25; break;
+            case '45 min': percentage = 50; break;
+            case '1h': percentage = 65; break;
+            case '1h 15min': percentage = 80; break;
+            case '1h 30min': percentage = 95; break;
+            default: percentage = 50;
+        }
+        
+        const timeIndicator = document.querySelector('.time-indicator');
+        timeIndicator.style.setProperty('--low-time', '30%');
+        timeIndicator.style.setProperty('--medium-time', '70%');
+    }
+    
+    // Mettre à jour toutes les minutes
+    updateWaitingTime();
+    setInterval(updateWaitingTime, 60000);
+    
+    // Animation des cartes de numéros
+    const urgenceCards = document.querySelectorAll('.urgence-card');
+    urgenceCards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+    });
+    
+    // Smooth scroll pour les ancres
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}
