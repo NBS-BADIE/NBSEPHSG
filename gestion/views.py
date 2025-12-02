@@ -110,6 +110,11 @@ def sg(request):
 def pt(request):
     return render(request, 'pt.html')
 
+# =================== Urgence ===================
+def urgence(request):
+    return render(request, 'urgence.html')
+    
+
 # =================== Accueil ===================
 def accueil(request):
     date_heure = datetime.now()
