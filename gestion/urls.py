@@ -24,6 +24,7 @@ urlpatterns = [
     path('pemalade/', views.pemalade, name='pemalade'),
     path('qualite/', views.qualite, name='qualite'),
     path('sg/', views.sg, name='sg'),
+    path('pt/', views.pt, name='pt'),
 
 
     # ================= ADMIN PERSONNALISÉ =================
